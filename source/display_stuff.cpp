@@ -1,4 +1,5 @@
 #include "why_lib.h"
+#include <cstdio>
 
 namespace why
 {
@@ -43,4 +44,20 @@ namespace why
 
         return object_representation;
     }
+
+    void print_thing(void *thing, char type, char space)
+    {
+        if (type == 's')
+            std::printf("%s", (char *)thing);
+        else if (type == 'd')
+            std::printf("%d", *(int *)thing);
+        else if (type == 'u')
+            std::printf("%u", *(unsigned int *)thing);
+        else if (type == 'S')
+            ((why::String *)thing)->print(space);
+
+        if (space)
+            std::printf("%c", space);
+    }
+
 }
