@@ -3,9 +3,11 @@
 
 #include "why_memory.h"
 #include "why_string.h"
+#include "why_structures.h"
 
 namespace why
 {
+
     //display?
     String represent_byte(unsigned char byte);
     String represent_object(void *object, unsigned int size);

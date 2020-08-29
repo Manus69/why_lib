@@ -1,4 +1,5 @@
 #include "why_string.h"
+#include "why_math.h"
 #include "limits.h"
 
 namespace why
@@ -12,7 +13,7 @@ namespace why
 
         if (base > 16)
             base = 10;
-        complement = LONG_MAX - number + 1;
+        complement = get_absolute_value(LONG_MAX - number + 1);
         if (number < 0)
         {
             if (base == 10)

@@ -21,6 +21,9 @@ $(object_folder)/%.o : $(source_folder)/%.cpp $(headers)
 run: $(objects) $(headers) $(driver)
 	$(compiler) $(flags) $(objects) $(driver) -I$(header_folder) -o $(run_file)
 
+lib: $(objects) $(headers)
+	ar -rcs $(lib_name) $(objects)
+
 clean:
 	rm -f *.o
 	rm -f $(objects)
