@@ -1,0 +1,101 @@
+#include "why_buffer_interface.h"
+#include "why_string_interface.h"
+#include "why_array_interface.h"
+#include "why_memory.h"
+#include "why_copy.h"
+
+#include <fcntl.h>
+
+#define READ_SIZE               (1 << 11)
+#define NUMBER_OF_DESCRIPTORS   (1 << 10)
+
+static void _destroy_buffers(Buffer** buffers)
+{
+    int_signed n;
+
+    n = 0;
+    while (n < NUMBER_OF_DESCRIPTORS)
+    {
+        buffer_destroy(buffers[n]);
+        n ++;
+    }
+}
+
+static Buffer* _get_buffer(int_signed index)
+{
+    static Buffer* buffers[NUMBER_OF_DESCRIPTORS];
+
+    if (index < 0)
+    {
+        _destroy_buffers(buffers);
+        return NULL;
+    }
+
+    if (index >= NUMBER_OF_DESCRIPTORS)
+        return NULL;
+
+    if (buffers[index] == NULL)
+        buffers[index] = buffer_create();
+
+    return buffers[index];
+}
+
+String* get_line(int file_descriptor)
+{
+    String* line;
+    Buffer* buffer;
+    int     status;
+    
+    buffer =  _get_buffer(file_descriptor);
+    if (!buffer)
+        return NULL;
+    
+    while (TRUE)
+    {
+        line = buffer_flush_sequence(buffer, '\n', TRUE);
+        if (line)
+            return line;
+        
+        status = buffer_write_into(buffer, READ_SIZE, file_descriptor);
+        if (status <= 0)
+            return buffer_flush_all(buffer, TRUE);
+    }
+}
+
+String* get_all_lines(int file_descriptor)
+{
+    Buffer* buffer;
+    String* string;
+
+    buffer = buffer_create();
+
+    buffer_write_all_bytes_into(buffer, file_descriptor);
+    string = buffer_read_from(buffer, buffer_count_unread_bytes(buffer), TRUE);
+    buffer_destroy(buffer);
+
+    return string;
+}
+
+Array* get_all_linesA(int file_descriptor)
+{
+    String* line;
+    Array*  lines;
+
+    lines = array_create(copy_shallow, string_destroy);
+    
+    while ((line = get_line(file_descriptor)))
+        array_push(lines, line);
+
+    return lines;
+}
+
+Array* get_all_linesAFN(const char* file_name)
+{
+    int fd;
+
+    fd = open(file_name, O_RDONLY);
+    if (fd < 0)
+        return NULL;
+
+    return get_all_linesA(fd);
+}
