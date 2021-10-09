@@ -28,35 +28,49 @@ void heap_map(Heap* heap, void (*function)())
 
 void heap_swap(Heap* heap, int_signed m, int_signed n)
 {
-    return array_swap(heap, m, n);
+    // return array_swap(heap, m, n);
+    SWAP(heap->items[m], heap->items[n], void *);
 }
 
-static int_signed _index_of_parent(int_signed index)
+static int_signed _index_of_parent(const Heap* heap, int_signed index)
 {
-    return (index - 1) / 2;
+    // return (index - 1) / 2;
+    return (index + heap->left_index) / 2;
 }
 
-static int_signed _index_of_left_child(int_signed index)
+static int_signed _index_of_left_child(const Heap* heap, int_signed index)
 {
-    return 2 * index + 1;
+    // return 2 * index + 1;
+    return 2 * index - heap->left_index;
 }
 
-static int_signed _index_of_right_child(int_signed index)
+static int_signed _index_of_right_child(const Heap* heap, int_signed index)
 {
-    return 2 * index + 2;
+    // return 2 * index + 2;
+    return 1 + _index_of_left_child(heap, index);
+}
+
+static bool _index_in_range(const Heap* heap, int_signed index)
+{
+    return (index > heap->left_index) && (index < heap->right_index);
+}
+
+void* _heap_at(const Heap* heap, int_signed index)
+{
+    return _index_in_range(heap, index) ? heap->items[index] : NULL;
 }
 
 static void* _get_parent(Heap* heap, int_signed index)
 {
-    return heap->items[_index_of_parent(index)];
+    return _index_in_range(heap, index) ? heap->items[_index_of_parent(heap, index)] : NULL;
 }
 
 void* _get_left_child(Heap* heap, int_signed index)
 {
     int_signed child_index;
 
-    child_index = _index_of_left_child(index);
-    if (child_index >= heap->right_index)
+    child_index = _index_of_left_child(heap, index);
+    if (!_index_in_range(heap, child_index))
         return NULL;
 
     return heap->items[child_index];
@@ -66,8 +80,8 @@ void* _get_right_child(Heap* heap, int_signed index)
 {
     int_signed child_index;
 
-    child_index = _index_of_right_child(index);
-    if (child_index >= heap->right_index)
+    child_index = _index_of_right_child(heap, index);
+    if (!_index_in_range(heap, child_index))
         return NULL;
 
     return heap->items[child_index];
@@ -80,7 +94,7 @@ static void _restore_heap_property(Heap* heap, int_signed index)
 
     while (index)
     {
-        parent_index = _index_of_parent(index);
+        parent_index = _index_of_parent(heap, index);
         parent = _get_parent(heap, parent_index);
 
         if (heap->compare(parent, heap->items[index]) < 0)
@@ -96,9 +110,71 @@ bool heap_push(Heap* heap, void* item)
     if (array_push(heap, item))
     {
         _restore_heap_property(heap, heap->right_index - 1);
-
         return TRUE;
     }
     
     return FALSE;
 }
+
+static bool _process_left_child(Heap* heap, void* lhs, int_signed index)
+{
+    if (heap->compare(_heap_at(heap, index), lhs) > 0)
+    {
+        heap_swap(heap, index, _index_of_left_child(heap, index));
+    }
+}
+
+static bool _heapify_down(Heap* heap, int_signed index)
+{
+    void*       lhs;
+    void*       rhs;
+    void*       root;
+    int_signed  lhs_result;
+    int_signed  rhs_result;
+
+    if (!_index_in_range(heap, index))
+        return false;
+    
+    lhs = _get_left_child(heap, index);
+    rhs = _get_right_child(heap, index);
+
+    if (!lhs && !rhs)
+        return true; 
+    
+    if (!rhs)
+        return _process_left_child(heap, lhs, index);
+    
+    root = _heap_at(heap, index);
+    lhs_result = heap->compare(root, lhs);
+    rhs_result = heap->compare(root, rhs);
+
+    if (lhs_result <= 0 && rhs_result <= 0)
+        return true;
+    
+    if (heap->compare(lhs, rhs) < 0)
+    {
+        heap_swap(heap, _index_of_left_child(heap, index), index);
+        return _heapify_down(heap, _index_of_left_child(heap, index));
+    }
+    else
+    {
+        heap_swap(heap, _index_of_right_child(heap, index), index);
+        return _heapify_down(heap, _index_of_right_child(heap, index));
+    }
+}
+
+void heap_sort(Heap* heap)
+{
+    int_signed n;
+    
+    if (!heap || !heap->compare)
+        return ;
+
+    n = heap->right_index - 1;
+    while (n > heap->left_index)
+    {
+        _heapify_down(heap, n);
+        n --;
+    }
+}
+

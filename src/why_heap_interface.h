@@ -18,6 +18,7 @@ void    heap_destroy(Heap* heap);
 bool    heap_push(Heap* heap, void* item);
 void*   heap_pop_root(Heap* heap);
 void    heap_map(Heap* heap, void (*function)());
+void    heap_sort(Heap* heap);
 
 #ifdef __cplusplus
     }

@@ -5,6 +5,7 @@
 #include "why_copy.h"
 
 #include <fcntl.h>
+#include <unistd.h>
 
 #define READ_SIZE               (1 << 11)
 #define NUMBER_OF_DESCRIPTORS   (1 << 10)
@@ -91,11 +92,15 @@ Array* get_all_linesA(int file_descriptor)
 
 Array* get_all_linesAFN(const char* file_name)
 {
-    int fd;
+    int     fd;
+    Array*  array;
 
     fd = open(file_name, O_RDONLY);
     if (fd < 0)
         return NULL;
 
-    return get_all_linesA(fd);
+    array = get_all_linesA(fd);
+    close(fd);
+
+    return array;
 }

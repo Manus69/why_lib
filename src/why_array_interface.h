@@ -3,7 +3,7 @@
 
 #include "why_definitions.h"
 
-#define A_CAPACITY_DEFAULT (1 << 2)
+#define A_CAPACITY_DEFAULT (1 << 5)
 #define A_CAPACITY_MIN (1 << 2)
 
 typedef struct Array Array;
@@ -23,6 +23,7 @@ bool        array_pushG(Array* array, void* item, void* (*copy)());
 bool        array_push_frontG(Array* array, void* item, void* (*copy)());
 bool        array_push_front(Array* array, void* item);
 int_signed  array_size(const Array* array);
+int_signed  array_get_capacity(const Array* array);
 void*       array_at(const Array* array, int_signed index);
 void*       array_set(Array* array, void* item, int_signed index);
 void*       array_pop(Array* array);
@@ -30,6 +31,8 @@ void        array_map(Array* array, void (*function)());
 void        array_swap(Array* array, int_signed m, int_signed n);
 void        array_destroy(Array* array);
 void        array_destroy_no_content(Array* array);
+void        array_sortM(Array* array, int_signed (*compare)());
+void        array_sortH(Array* array, int_signed (*compare)());
 
 #ifdef __cplusplus
     }

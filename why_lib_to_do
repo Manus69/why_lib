@@ -6,3 +6,5 @@ sets via trees
 radix sort
 <stdint.h>?
 some sort of a dictionary to unfuck enum - string array management?
+array first() last()
+make realloc useable

@@ -18,7 +18,6 @@ static void** _get_array(int_signed size)
     return array;
 }
 
-
 Array* array_create_with_capacity(void* (copy)(), void (*destroy)(), int_signed capacity)
 {
     Array* array;
@@ -97,6 +96,11 @@ void* array_at(const Array* array, int_signed index)
 int_signed array_size(const Array* array)
 {
     return array->right_index - array->left_index - 1;
+}
+
+int_signed array_get_capacity(const Array* array)
+{
+    return array->capacity;
 }
 
 void* array_set(Array* array, void* item, int_signed index)
@@ -185,7 +189,7 @@ void* array_pop(Array* array)
 
 void array_swap(Array* array, int_signed m, int_signed n)
 {
-    SWAP(array->items[m], array->items[n], void *);
+    SWAP(array->items[array->left_index + m + 1], array->items[array->left_index + n + 1], void *);
 }
 
 Array* array_copy_with(const Array* array, void* (*copy_function)())

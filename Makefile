@@ -17,7 +17,8 @@ driver = test.c
 
 .PHONY: directory
 
-all: directory $(lib)
+# all: directory $(lib)
+all: directory $(driver_name)
 
 directory:
 	@mkdir -p $(obj_folder)
@@ -33,7 +34,8 @@ $(obj_folder)%.o : $(source_folder)%.c $(headers) $(lib_header)
 
 $(driver_name): $(driver) $(lib)
 	$(cc) $(flags) $< -I $(include_folder) -I. -c -o $(obj_folder)$(driver:.c=.o)
-	$(cc) $(flags) $(obj_folder)$(driver:.c=.o) -o $(driver_name) $(lib)
+	# $(cc) $(flags) $(obj_folder)$(driver:.c=.o) -o $(driver_name) $(lib)
+	$(cc) $(flags) $(objects) $(obj_folder)$(driver:.c=.o) -o $(driver_name)
 
 $(lib): $(objects)
 	ar rcs $(lib) $(objects)

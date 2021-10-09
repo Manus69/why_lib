@@ -1,5 +1,7 @@
 test
 test_file.txt
+test.cpp
 *.o
 lib*
 .vscode
+a.out
