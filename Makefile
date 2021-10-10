@@ -4,7 +4,7 @@ driver_name = test
 
 cc = gcc
 flags = -Wall -Wextra -g
-release_flags = -Wall -Wextra -O2
+release_flags = -Wall -Wextra -O3
 
 source_folder = src/
 obj_folder = obj/

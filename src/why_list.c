@@ -83,6 +83,14 @@ List* _list_create_init(void* (*copy)(), void (*destroy)(), const void* data)
     return _list_init(list, data);
 }
 
+int_signed list_length(const List* list)
+{
+    if (!list)
+        return -1;
+    
+    return list->size;
+}
+
 List* list_push_back(List* list, const void* data)
 {
     Sequence* item;
@@ -240,4 +248,56 @@ void list_map(List* list, void (*function)())
         function(current->data);
         current = current->next;
     }
+}
+
+void* list_find(const List* list, void* item, int_signed (*compare)())
+{
+    Sequence* current;
+
+    if (!list || !compare || !item)
+        return NULL;
+    
+    current = list->head;
+    while (current)
+    {
+        if (compare(item, current->data) == 0)
+            return current->data;
+        
+        current = current->next;
+    }
+
+    return NULL;
+}
+
+void* list_remove(List* list, void* item, int_signed (*compare)())
+{
+    Sequence*   current;
+    Sequence*   next;
+    void*       _item;
+
+    if (!list || !compare || !item || !list->size)
+        return NULL;
+    
+    current = list->head;
+    if (compare(current->data, item) == 0)
+        return list_pop_back(list);
+    
+    next = current->next;
+    while (next)
+    {
+        if (compare(next, item) == 0)
+        {
+            current->next = next->next;
+            list->size --;
+            _item = next->data;
+            free(next);
+
+            return _item;
+        }
+
+        current = next;
+        next = next->next;
+    }
+
+    return NULL;
 }

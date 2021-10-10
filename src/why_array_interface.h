@@ -27,6 +27,7 @@ int_signed  array_get_capacity(const Array* array);
 void*       array_at(const Array* array, int_signed index);
 void*       array_set(Array* array, void* item, int_signed index);
 void*       array_pop(Array* array);
+void*       array_pop_front(Array* array);
 void        array_map(Array* array, void (*function)());
 void        array_swap(Array* array, int_signed m, int_signed n);
 void        array_destroy(Array* array);

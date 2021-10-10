@@ -126,7 +126,7 @@ void print_string(const String* string)
     printf("%.*s", (int)length, cstring);
 }
 
-void print_string_n(const String* string)
+void print_stringN(const String* string)
 {
     print_string(string);
     printf("\n");

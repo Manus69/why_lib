@@ -28,25 +28,21 @@ void heap_map(Heap* heap, void (*function)())
 
 void heap_swap(Heap* heap, int_signed m, int_signed n)
 {
-    // return array_swap(heap, m, n);
     SWAP(heap->items[m], heap->items[n], void *);
 }
 
 static int_signed _index_of_parent(const Heap* heap, int_signed index)
 {
-    // return (index - 1) / 2;
     return (index + heap->left_index) / 2;
 }
 
 static int_signed _index_of_left_child(const Heap* heap, int_signed index)
 {
-    // return 2 * index + 1;
     return 2 * index - heap->left_index;
 }
 
 static int_signed _index_of_right_child(const Heap* heap, int_signed index)
 {
-    // return 2 * index + 2;
     return 1 + _index_of_left_child(heap, index);
 }
 
@@ -60,7 +56,7 @@ static void* _heap_at(const Heap* heap, int_signed index)
     return _index_in_range(heap, index) ? heap->items[index] : NULL;
 }
 
-static void* _get_parent(Heap* heap, int_signed index)
+void* _get_parent(Heap* heap, int_signed index)
 {
     return _index_in_range(heap, index) ? heap->items[_index_of_parent(heap, index)] : NULL;
 }
@@ -102,10 +98,13 @@ static void _restore_heap_property(Heap* heap, int_signed index)
     int_signed  parent_index;
     void*       parent;
 
-    while (index)
+    while (index > heap->left_index)
     {
         parent_index = _index_of_parent(heap, index);
-        parent = _get_parent(heap, parent_index);
+        if (parent_index <= heap->left_index)
+            return ;
+        
+        parent = heap->items[parent_index];
 
         if (heap->compare(parent, heap->items[index]) < 0)
             return ;
@@ -181,6 +180,19 @@ static void _swap_out_root(Heap* heap)
     heap_swap(heap, _index_of_last(heap), _index_of_root(heap));
     heap->right_index --;
     _heapify_down(heap, _index_of_root(heap));
+}
+
+void* heap_pop_root(Heap* heap)
+{
+    void* item;
+
+    if (!heap || array_size(heap) == 0)
+        return NULL;
+    
+    _swap_out_root(heap);
+    item = heap->items[heap->right_index];
+
+    return item;
 }
 
 void heap_sort(Heap* heap)

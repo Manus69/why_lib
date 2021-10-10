@@ -26,6 +26,39 @@ void merge_sort_test()
     array_destroy(strings);
 }
 
+void queue_test()
+{
+    Heap*   queue;
+    Array*  strings;
+    String* string;
+
+    strings = get_all_linesAFN("test_file.txt");
+    queue = heap_create(copy_shallow, string_destroy, string_compare);
+
+    // print_arrayN(strings, print_string, "\n");
+
+    while (array_size(strings))
+    {
+        string = array_pop_front(strings);
+        heap_push(queue, string);
+    }
+
+    while ((string = heap_pop_root(queue)))
+    {
+        print_stringN(string);
+        string_destroy(string);
+    }
+
+    heap_destroy(queue);
+    array_destroy(strings);
+}
+
+void hash_test()
+{
+    
+}
+
+
 void _at_exit()
 {
     get_line(-1);
@@ -41,6 +74,7 @@ int main()
     start = clock();
 
     merge_sort_test();
+    // queue_test();
 
     end = clock();
 

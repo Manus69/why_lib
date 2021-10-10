@@ -95,11 +95,17 @@ void* array_at(const Array* array, int_signed index)
 
 int_signed array_size(const Array* array)
 {
+    if (!array)
+        return 0;
+    
     return array->right_index - array->left_index - 1;
 }
 
 int_signed array_get_capacity(const Array* array)
 {
+    if (!array)
+        return 0;
+    
     return array->capacity;
 }
 
@@ -178,11 +184,24 @@ void* array_pop(Array* array)
 {
     void* item;
 
-    if (array->right_index == array->left_index + 1)
+    if (array_size(array) == 0)
         return NULL;
     
-    item = array_at(array, array->right_index - 1);
     array->right_index --;
+    item = array->items[array->right_index];
+
+    return item;
+}
+
+void* array_pop_front(Array* array)
+{
+    void* item;
+
+    if (array_size(array) == 0)
+        return NULL;
+    
+    array->left_index ++;
+    item = array->items[array->left_index];
 
     return item;
 }

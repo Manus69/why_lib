@@ -96,6 +96,10 @@ Matrix*         matrix_eye(int_signed size);
 Matrix*         matrix_add(Matrix* A, Matrix* B);
 Matrix*         matrix_mult(Matrix* A, Matrix* B);
 
+//primes
+bool            is_prime(int_unsigned n);
+int_unsigned    get_next_prime(int_unsigned n);
+
 #ifdef __cplusplus
     }
 #endif
