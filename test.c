@@ -17,8 +17,8 @@ void merge_sort_test()
     // printf("\n---------------\n");
 
     // array_sortM(strings, string_compare);
-    // array_sortH(strings, string_compare);
-    array_sortH(strings, inverse_string_compare);
+    array_sortH(strings, string_compare);
+    // array_sortH(strings, inverse_string_compare);
 
 
     print_arrayN(strings, print_string, "\n");
