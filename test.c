@@ -92,6 +92,19 @@ void hash_test()
     hash_table_destroy(table);
 }
 
+void string_test()
+{
+    char* stuff;
+
+    stuff = allocate(2 + sizeof(int_signed));
+    stuff[0] = 'x';
+    stuff[1] = 'X';
+    *(int_signed *)(stuff + 2) = -666;
+
+    print_int_pointerN((int_signed *)(stuff + 2));
+
+    free(stuff);
+}
 
 void _at_exit()
 {
@@ -109,7 +122,8 @@ int main()
 
     // merge_sort_test();
     // queue_test();
-    hash_test();
+    // hash_test();
+    string_test();
 
     end = clock();
 

@@ -144,7 +144,8 @@ void string_destroy(String* string)
     if (!string)
         return ;
     if (string->allocated)
-        free(string->pointer);
+        // free(string->pointer);
+        free(string->characters);
 
     free(string);
 }
