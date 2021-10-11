@@ -7,6 +7,7 @@
 #include "why_math_complex.h"
 #include "why_string_interface.h"
 #include "why_list_interface.h"
+#include "why_hash_table_interface.h"
 
 #define TOLERANCE (1.0/10000)
 
@@ -15,6 +16,8 @@
 #endif
 
 void print_int(int_signed n);
+void print_intN(int_signed n);
+void print_int_pointer(int_signed* n);
 void print_int_pointerN(int_signed* n);
 void print_real(real x);
 void print_complex(Complex z);
@@ -28,6 +31,8 @@ void _print_polynomialDBG(const Polynomial* p);
 void print_array(const Array* array, void (*print)(), const char* separator);
 void print_arrayN(const Array* array, void (*print)(), const char* separator);
 void print_list(const List* list, void (*function)());
+void print_distribution(const Array* distribution);
+void print_hash_table(const HashTable* table, void (*print)());
 
 #ifdef __cplusplus
     }

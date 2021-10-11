@@ -1,4 +1,5 @@
 #include "why_lib.h"
+#include "why_hash_table_diagnostics.h"
 
 #include <time.h>
 #include <stdio.h>
@@ -55,7 +56,40 @@ void queue_test()
 
 void hash_test()
 {
-    
+    HashTable*  table;
+    Array*      strings;
+    String*     string;
+    Array*      distribution;
+    int_signed  unique_lines;
+
+    strings = get_all_linesAFN("test_file.txt");
+    table = hash_table_create(copy_shallow, string_destroy, hash_string, 30000);
+    unique_lines = array_size(strings);
+
+    while (array_size(strings))
+    {
+        string = array_pop(strings);
+        if (!hash_table_insert(table, string, string_compare))
+        {
+            // print_stringN(string);
+            if (string_length(string) > 1)
+                print_stringN(string);
+            string_destroy(string);
+            unique_lines --;
+        }
+    }
+
+    // print_hash_table(table, print_string);
+
+    distribution = _hash_table_get_distribution(table);
+    // print_distribution(distribution);
+    // print_array(distribution, print_int_pointerN, " ");
+    array_destroy(distribution);
+
+    print_intN(unique_lines);
+
+    array_destroy(strings);
+    hash_table_destroy(table);
 }
 
 
@@ -73,8 +107,9 @@ int main()
 
     start = clock();
 
-    merge_sort_test();
+    // merge_sort_test();
     // queue_test();
+    hash_test();
 
     end = clock();
 

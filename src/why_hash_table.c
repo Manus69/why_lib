@@ -29,8 +29,9 @@ HashTable* hash_table_create(void* (*copy)(), void (*destroy)(), int_unsigned (*
     table->copy = copy;
     table->destroy = destroy;
     table->hash = hash;
-    capacity = capacity < HASHT_MIN_CAPACITY ? HASHT_MIN_CAPACITY : get_next_prime(capacity);
-    table->items = _get_items(copy, destroy, capacity);
+    table->capacity = capacity < HASHT_MIN_CAPACITY ? HASHT_MIN_CAPACITY : get_next_prime(capacity);
+    // table->capacity = 1; //
+    table->items = _get_items(copy, destroy, table->capacity);
 
     return table;
 }
@@ -53,6 +54,16 @@ void hash_table_destroy(HashTable* table)
     free(table);
 }
 
+int_unsigned hash_table_capacity(const HashTable* table)
+{
+    return table->capacity;
+}
+
+void* hash_table_at(const HashTable* table, int_unsigned n)
+{
+    return table->items[n];
+}
+
 bool hash_table_is_in(HashTable* table, void* item, int_signed (*compare)())
 {
     int_unsigned index;
@@ -60,7 +71,7 @@ bool hash_table_is_in(HashTable* table, void* item, int_signed (*compare)())
     if (!table)
         return false;
     
-    index = table->hash(item);
+    index = table->hash(item) % table->capacity;
     if (!list_find(table->items[index], item, compare))
         return false;
     
@@ -71,7 +82,7 @@ bool hash_table_insert(HashTable* table, void* item, int_signed (*compare)())
 {
     int_unsigned index;
 
-    index = table->hash(item);
+    index = table->hash(item) % table->capacity;
     if (list_find(table->items[index], item, compare))
         return false;
     
@@ -85,7 +96,7 @@ void* hash_table_remove(HashTable* table, void* item, int_signed (*compare)())
     int_unsigned    index;
     void*           _item;
 
-    index = table->hash(item);
+    index = table->hash(item) % table->capacity;
     _item = list_remove(table->items[index], item, compare);
 
     return _item;

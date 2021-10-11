@@ -18,6 +18,8 @@
 #include "why_cstring.h"
 #include "why_error.h"
 #include "why_lines_and_strings.h"
+#include "why_hash_table_interface.h"
+#include "why_hash_functions.h"
 
 #define OVERFLOW_CHECK TRUE
 

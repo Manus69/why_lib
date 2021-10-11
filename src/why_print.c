@@ -12,6 +12,17 @@ void print_int(int_signed n)
     printf("%lld", n);
 }
 
+void print_intN(int_signed n)
+{
+    print_int(n);
+    printf("\n");
+}
+
+void print_int_pointer(int_signed* n)
+{
+    print_int(*n);
+}
+
 void print_int_pointerN(int_signed* n)
 {
     print_int(*n);
@@ -167,4 +178,46 @@ void print_arrayN(const Array* array, void (*print)(), const char* separator)
 void print_list(const List* list, void (*function)())
 {
     return list_map((List *)list, function);
+}
+
+void print_distribution(const Array* distribution)
+{
+    int_signed  n;
+    int_signed* item;
+
+    if (!distribution)
+        return ;
+    
+    n = 0;
+    while (n < array_size(distribution))
+    {
+        item = array_at(distribution, n);
+        if (!item || *item <= 0)
+        {
+            printf("\n");
+            n ++;
+
+            continue ;
+        }
+        
+        while (*item --)
+            printf("#");
+        
+        printf("\n");
+        n ++;
+    }
+}
+
+void print_hash_table(const HashTable* table, void (*print)())
+{
+    int_unsigned n;
+
+    n = 0;
+    while (n < hash_table_capacity(table))
+    {
+        print_list(hash_table_at(table, n), print);
+        printf("\n");
+
+        n ++;
+    }
 }
