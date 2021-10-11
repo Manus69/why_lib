@@ -19,7 +19,7 @@ char* cstr_substring(const char* string, int_unsigned length)
     char* substring;
 
     substring = allocate(length + 1);
-    substring = memory_copy(substring, string, length);
+    substring = memory_init(substring, string, length);
     substring[length] = '\0';
 
     return substring;
@@ -90,8 +90,8 @@ char* cstr_concat_length(const char* lhs, int_signed lhs_len, const char* rhs, i
 
     new_str = allocate(total_len + 1);
     
-    memory_copy(new_str, lhs, lhs_len);
-    memory_copy(new_str + lhs_len, rhs, rhs_len);
+    memory_init(new_str, lhs, lhs_len);
+    memory_init(new_str + lhs_len, rhs, rhs_len);
     new_str[total_len] = 0;
 
     return new_str;

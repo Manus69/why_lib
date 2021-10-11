@@ -10,9 +10,9 @@
     extern "C" {
 #endif
 #ifdef __cplusplus
-    void*   memory_copy(void* destination, const void* source, int_unsigned size);
+    void*   memory_init(void* destination, const void* source, int_unsigned size);
 #else
-    void*   memory_copy(void* restrict destination, const void* restrict source, int_unsigned size);
+    void*   memory_init(void* restrict destination, const void* restrict source, int_unsigned size);
 #endif
 
 void*   allocate(int_unsigned size);

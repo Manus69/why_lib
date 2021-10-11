@@ -18,7 +18,7 @@ void merge_sort_test()
     // printf("\n---------------\n");
 
     // array_sortM(strings, string_compare);
-    array_sortH(strings, string_compare);
+    // array_sortH(strings, string_compare);
     // array_sortH(strings, inverse_string_compare);
 
 
@@ -94,16 +94,16 @@ void hash_test()
 
 void string_test()
 {
-    char* stuff;
+    String* string; 
+    Array*  strings;
 
-    stuff = allocate(2 + sizeof(int_signed));
-    stuff[0] = 'x';
-    stuff[1] = 'X';
-    *(int_signed *)(stuff + 2) = -666;
+    string = string_create("0 1 2 3 4 ");
+    print_string(string);
 
-    print_int_pointerN((int_signed *)(stuff + 2));
-
-    free(stuff);
+    strings = string_split(string, ' ');
+    print_arrayN(strings, print_string, " ");
+    string_destroy(string);
+    array_destroy(strings);
 }
 
 void _at_exit()
@@ -120,10 +120,10 @@ int main()
 
     start = clock();
 
-    // merge_sort_test();
+    merge_sort_test();
     // queue_test();
     // hash_test();
-    string_test();
+    // string_test();
 
     end = clock();
 

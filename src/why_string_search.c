@@ -14,12 +14,14 @@ static inline bool _not_id_char(char lhs, char rhs)
 int_signed string_index_of_predicate(const String* string, int_signed start, char c, bool (*predicate)(char, char))
 {
     int_signed n;
+    int_signed length;
 
-    if (start >= string->length)
+    length = string_length(string);
+    if (start >= length)
         return NOT_FOUND;
 
     n = start;
-    while (n < string->length)
+    while (n < length)
     {
         if (predicate(string->characters[n], c))
             return n;
@@ -48,12 +50,15 @@ int_signed string_index_of_any(const String* string, char* characters)
 {
     int_signed  n;
     int_signed  index;
+    int_signed  length;
     String*     wrapper;
 
     n = 0;
     index = NOT_FOUND;
+    length = string_length(string);
     wrapper = string_create(characters);
-    while (n < string->length)
+
+    while (n < length)
     {
         index = string_index_of(wrapper, string_at(string, n));
         if (index != NOT_FOUND)
@@ -73,10 +78,10 @@ static int_signed _string_find_from(const String* haystack, const String* needle
     int_signed next_index;
     int_signed n;
 
-    if (haystack->length < needle->length + start)
+    if (string_length(haystack) < string_length(needle) + start)
         return NOT_FOUND;
 
-    if (haystack->characters[start + needle->length - 1] != needle->characters[needle->length - 1])
+    if (haystack->characters[start + string_length(needle) - 1] != needle->characters[string_length(needle) - 1])
         return _string_find_from(haystack, needle, start + 1);
 
     n = 0;
@@ -102,10 +107,10 @@ int_signed string_find(const String* haystack, const String* needle)
     if (!needle)
         return NOT_FOUND;
     
-    if (needle->length > haystack->length)
+    if (string_length(needle) > string_length(haystack))
         return NOT_FOUND;
 
-    if (needle->length == 0)
+    if (string_length(needle) == 0)
         return 0;
 
     return _string_find_from(haystack, needle, 0);

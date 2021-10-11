@@ -137,7 +137,7 @@ static bool _reallocate_array(Array* array)
     left_index = (new_capacity - n_items) / 2;
     right_index = left_index + n_items + 1;
 
-    memory_copy(new_array + left_index + 1, array->items + array->left_index + 1, n_items * sizeof(void *));
+    memory_init(new_array + left_index + 1, array->items + array->left_index + 1, n_items * sizeof(void *));
 
     free(array->items);
     array->items = new_array;

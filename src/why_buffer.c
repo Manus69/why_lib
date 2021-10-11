@@ -74,7 +74,7 @@ static int_signed _reallocate_bytes(Buffer* buffer, int_signed extra_capacity)
 
     shift = buffer->search_pointer - buffer->read_pointer;
     unread_bytes = buffer_count_unread_bytes(buffer);
-    memory_copy(new_byte_array, buffer->read_pointer, unread_bytes);
+    memory_init(new_byte_array, buffer->read_pointer, unread_bytes);
     free(buffer->bytes);
 
     _buffer_init(buffer, new_byte_array, new_size);
@@ -89,9 +89,7 @@ int_signed buffer_write_into(Buffer* buffer, int_signed n_bytes, int f_descripto
     int_signed read_size;
 
     if (buffer_get_remaining_capacity(buffer) < n_bytes)
-    {
         _reallocate_bytes(buffer, n_bytes);
-    }
 
     read_size = read(f_descriptor, buffer->write_pointer, n_bytes);
     if (read_size <= 0)
@@ -116,7 +114,7 @@ int_signed buffer_write_all_bytes_into(Buffer* buffer, int f_descriptor)
     return status;
 }
 
-String* buffer_read_from(Buffer* buffer, int_signed n_bytes, bool allocate_bytes)
+String* buffer_read_from(Buffer* buffer, int_signed n_bytes)
 {
     String*     string;
     int_signed  bytes_availible;
@@ -127,23 +125,20 @@ String* buffer_read_from(Buffer* buffer, int_signed n_bytes, bool allocate_bytes
         
     if (n_bytes > bytes_availible)
         n_bytes = bytes_availible;
-    
-    if (allocate_bytes)
-        string = string_create_allocated_fl(buffer->read_pointer, n_bytes);
-    else
-        string = string_create_fixed_length(buffer->read_pointer, n_bytes);
+
+    string = string_createFL(buffer->read_pointer, n_bytes);
     
     buffer->read_pointer += n_bytes;
 
     return string;
 }
 
-String* buffer_flush_all(Buffer* buffer, bool allocate_bytes)
+String* buffer_flush_all(Buffer* buffer)
 {
-    return buffer_read_from(buffer, buffer->size, allocate_bytes);
+    return buffer_read_from(buffer, buffer->size);
 }
 
-String* buffer_flush_sequence(Buffer* buffer, char terminator, bool allocate_bytes)
+String* buffer_flush_sequence(Buffer* buffer, char terminator)
 {
     int_signed  index;
     String*     string;
@@ -152,7 +147,7 @@ String* buffer_flush_sequence(Buffer* buffer, char terminator, bool allocate_byt
     if (index == NOT_FOUND)
         return NULL;
     
-    string = buffer_read_from(buffer, index, allocate_bytes);
+    string = buffer_read_from(buffer, index);
     buffer->read_pointer ++;
 
     return string;
@@ -186,7 +181,7 @@ int_signed buffer_search(Buffer* buffer, char c)
     if (length <= 0)
         return NOT_FOUND;
     
-    string = string_create_fixed_length(buffer->search_pointer, length);
+    string = string_createFL(buffer->search_pointer, length);
     index = string_index_of(string, c);
     index = _process_index(buffer, index);
     string_destroy(string);
@@ -204,7 +199,7 @@ int_signed buffer_search_string(Buffer* buffer, const char* literal)
     if (length <= 0)
         return NOT_FOUND;
     
-    string = string_create_fixed_length(buffer->search_pointer, length);
+    string = string_createFL(buffer->search_pointer, length);
     index = string_find_literal(string, literal);
     index = _process_index(buffer, index);
     string_destroy(string);

@@ -17,9 +17,9 @@ int_signed  buffer_search_string(Buffer* buffer, const char* literal);
 int_signed  buffer_write_into(Buffer* buffer, int_signed n_bytes, int f_descriptor);
 int_signed  buffer_write_all_bytes_into(Buffer* buffer, int f_descriptor);
 int_signed  buffer_count_unread_bytes(Buffer* buffer);
-String*     buffer_read_from(Buffer* buffer, int_signed n_bytes, bool allocate_bytes);
-String*     buffer_flush_all(Buffer* buffer, bool allocate_bytes);
-String*     buffer_flush_sequence(Buffer* buffer, char terminator, bool allocate_bytes);
+String*     buffer_read_from(Buffer* buffer, int_signed n_bytes);
+String*     buffer_flush_all(Buffer* buffer);
+String*     buffer_flush_sequence(Buffer* buffer, char terminator);
 
 #ifdef __cplusplus
     }

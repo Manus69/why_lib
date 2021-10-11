@@ -92,7 +92,7 @@ Polynomial* polynomial_copy(const Polynomial* p)
     new = _create(p->degree + 1, p->variable);
     new->degree = p->degree;
     new->capacity = new->degree + 1;
-    new->coefficients = memory_copy(new->coefficients, p->coefficients, (p->degree + 1) * sizeof(Complex));
+    new->coefficients = memory_init(new->coefficients, p->coefficients, (p->degree + 1) * sizeof(Complex));
 
     return new;
 }

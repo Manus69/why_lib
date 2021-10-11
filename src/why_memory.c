@@ -1,6 +1,6 @@
 #include "why_memory.h"
 
-void* memory_copy(void* restrict destination, const void* restrict source, int_unsigned size)
+void* memory_init(void* restrict destination, const void* restrict source, int_unsigned size)
 {
     void* initial;
 
@@ -53,7 +53,7 @@ void* reallocate(const void* item, int_unsigned current_size, int_unsigned extra
     void* new_item;
 
     new_item = allocate(current_size + extra_size);
-    memory_copy(new_item, item, current_size);
+    memory_init(new_item, item, current_size);
 
     return new_item;
 }

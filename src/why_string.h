@@ -9,10 +9,8 @@
 
 struct String
 {
+    // int_signed* length;
     char*       characters;
-    char*       pointer;
-    int_signed  length;
-    bool        allocated;
 };
 
 #endif

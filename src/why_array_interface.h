@@ -3,7 +3,7 @@
 
 #include "why_definitions.h"
 
-#define A_CAPACITY_DEFAULT (1 << 5)
+#define A_CAPACITY_DEFAULT (1 << 15)
 #define A_CAPACITY_MIN (1 << 2)
 
 typedef struct Array Array;

@@ -44,7 +44,7 @@ struct _slice _get_slice(struct _slice* source, int_signed size)
 
 static void _insert_slice(struct _slice* target, struct _slice* slice)
 {
-    memory_copy(target->items + target->left_index, slice->items + slice->left_index, _slice_size(slice) * sizeof(void *));
+    memory_init(target->items + target->left_index, slice->items + slice->left_index, _slice_size(slice) * sizeof(void *));
     target->left_index += _slice_size(slice);
 }
 

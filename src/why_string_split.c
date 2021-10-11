@@ -1,5 +1,7 @@
 #include "why_array_interface.h"
 #include "why_string_interface.h"
+#include "why_string_view_interface.h"
+#include "why_string_view.h"
 #include "why_copy.h"
 
 #include "why_memory.h"
@@ -9,33 +11,37 @@ Array* string_split(String* string, char delimiter)
 {
     Array*      array;
     String*     element;
+    StringView  view;
     int_signed  index;
-    int_signed  length;
 
     array = array_create(copy_shallow, string_destroy);
+    string_view_init(&view, string);
 
-    while ((length = string_length(string)))
+    while (string_view_length(&view))
     {
-        index = string_index_of(string, delimiter);
+        index = string_view_index_of(&view, delimiter);
         if (index > 0)
         {
-            element = string_substring_allocated(string, 0, index);
-            _string_shift(string, index + 1);
+            element = string_view_substring_shift(&view, index);
+
+            // element = string_substring(string, 0, index);
+            // _string_shift(string, index + 1);
         }
         else if (index == NOT_FOUND)
         {
-            element = string_substring_from_allocated(string, 0);
-            _string_shift(string, length);
+            element = string_view_substring_shiftE(&view);
+
+            // element = string_substring_end(string, 0);
+            // _string_shift(string, length);
         }
         else
         {
             element = string_create("");
-            _string_shift(string, 1);
+            string_view_shift(&view, 1);
         }
         array_push(array, element);
     }
 
-    _string_rewind(string);
     return array;
 }
 

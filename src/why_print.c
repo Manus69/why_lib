@@ -123,8 +123,16 @@ void print_cstringN(const char* string)
     printf("\n");
 }
 
-//this is ugly and dangerous
 void print_string(const String* string)
+{
+    if (!string)
+        return ;
+
+    printf("%s", string_get_characters(string));
+}
+
+//this is ugly and dangerous
+void print_stringL(const String* string)
 {
     char*       cstring;
     int_signed  length;

@@ -53,13 +53,13 @@ String* get_line(int file_descriptor)
     
     while (TRUE)
     {
-        line = buffer_flush_sequence(buffer, '\n', TRUE);
+        line = buffer_flush_sequence(buffer, '\n');
         if (line)
             return line;
         
         status = buffer_write_into(buffer, READ_SIZE, file_descriptor);
         if (status <= 0)
-            return buffer_flush_all(buffer, TRUE);
+            return buffer_flush_all(buffer);
     }
 }
 
@@ -71,7 +71,7 @@ String* get_all_lines(int file_descriptor)
     buffer = buffer_create();
 
     buffer_write_all_bytes_into(buffer, file_descriptor);
-    string = buffer_read_from(buffer, buffer_count_unread_bytes(buffer), TRUE);
+    string = buffer_read_from(buffer, buffer_count_unread_bytes(buffer));
     buffer_destroy(buffer);
 
     return string;
