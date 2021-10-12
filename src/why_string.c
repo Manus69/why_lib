@@ -4,7 +4,7 @@
 #include "why_cstring.h"
 #include "why_macros.h"
 
-#define DBG
+// #define DBG
 #ifdef DBG
     #include <stdio.h>
 #endif

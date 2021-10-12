@@ -17,7 +17,7 @@ void merge_sort_test()
     // print_arrayN(strings, print_string, "\n");
     // printf("\n---------------\n");
 
-    // array_sortM(strings, string_compare);
+    array_sortM(strings, string_compare);
     // array_sortH(strings, string_compare);
     // array_sortH(strings, inverse_string_compare);
 
@@ -97,13 +97,14 @@ void string_test()
     String* string; 
     Array*  strings;
 
-    string = string_create("0 1 2 3 4 ");
-    print_string(string);
+    string = string_create("0 1");
+    // print_string(string);
 
     strings = string_split(string, ' ');
     print_arrayN(strings, print_string, " ");
-    string_destroy(string);
     array_destroy(strings);
+
+    string_destroy(string);
 }
 
 void _at_exit()

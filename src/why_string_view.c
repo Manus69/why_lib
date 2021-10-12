@@ -9,6 +9,13 @@ void string_view_init(StringView* view, const String* string)
     view->length = string_length(string);
 }
 
+void string_view_initB(StringView* view, char* buffer, int_signed length)
+{
+    view->characters = buffer;
+    view->current = buffer;
+    view->length = length;
+}
+
 void string_view_shift(StringView* view, int_signed shift)
 {
     if (shift > view->length)

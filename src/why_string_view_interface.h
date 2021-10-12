@@ -7,6 +7,7 @@
 typedef struct StringView StringView;
 
 void string_view_init(StringView* view, const String* string);
+void string_view_initB(StringView* view, char* buffer, int_signed length);
 void string_view_shift(StringView* view, int_signed shift);
 void string_view_rewind(StringView* view);
 int_signed string_view_length(const StringView* view);

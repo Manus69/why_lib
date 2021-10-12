@@ -3,6 +3,8 @@
 #include "why_definitions.h"
 #include "why_memory.h"
 #include "why_string_interface.h"
+#include "why_string_view_interface.h"
+#include "why_string_view.h"
 #include "why_macros.h"
 
 #include <unistd.h>
@@ -173,7 +175,7 @@ static int_signed _process_index(Buffer* buffer, int_signed index)
 
 int_signed buffer_search(Buffer* buffer, char c)
 {
-    String*     string;
+    StringView  view;
     int_signed  length;
     int_signed  index;
 
@@ -181,10 +183,9 @@ int_signed buffer_search(Buffer* buffer, char c)
     if (length <= 0)
         return NOT_FOUND;
     
-    string = string_createFL(buffer->search_pointer, length);
-    index = string_index_of(string, c);
+    string_view_initB(&view, buffer->search_pointer, length);
+    index = string_view_index_of(&view, c);
     index = _process_index(buffer, index);
-    string_destroy(string);
 
     return index;
 }
