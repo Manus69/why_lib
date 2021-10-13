@@ -37,6 +37,16 @@ void* memory_set(void* object, byte value, int_unsigned size)
     return initial;
 }
 
+void* memory_copy(void* restrict source, int_unsigned size)
+{
+    void* result;
+
+    result = allocate(size);
+    memory_init(result, source, size);
+
+    return result;
+}
+
 void* allocate(int_unsigned size)
 {
     void* result;

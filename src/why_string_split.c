@@ -7,7 +7,36 @@
 #include "why_memory.h"
 #include "why_cstring.h"
 
-Array* string_split(String* string, char delimiter)
+Array* cstr_split(const char* string, char delimiter)
+{
+    Array*      array;
+    StringView  view;
+    int_signed  index;
+    char*       substring;
+
+    array = array_create(copy_shallow, memory_destroy);
+    string_view_initB(&view, string, cstr_length(string));
+
+    while (string_view_length(&view))
+    {
+        index = string_view_index_of(&view, delimiter);
+        if (index > 0)
+            substring = string_view_substring_shiftCSTR(&view, index);
+        else if (index == NOT_FOUND)
+            substring = string_view_substring_shiftCSTRE(&view);
+        else
+        {
+            // substring = cstr_copy("");
+            string_view_shift(&view, 1);
+            continue ;
+        }
+        array_push(array, substring);
+    }
+
+    return array;
+}
+
+Array* string_split(const String* string, char delimiter)
 {
     Array*      array;
     String*     element;
@@ -21,23 +50,14 @@ Array* string_split(String* string, char delimiter)
     {
         index = string_view_index_of(&view, delimiter);
         if (index > 0)
-        {
             element = string_view_substring_shift(&view, index);
-
-            // element = string_substring(string, 0, index);
-            // _string_shift(string, index + 1);
-        }
         else if (index == NOT_FOUND)
-        {
             element = string_view_substring_shiftE(&view);
-
-            // element = string_substring_end(string, 0);
-            // _string_shift(string, length);
-        }
         else
         {
-            element = string_create("");
+            // element = string_create("");
             string_view_shift(&view, 1);
+            continue ;
         }
         array_push(array, element);
     }
@@ -45,7 +65,7 @@ Array* string_split(String* string, char delimiter)
     return array;
 }
 
-Array* string_split_cstar(char* c_string, char delimiter)
+Array* string_splitCSTR(const char* c_string, char delimiter)
 {
     String* string;
     Array*  array;

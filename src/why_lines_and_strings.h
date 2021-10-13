@@ -8,8 +8,9 @@
     extern "C" {
 #endif
 
-Array*  string_split(String* string, char delimiter);
-Array*  cstr_split(char* string, char delimiter);
+Array*  string_split(const String* string, char delimiter);
+Array*  string_splitCSTR(const char* c_string, char delimiter);
+Array*  cstr_split(const char* string, char delimiter);
 Array*  get_all_linesA(int file_descriptor);
 Array*  get_all_linesAFN(const char* file_name);
 String* get_line(int file_descriptor);

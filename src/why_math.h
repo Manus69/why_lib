@@ -26,6 +26,7 @@ int_signed      power_int(int_signed base, int_unsigned n);
 int_unsigned    factorial(int_unsigned n);
 int_unsigned    round_to_int(real x);
 int_unsigned    fib(int_unsigned n);
+int_unsigned    math_is_perfect_square(int_unsigned x);
 
 //R -> R
 real            math_sqrt(real a);

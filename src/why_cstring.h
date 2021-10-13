@@ -6,6 +6,7 @@
 #define WHY_CSTRING_H
 
 #include "why_memory.h"
+#include "why_array_interface.h"
 
 int_signed      cstr_length(const char* string);
 int_signed      cstr_compare(const char* lhs, const char* rhs);

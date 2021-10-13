@@ -9,8 +9,8 @@
 
 struct String
 {
-    // int_signed* length;
     char*       characters;
+    int_signed  length;
 };
 
 #endif

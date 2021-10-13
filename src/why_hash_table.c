@@ -64,6 +64,23 @@ void* hash_table_at(const HashTable* table, int_unsigned n)
     return table->items[n];
 }
 
+bool hash_table_is_in_at_index(HashTable* table, void* item, int_signed (*compare)(), int_unsigned index)
+{
+    if (!list_find(table->items[index], item, compare))
+        return false;
+    
+    return true;
+}
+
+bool hash_table_is_in_hashed(HashTable* table, void* item, int_signed (*compare)(), int_unsigned hash_value)
+{
+    int_unsigned index;
+
+    index = hash_value % table->capacity;
+
+    return hash_table_is_in_at_index(table, item, compare, index);
+}
+
 bool hash_table_is_in(HashTable* table, void* item, int_signed (*compare)())
 {
     int_unsigned index;
@@ -72,10 +89,27 @@ bool hash_table_is_in(HashTable* table, void* item, int_signed (*compare)())
         return false;
     
     index = table->hash(item) % table->capacity;
-    if (!list_find(table->items[index], item, compare))
+    
+    return hash_table_is_in_at_index(table, item, compare, index);
+}
+
+bool hash_table_insert_at_index(HashTable* table, void* item, int_signed (*compare)(), int_unsigned index)
+{
+    if (list_find(table->items[index], item, compare))
         return false;
     
+    list_push_back(table->items[index], item);
+
     return true;
+}
+
+bool hash_table_insert_hashed(HashTable* table, void* item, int_signed (*compare)(), int_unsigned hash_value)
+{
+    int_unsigned index;
+
+    index = hash_value % table->capacity;
+
+    return hash_table_insert_at_index(table, item, compare, index);
 }
 
 bool hash_table_insert(HashTable* table, void* item, int_signed (*compare)())
@@ -83,12 +117,8 @@ bool hash_table_insert(HashTable* table, void* item, int_signed (*compare)())
     int_unsigned index;
 
     index = table->hash(item) % table->capacity;
-    if (list_find(table->items[index], item, compare))
-        return false;
-    
-    list_push_back(table->items[index], item);
 
-    return true;
+    return hash_table_insert_at_index(table, item, compare, index);
 }
 
 void* hash_table_remove(HashTable* table, void* item, int_signed (*compare)())

@@ -1,6 +1,7 @@
 #include "why_conversion.h"
 #include "why_cstring.h"
 #include "why_error.h"
+#include "why_string_interface.h"
 
 static real _convert_decimal_part(const char* string, int_signed length)
 {
@@ -25,7 +26,7 @@ static real _convert_int_part(const char* string, int_signed length)
     result = 0;
     while (length)
     {
-        result = result*  10 + *string - '0';
+        result = result * 10 + *string - '0';
         if (result > __INT_MAX__)
             return (int_signed)error_set(WHY_ERROR_CONV, string);
         
@@ -46,7 +47,7 @@ int_signed convert_to_int(const char* string)
     result = 0;
     while (*string && id_digit(string))
     {
-        result = result*  10 +* string - '0';
+        result = result * 10 + *string - '0';
         if (result > __INT_MAX__)
             return (int_signed)error_set(WHY_ERROR_CONV, string);
         
@@ -54,6 +55,11 @@ int_signed convert_to_int(const char* string)
     }
 
     return result;
+}
+
+int_signed convert_to_intS(const String* string)
+{
+    return convert_to_int(string_get_characters(string));
 }
 
 real convert_to_real(const char* string)

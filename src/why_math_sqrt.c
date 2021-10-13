@@ -40,3 +40,14 @@ real math_sqrt(real a)
 
     return x;
 }
+
+int_unsigned math_is_perfect_square(int_unsigned x)
+{
+    int_unsigned    result;
+    real            root;
+
+    root = math_sqrt(x);
+    result = (int_unsigned)root;
+
+    return within_delta(0, root - result, EPSILON) ? result : 0;
+}

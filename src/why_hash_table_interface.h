@@ -16,7 +16,11 @@ void            hash_table_destroy(HashTable* table);
 int_unsigned    hash_table_capacity(const HashTable* table);
 void*           hash_table_at(const HashTable* table, int_unsigned n);
 bool            hash_table_is_in(HashTable* table, void* item, int_signed (*compare)());
+bool            hash_table_is_in_at_index(HashTable* table, void* item, int_signed (*compare)(), int_unsigned index);
+bool            hash_table_is_in_hashed(HashTable* table, void* item, int_signed (*compare)(), int_unsigned hash_value);
 bool            hash_table_insert(HashTable* table, void* item, int_signed (*compare)());
+bool            hash_table_insert_at_index(HashTable* table, void* item, int_signed (*compare)(), int_unsigned index);
+bool            hash_table_insert_hashed(HashTable* table, void* item, int_signed (*compare)(), int_unsigned hash_value);
 void*           hash_table_remove(HashTable* table, void* item, int_signed (*compare)());
 
 #ifdef __cplusplus

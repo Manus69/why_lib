@@ -9,30 +9,16 @@
     #include <stdio.h>
 #endif
 
-static int_signed* _get_length_pointer(const String* string)
-{
-    return (int_signed *)((char *)string + sizeof(String));
-}
-
-static void _set_length(String* string, int_signed length)
-{
-    int_signed* pointer;
-
-    pointer = _get_length_pointer(string);
-    *pointer = length;
-}
-
 void _string_init(String* string, const char* literal, int_signed length)
 {
     string->characters = memory_init(string->characters, literal, length);
     string->characters[length] = '\0';
-    // *(int_signed *)((char *)string + sizeof(String)) = length;
-    _set_length(string, length);
+    string->length = length;
 }
 
 static int_signed _compute_size(int_signed length)
 {
-    return sizeof(String) + sizeof(int_signed) + length + 1;
+    return sizeof(String) + sizeof(char) * (length + 1);
 }
 
 static int_signed _compute_total_size(const String* string)
@@ -49,7 +35,7 @@ String* string_createFL(const char* literal, int_signed length)
     #endif
 
     string = allocate(_compute_size(length));
-    string->characters = (char *)string + sizeof(String) + sizeof(int_signed);
+    string->characters = (char *)string + sizeof(String);
     _string_init(string, literal, length);
 
     return string;
@@ -69,7 +55,7 @@ String* string_create(const char* literal)
 
 int_signed string_length(const String* string)
 {
-    return *_get_length_pointer(string);
+    return string->length;
 }
 
 char string_at(const String* string, int_signed n)
@@ -122,7 +108,7 @@ static String* _append(String* string, const char* rhs, int_signed length)
 
     memory_init(new_string->characters + old_size - 1, rhs, length);
     new_string->characters[new_size] = '\0';
-    _set_length(new_string, string_length(string) + length);
+    new_string->length = string_length(string) + length;
     string_destroy(string);
 
     return new_string;
