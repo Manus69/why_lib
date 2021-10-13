@@ -16,6 +16,13 @@ void _string_init(String* string, const char* literal, int_signed length)
     string->length = length;
 }
 
+void _string_init_backwards(String* string, const char* literal, int_signed length)
+{
+    string->characters = memory_init_backwards(string->characters, literal, length);
+    string->characters[length] = '\0';
+    string->length = length;
+}
+
 static int_signed _compute_size(int_signed length)
 {
     return sizeof(String) + sizeof(char) * (length + 1);
@@ -37,6 +44,17 @@ String* string_createFL(const char* literal, int_signed length)
     string = allocate(_compute_size(length));
     string->characters = (char *)string + sizeof(String);
     _string_init(string, literal, length);
+
+    return string;
+}
+
+String* string_createFL_backwards(const char* literal_end, int_signed length)
+{
+    String* string;
+
+    string = allocate(_compute_size(length));
+    string->characters = (char *)string + sizeof(String);
+    _string_init_backwards(string, literal_end, length);
 
     return string;
 }

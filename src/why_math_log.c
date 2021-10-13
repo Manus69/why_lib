@@ -3,8 +3,9 @@
 
 #define N_TERMS     (1 << 6)
 #define LN2         (real)0.693147180559945309
+#define LN10        (real)2.302585093
 #define R_THRESHOLD (1 << 3)
-#define L_THRESHOLD 1
+#define L_THRESHOLD (1)
 
 //ln x = 2[(x - 1)/(x + 1) + 1/3((x - 1)/(x + 1))^3 + 1/5((x - 1)/(x + 1))^5 + ...]
 real math_ln(real x)
@@ -44,6 +45,11 @@ real math_ln(real x)
 real math_log2(real x)
 {
     return math_ln(x) / LN2;
+}
+
+real math_log10(real x)
+{
+    return math_ln(x) / LN10;
 }
 
 real math_log(real x, real base)

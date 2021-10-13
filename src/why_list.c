@@ -1,6 +1,7 @@
 #include "why_list_interface.h"
 #include "why_list.h"
 #include "why_memory.h"
+#include "why_copy.h"
 
 //not tested
 
@@ -25,6 +26,8 @@ void sequence_destroy(Sequence* sequence, void (*destroy)())
     if (!sequence)
         return ;
     
+    destroy = destroy ? destroy : (void *)copy_shallow; //this is spooky
+
     while (sequence)
     {
         next = sequence->next;
@@ -250,7 +253,7 @@ void list_map(List* list, void (*function)())
     }
 }
 
-void* list_find(const List* list, void* item, int_signed (*compare)())
+void* list_find(const List* list, const void* item, int_signed (*compare)())
 {
     Sequence* current;
 
@@ -269,7 +272,7 @@ void* list_find(const List* list, void* item, int_signed (*compare)())
     return NULL;
 }
 
-void* list_remove(List* list, void* item, int_signed (*compare)())
+void* list_remove(List* list, const void* item, int_signed (*compare)())
 {
     Sequence*   current;
     Sequence*   next;

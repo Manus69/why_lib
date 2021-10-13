@@ -13,6 +13,10 @@ int_signed  convert_to_intS(const String* string);
 real        convert_to_real(const char* string);
 Complex     convert_to_complex(const char* string);
 
+String*     convert_to_string_uintB(int_unsigned n, byte base);
+String*     convert_to_string_uint(int_unsigned n);
+
+
 #endif
 
 #ifdef __cplusplus

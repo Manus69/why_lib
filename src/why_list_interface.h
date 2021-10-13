@@ -20,8 +20,8 @@ void*       list_pop_back(List* list);
 void*       list_pop_front(List* list);
 List*       list_reverse(List* list);
 void        list_map(List* list, void (*function)());
-void*       list_find(const List* list, void* item, int_signed (*compare)());
-void*       list_remove(List* list, void* item, int_signed (*compare)());
+void*       list_find(const List* list, const void* item, int_signed (*compare)());
+void*       list_remove(List* list, const void* item, int_signed (*compare)());
 
 #ifdef __cplusplus
     }

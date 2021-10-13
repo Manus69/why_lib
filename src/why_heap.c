@@ -114,7 +114,7 @@ static void _restore_heap_property(Heap* heap, int_signed index)
     }
 }
 
-bool heap_push(Heap* heap, void* item)
+bool heap_push(Heap* heap, const void* item)
 {
     if (array_push(heap, item))
     {

@@ -19,6 +19,25 @@ void* memory_init(void* restrict destination, const void* restrict source, int_u
     return initial;
 }
 
+void* memory_init_backwards(void* restrict destination, const void* restrict source_end, int_unsigned size)
+{
+    void* initial;
+
+    if (!destination || !source_end)
+        return destination;
+
+    initial = destination;
+    while (size)
+    {
+        *(byte *)destination = *(byte *)source_end;
+        destination ++;
+        source_end --;
+        size --;
+    }
+
+    return initial;
+}
+
 void* memory_set(void* object, byte value, int_unsigned size)
 {
     void* initial;
@@ -37,7 +56,7 @@ void* memory_set(void* object, byte value, int_unsigned size)
     return initial;
 }
 
-void* memory_copy(void* restrict source, int_unsigned size)
+void* memory_copy(const void* source, int_unsigned size)
 {
     void* result;
 

@@ -15,7 +15,7 @@ typedef struct Array Heap;
 Heap*   heap_create(void* (*copy)(), void (*destroy)(), int_signed (*compare)());
 void    heap_destroy(Heap* heap);
 
-bool    heap_push(Heap* heap, void* item);
+bool    heap_push(Heap* heap, const void* item);
 void*   heap_pop_root(Heap* heap);
 void    heap_map(Heap* heap, void (*function)());
 void    heap_sort(Heap* heap);

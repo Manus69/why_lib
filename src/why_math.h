@@ -33,6 +33,7 @@ real            math_sqrt(real a);
 real            math_exp(real x);
 real            math_ln(real x);
 real            math_log2(real x);
+real            math_log10(real x);
 real            math_log(real x, real base);
 real            math_id(real x);
 real            math_sin(real x);

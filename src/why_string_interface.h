@@ -10,6 +10,7 @@ typedef struct String String;
 #endif
 
 String*     string_createFL(const char* literal, int_signed length);
+String*     string_createFL_backwards(const char* literal_end, int_signed length);
 String*     string_create(const char* literal);
 int_signed  string_length(const String* string);
 char        string_at(const String* string, int_signed n);

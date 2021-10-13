@@ -148,7 +148,7 @@ static bool _reallocate_array(Array* array)
     return TRUE;
 }
 
-bool array_pushG(Array* array, void* item, void* (*copy)())
+bool array_pushG(Array* array, const void* item, void* (*copy)())
 {
     if (array->right_index == array->capacity)
         _reallocate_array(array);
@@ -159,7 +159,7 @@ bool array_pushG(Array* array, void* item, void* (*copy)())
     return TRUE;
 }
 
-bool array_push_frontG(Array* array, void* item, void* (*copy)())
+bool array_push_frontG(Array* array, const void* item, void* (*copy)())
 {
     if (array->left_index == 0)
         _reallocate_array(array);
@@ -170,12 +170,12 @@ bool array_push_frontG(Array* array, void* item, void* (*copy)())
     return TRUE;
 }
 
-bool array_push(Array* array, void* item)
+bool array_push(Array* array, const void* item)
 {
     return array_pushG(array, item, array->copy);
 }
 
-bool array_push_front(Array* array, void* item)
+bool array_push_front(Array* array, const void* item)
 {
     return array_push_frontG(array, item, array->copy);
 }

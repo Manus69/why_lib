@@ -64,7 +64,7 @@ void* hash_table_at(const HashTable* table, int_unsigned n)
     return table->items[n];
 }
 
-bool hash_table_is_in_at_index(HashTable* table, void* item, int_signed (*compare)(), int_unsigned index)
+bool hash_table_is_in_at_index(const HashTable* table, const void* item, int_signed (*compare)(), int_unsigned index)
 {
     if (!list_find(table->items[index], item, compare))
         return false;
@@ -72,7 +72,7 @@ bool hash_table_is_in_at_index(HashTable* table, void* item, int_signed (*compar
     return true;
 }
 
-bool hash_table_is_in_hashed(HashTable* table, void* item, int_signed (*compare)(), int_unsigned hash_value)
+bool hash_table_is_in_hashed(const HashTable* table, const void* item, int_signed (*compare)(), int_unsigned hash_value)
 {
     int_unsigned index;
 
@@ -81,7 +81,7 @@ bool hash_table_is_in_hashed(HashTable* table, void* item, int_signed (*compare)
     return hash_table_is_in_at_index(table, item, compare, index);
 }
 
-bool hash_table_is_in(HashTable* table, void* item, int_signed (*compare)())
+bool hash_table_is_in(const HashTable* table, const void* item, int_signed (*compare)())
 {
     int_unsigned index;
 
@@ -93,7 +93,7 @@ bool hash_table_is_in(HashTable* table, void* item, int_signed (*compare)())
     return hash_table_is_in_at_index(table, item, compare, index);
 }
 
-bool hash_table_insert_at_index(HashTable* table, void* item, int_signed (*compare)(), int_unsigned index)
+bool hash_table_insert_at_index(HashTable* table, const void* item, int_signed (*compare)(), int_unsigned index)
 {
     if (list_find(table->items[index], item, compare))
         return false;
@@ -103,7 +103,7 @@ bool hash_table_insert_at_index(HashTable* table, void* item, int_signed (*compa
     return true;
 }
 
-bool hash_table_insert_hashed(HashTable* table, void* item, int_signed (*compare)(), int_unsigned hash_value)
+bool hash_table_insert_hashed(HashTable* table, const void* item, int_signed (*compare)(), int_unsigned hash_value)
 {
     int_unsigned index;
 
@@ -112,7 +112,7 @@ bool hash_table_insert_hashed(HashTable* table, void* item, int_signed (*compare
     return hash_table_insert_at_index(table, item, compare, index);
 }
 
-bool hash_table_insert(HashTable* table, void* item, int_signed (*compare)())
+bool hash_table_insert(HashTable* table, const void* item, int_signed (*compare)())
 {
     int_unsigned index;
 
@@ -121,7 +121,7 @@ bool hash_table_insert(HashTable* table, void* item, int_signed (*compare)())
     return hash_table_insert_at_index(table, item, compare, index);
 }
 
-void* hash_table_remove(HashTable* table, void* item, int_signed (*compare)())
+void* hash_table_remove(HashTable* table, const void* item, int_signed (*compare)())
 {
     int_unsigned    index;
     void*           _item;

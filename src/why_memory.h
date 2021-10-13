@@ -13,11 +13,12 @@
     void*   memory_init(void* destination, const void* source, int_unsigned size);
 #else
     void*   memory_init(void* restrict destination, const void* restrict source, int_unsigned size);
+    void*   memory_init_backwards(void* restrict destination, const void* restrict source_end, int_unsigned size);
 #endif
 
 void*   allocate(int_unsigned size);
 void*   memory_set(void* object, byte value, int_unsigned size);
-void*   memory_copy(void* restrict source, int_unsigned size);
+void*   memory_copy(const void* source, int_unsigned size);
 void*   reallocate(const void* item, int_unsigned current_size, int_unsigned extra_size);
 void*   memory_zero(int_unsigned size);
 void    memory_destroy(void* item);

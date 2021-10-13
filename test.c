@@ -97,7 +97,7 @@ void string_test()
     String* string; 
     Array*  strings;
 
-    string = string_create("0 1");
+    string = string_create("0    1  xx");
     // print_string(string);
 
     strings = string_split(string, ' ');
@@ -133,10 +133,10 @@ int main()
 
     start = clock();
 
-    merge_sort_test();
+    // merge_sort_test();
     // queue_test();
     // hash_test();
-    // string_test();
+    string_test();
     // perfect_square_test();
 
     end = clock();
