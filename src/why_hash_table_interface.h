@@ -14,6 +14,7 @@ typedef struct HashTable HashTable;
 HashTable*      hash_table_create(void* (*copy)(), void (*destroy)(), int_unsigned (*hash)(), int_unsigned capacity);
 void            hash_table_destroy(HashTable* table);
 int_unsigned    hash_table_capacity(const HashTable* table);
+int_signed      hash_table_number_of_items(const HashTable* table);
 void*           hash_table_at(const HashTable* table, int_unsigned n);
 bool            hash_table_is_in(const HashTable* table, const void* item, int_signed (*compare)());
 bool            hash_table_is_in_at_index(const HashTable* table, const void* item, int_signed (*compare)(), int_unsigned index);

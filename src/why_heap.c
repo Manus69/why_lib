@@ -4,16 +4,19 @@
 #include "why_memory.h"
 #include "why_macros.h"
 
-//not tested
-
-Heap* heap_create(void* (*copy)(), void (*destroy)(), int_signed (*compare)())
+Heap* heap_create_with_capacity(void* (*copy)(), void (*destroy)(), int_signed (*compare)(), int_signed capacity)
 {
     Heap* heap;
 
-    heap = array_create(copy, destroy);
+    heap = array_create_with_capacity(copy, destroy, capacity);
     heap->compare = compare;
 
     return heap;
+}
+
+Heap* heap_create(void* (*copy)(), void (*destroy)(), int_signed (*compare)())
+{
+    return heap_create_with_capacity(copy, destroy, compare, H_CAPACITY_DEFAULT);
 }
 
 void heap_destroy(Heap* heap)

@@ -229,3 +229,14 @@ void print_hash_table(const HashTable* table, void (*print)())
         n ++;
     }
 }
+
+void print_heap(const Heap* heap, void (*print)())
+{
+    if (!heap)
+        return ;
+    
+    if (array_size(heap) == 0)
+        return ;
+    
+    print_array(heap, print, "\n");
+}

@@ -11,6 +11,7 @@ struct HashTable
 
     void**          items;
     int_unsigned    capacity;
+    int_signed      number_of_items;
 };
 
 #endif

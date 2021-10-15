@@ -4,7 +4,7 @@
 
 #include "why_definitions.h"
 
-#define H_CAPACITY_DEFAULT (1 << 1)
+#define H_CAPACITY_DEFAULT (1 << 5)
 
 typedef struct Array Heap;
 
@@ -12,6 +12,7 @@ typedef struct Array Heap;
     extern "C" {
 #endif
 
+Heap*   heap_create_with_capacity(void* (*copy)(), void (*destroy)(), int_signed (*compare)(), int_signed capacity);
 Heap*   heap_create(void* (*copy)(), void (*destroy)(), int_signed (*compare)());
 void    heap_destroy(Heap* heap);
 

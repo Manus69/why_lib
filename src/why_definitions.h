@@ -17,4 +17,14 @@ typedef unsigned char       byte;
 typedef long double         real;
 typedef unsigned char       boolean;
 
+typedef struct Array Array;
+typedef struct Buffer Buffer;
+typedef struct HashTable HashTable;
+typedef struct Array Heap;
+typedef struct List List;
+typedef struct Polynomial Polynomial;
+typedef struct String String;
+typedef struct StringView StringView;
+typedef struct Tree Tree;
+
 #endif
