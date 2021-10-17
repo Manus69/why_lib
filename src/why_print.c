@@ -208,12 +208,20 @@ void print_distribution(const Array* distribution)
             continue ;
         }
         
-        while (*item --)
+        while (*item > 0)
+        {
+            *item = *item - 1;
             printf("#");
+        }
         
         printf("\n");
         n ++;
     }
+}
+
+void print_hash_table_cell(const HashTable* table, void (*print)(), int_signed n)
+{
+    print_list(hash_table_at(table, n), print);
 }
 
 void print_hash_table(const HashTable* table, void (*print)())

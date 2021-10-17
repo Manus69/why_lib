@@ -133,10 +133,10 @@ int main()
 
     start = clock();
 
-    // merge_sort_test();
+    merge_sort_test();
     // queue_test();
     // hash_test();
-    string_test();
+    // string_test();
     // perfect_square_test();
 
     end = clock();

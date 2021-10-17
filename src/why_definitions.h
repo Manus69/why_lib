@@ -3,6 +3,8 @@
 
 #include <limits.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 #define FALSE       0
 #define TRUE        1

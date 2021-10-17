@@ -4,6 +4,8 @@
 #include "why_memory.h"
 #include "why_macros.h"
 
+extern inline int_signed heap_size(const Heap* heap);
+
 Heap* heap_create_with_capacity(void* (*copy)(), void (*destroy)(), int_signed (*compare)(), int_signed capacity)
 {
     Heap* heap;
@@ -126,6 +128,11 @@ bool heap_push(Heap* heap, const void* item)
     }
     
     return FALSE;
+}
+
+int_signed heap_size(const Heap* heap)
+{
+    return array_size(heap);
 }
 
 static bool _process_left_child(Heap* heap, void* lhs, int_signed index)

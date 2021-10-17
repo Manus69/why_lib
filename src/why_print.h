@@ -34,6 +34,7 @@ void print_arrayN(const Array* array, void (*print)(), const char* separator);
 void print_list(const List* list, void (*function)());
 void print_distribution(const Array* distribution);
 void print_hash_table(const HashTable* table, void (*print)());
+void print_hash_table_cell(const HashTable* table, void (*print)(), int_signed n);
 void print_heap(const Heap* heap, void (*print)());
 
 #ifdef __cplusplus

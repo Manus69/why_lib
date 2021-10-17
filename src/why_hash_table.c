@@ -21,7 +21,7 @@ static void** _get_items(void* (*copy)(), void (*destroy)(), int_unsigned capaci
     return items;
 }
 
-HashTable* hash_table_create(void* (*copy)(), void (*destroy)(), int_unsigned (*hash)(), int_unsigned capacity)
+HashTable* _hash_table_create_force_capacity(void* (*copy)(), void (*destroy)(), int_unsigned (*hash)(), int_unsigned capacity)
 {
     HashTable* table;
 
@@ -29,12 +29,18 @@ HashTable* hash_table_create(void* (*copy)(), void (*destroy)(), int_unsigned (*
     table->copy = copy;
     table->destroy = destroy;
     table->hash = hash;
-    table->capacity = capacity < HASHT_MIN_CAPACITY ? HASHT_MIN_CAPACITY : get_next_prime(capacity);
+    table->capacity = capacity;
     table->number_of_items = 0;
-    // table->capacity = 1; //
     table->items = _get_items(copy, destroy, table->capacity);
 
     return table;
+}
+
+HashTable* hash_table_create(void* (*copy)(), void (*destroy)(), int_unsigned (*hash)(), int_unsigned capacity)
+{
+    capacity = capacity < HASHT_MIN_CAPACITY ? HASHT_MIN_CAPACITY : get_next_prime(capacity);
+
+    return _hash_table_create_force_capacity(copy, destroy, hash, capacity);
 }
 
 void hash_table_destroy(HashTable* table)
@@ -72,7 +78,7 @@ void* hash_table_at(const HashTable* table, int_unsigned n)
 
 bool hash_table_is_in_at_index(const HashTable* table, const void* item, int_signed (*compare)(), int_unsigned index)
 {
-    if (!list_find(table->items[index], item, compare))
+    if (list_find(table->items[index], item, compare) == NULL)
         return false;
     
     return true;

@@ -12,6 +12,7 @@ typedef struct HashTable HashTable;
 #endif
 
 HashTable*      hash_table_create(void* (*copy)(), void (*destroy)(), int_unsigned (*hash)(), int_unsigned capacity);
+HashTable*      _hash_table_create_force_capacity(void* (*copy)(), void (*destroy)(), int_unsigned (*hash)(), int_unsigned capacity);
 void            hash_table_destroy(HashTable* table);
 int_unsigned    hash_table_capacity(const HashTable* table);
 int_signed      hash_table_number_of_items(const HashTable* table);

@@ -30,6 +30,8 @@ String*     string_to_lower(String* string);
 bool        string_starts_with(const String* string, const char* start);
 char*       string_slice_index(const String* string, int_signed left_index, int_signed length);
 char*       string_slice(const String* string, int_signed length);
+String*     string_trim(const String* string);
+String*     string_trimD(String* string);
 
 //search
 int_signed  string_index_of_predicate(const String* string, int_signed start, char c, bool (*predicate)(char, char));

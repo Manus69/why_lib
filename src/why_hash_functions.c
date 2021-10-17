@@ -6,14 +6,15 @@
 //this is some voodoo bullshit
 int_unsigned hash_bytesFL(const byte* bytes, int_signed length)
 {
-    byte            byte;
     int_unsigned    hash_value;
 
     hash_value = H_VALUE;
-    while (length --)
+    while (length)
     {
-        byte = *bytes ++;
-        hash_value = ((hash_value << 5) + hash_value) + byte;
+        hash_value = ((hash_value << 5) + hash_value) + *bytes;
+
+        length --;
+        bytes ++;
     }
 
     return hash_value;
