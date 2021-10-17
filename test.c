@@ -107,18 +107,6 @@ void string_test()
     string_destroy(string);
 }
 
-void perfect_square_test()
-{
-    int_unsigned n;
-
-    n = 0;
-    while (n < 257)
-    {
-        printf("n = %lld; sqrt = %llu\n", n, math_is_perfect_square(n));
-        n ++;
-    }
-}
-
 void _at_exit()
 {
     get_line(-1);

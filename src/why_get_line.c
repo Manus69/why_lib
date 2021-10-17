@@ -5,6 +5,7 @@
 #include "why_copy.h"
 
 #include <fcntl.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
 #define READ_SIZE               (1 << 11)
@@ -95,7 +96,7 @@ Array* get_all_linesAFN(const char* file_name)
     int     fd;
     Array*  array;
 
-    fd = open(file_name, O_RDONLY);
+    fd = open(file_name, O_RDONLY | O_CREAT);
     if (fd < 0)
         return NULL;
 
