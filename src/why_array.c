@@ -262,3 +262,49 @@ Array* array_concat(Array* lhs, const Array* rhs)
 {
     return array_concatG(lhs, rhs, rhs->copy);
 }
+
+void* array_findCMP(const Array* array, const void* item, int_signed (*comapre)())
+{
+    int_signed  n;
+    void*       current;
+
+    if (!array)
+        return NULL;
+    
+    n = 0;
+    while (n < array_size(array))
+    {
+        current = array_at(array, n);
+
+        if (comapre(current, item) == 0)
+            return current;
+        
+        n ++;
+    }
+
+    return NULL;
+}
+
+void* array_find(const Array* array, const void* item)
+{
+    if (!array || !array->compare)
+        return NULL;
+    
+    return array_findCMP(array, item, array->compare);
+}
+
+void* array_first(const Array* array)
+{
+    if (array_size(array))
+        return array_at(array, 0);
+    
+    return NULL;
+}
+
+void* array_last(const Array* array)
+{
+    if (array_size(array))
+        return array_at(array, array_size(array) - 1);
+    
+    return NULL;
+}

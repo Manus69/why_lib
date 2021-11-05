@@ -20,6 +20,7 @@ typedef unsigned char       boolean;
 typedef struct Array Array;
 typedef struct Buffer Buffer;
 typedef struct HashTable HashTable;
+typedef struct HashTable Set;
 typedef struct Array Heap;
 typedef struct List List;
 typedef struct Polynomial Polynomial;

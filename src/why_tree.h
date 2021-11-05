@@ -7,13 +7,37 @@
 
 #include "why_tree_interface.h"
 
+typedef struct Node Node;
+typedef struct AVLNode AVLNode;
+
+struct Node
+{
+    void*       data;
+    Node*       left;
+    Node*       right;
+};
+
+struct AVLNode
+{
+    void*       data;
+    AVLNode*    left;
+    AVLNode*    right;
+    AVLNode*    parent;
+    int_signed  height;
+    int_signed  balance;
+};
+
 struct Tree
 {
-    void*       node;
+    void*       root;
+    void*       (*copy)();
+    void        (*destroy)();
     int_signed  (*compare)();
+    int_signed  size;
+    bool        avl;
 
-    Tree*       left;
-    Tree*       right;
+    void*       (*create)();
+    bool        (*insert)();
 };
 
 

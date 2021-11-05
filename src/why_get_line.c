@@ -96,7 +96,7 @@ Array* get_all_linesAFN(const char* file_name)
     int     fd;
     Array*  array;
 
-    fd = open(file_name, O_RDONLY | O_CREAT);
+    fd = open(file_name, O_RDONLY | O_EXCL);
     if (fd < 0)
         return NULL;
 

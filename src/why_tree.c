@@ -2,129 +2,175 @@
 #include "why_tree_interface.h"
 #include "why_memory.h"
 
-Tree* tree_create(const void* node, int_signed (*compare)())
+static void* _node_create(const void* data)
+{
+    Node* node;
+
+    node = allocate(sizeof(Node));
+    node->data = data;
+    node->left = NULL;
+    node->right = NULL;
+
+    return node;
+}
+
+static void* _node_avl_create(const void* data)
+{
+    AVLNode* node;
+
+    node = allocate(sizeof(AVLNode));
+    node->data = data;
+    node->left = NULL;
+    node->right = NULL;
+    node->parent = NULL;
+    node->height = 0;
+    node->balance = 0;
+
+    return node;
+}
+
+static void _node_destroy(Node* node, void (*destroy)())
+{
+    destroy(node->data);
+    free(node);
+}
+
+Tree* tree_create(void* (*copy)(), void (*destroy)(), int_signed (*compare)())
 {
     Tree* tree;
 
-    if (!node)
-        return NULL;
-
     tree = allocate(sizeof(Tree));
-    tree->node = (void *)node;
+    tree->copy = copy;
+    tree->destroy = destroy;
     tree->compare = compare;
-    tree->left = NULL;
-    tree->right = NULL;
+
+    tree->root = NULL;
+    tree->size = 0;
+    tree->avl = false;
+
+    tree->create = _node_create;
+    tree->insert = _insert;
 
     return tree;
 }
 
-void tree_destroy(Tree* tree, void (*destroy)())
+void* tree_get_root(const Tree* tree);
+int_signed tree_get_size(const Tree* tree);
+
+static void _linkL(AVLNode* parent, AVLNode* child)
 {
-    Tree* left;
-    Tree* right;
-
-    if (!tree)
-        return ;
-
-    left = tree->left;
-    right = tree->right;
-    tree_destroy(left, destroy);
-    tree_destroy(right, destroy);
-    destroy(tree->node);
-
-    free(tree);
+    parent->left = child;
+    child->parent = parent;
 }
 
-void* tree_get_node(Tree* tree)
+static void _linkR(AVLNode* parent, AVLNode* child)
 {
-    if (!tree)
-        return NULL;
-    
-    return tree->node;
+    parent->right = child;
+    child->parent = parent;
 }
 
-void tree_map_flr(Tree* tree, void (*function)())
+static void _create_linkL(AVLNode* node, const void* item)
 {
-    if (!tree)
-        return ;
-    
-    function(tree->node);
-    tree_map_flr(tree->left, function);
-    tree_map_flr(tree->right, function);
+    node->left = _node_avl_create(item);
+    node->left->parent = node;
 }
 
-void tree_map_lfr(Tree* tree, void (*function)())
+static void _create_linkR(AVLNode* node, const void* item)
 {
-    if (!tree)
-        return ;
-    
-    tree_map_lfr(tree->left, function);
-    function(tree->node);
-    tree_map_lfr(tree->right, function);
+    node->right = _node_avl_create(item);
+    node->right->parent = node;
 }
 
-void* tree_search(const Tree* tree, const void* item)
-{
-    if (!tree)
-        return NULL;
-    
-    return tree_search_function(tree, item, tree->compare);
-}
-
-void* tree_search_function(const Tree* tree, const void* item, int_signed (*function)())
+static bool _insert(Node* root, const void* item, int_signed (*compare)())
 {
     int_signed result;
+    
+    if (!root)
+        return false;
 
-    if (!tree)
-        return NULL;
-
-    result = function(tree->node, item);
-    if (result == 0)
-        return tree->node;
-    else if (result > 0)
-        return tree_search_function(tree->right, item, function);
-    else
-        return tree_search_function(tree->left, item, function);
-}
-
-Tree* tree_insert(Tree* tree, const void* item)
-{
-    int_signed result;
-
-    if (!tree)
-        return FALSE;
-
-    result = tree->compare(tree->node, item);
-    if (result == 0)
-        return FALSE;
-    else if (result > 0)
+    result = compare(root->data, item);
+    if (result > 0)
     {
-        if (tree->right)
-            return tree_insert(tree->right, item);
+        if (root->right)
+            return _insert(root->right, item, compare);
         
-        tree->right = tree_create(item, tree->compare);
-
-        return tree->right;
+        root->right = _node_create(item);
     }
     else
     {
-        if (tree->left)
-            return tree_insert(tree->left, item);
-        
-        tree->left = tree_create(item, tree->compare);
+        if (root->left)
+            return _insert(root->left, item, compare);
 
-        return tree->left;
+        root->left = _node_create(item);
     }
 
-    return NULL;
+    return true;
 }
 
-Tree* tree_get_left(Tree* tree)
+static bool _insertAVL(AVLNode* node, const void* item, int_signed (*compare)())
 {
-    return tree->left;
+    int_signed result;
+
+    if (!node)
+        return false;
+
+    result = compare(node->data, item);
+    if (result > 0)
+    {
+        if (node->right)
+            return _insertAVL(node->right, item, compare);
+        
+        _create_linkR(node, item);
+    }
+    else if (result < 0)
+    {
+        if (node->left)
+            return _insertAVL(node->left, item, compare);
+        
+        _create_linkL(node, item);
+    }
+    else return false;
+    
+    return true;
 }
 
-Tree* tree_get_right(Tree* tree)
+bool tree_insert(Tree* tree, const void* item)
 {
-    return tree->right;
+    if (!tree)
+        return false;
+
+    if (!tree->root)
+    {
+        tree->root = tree->create(item);
+        tree->size = 1;
+    }
+    
+    if (tree->insert(tree->root, item, tree->compare))
+    {
+        tree->size ++;
+        return true;
+    }
+
+    return false;
 }
+
+static void _map_inorder(Node* node, void (*function)())
+{
+    if (!node)
+        return ;
+    
+    _map_inorder(node->left, function);
+    function(node->data);
+    _map_inorder(node->right, function);
+}
+
+void tree_map_inorder(Tree* tree, void (*function)())
+{
+    if (!tree)
+        return ;
+
+    _map_inorder(tree->root, function);
+}
+
+void* tree_remove(Tree* tree, const void* item);
+void* tree_find(Tree* tree, const void* item);

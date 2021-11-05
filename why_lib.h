@@ -20,6 +20,7 @@
 #include "why_lines_and_strings.h"
 #include "why_hash_table_interface.h"
 #include "why_hash_functions.h"
+#include "why_set_interface.h"
 
 #define OVERFLOW_CHECK TRUE
 

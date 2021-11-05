@@ -10,16 +10,13 @@ typedef struct Tree Tree;
     extern "C" {
 #endif
 
-Tree*   tree_create(const void* node, int_signed (*compare)());
-Tree*   tree_get_left(Tree* tree);
-Tree*   tree_get_right(Tree* tree);
-Tree*   tree_insert(Tree* tree, const void* item);
-void    tree_destroy(Tree* tree, void (*destroy)());
-void*   tree_get_node(Tree* tree);
-void    tree_map_flr(Tree* tree, void (*function)());
-void    tree_map_lfr(Tree* tree, void (*function)());
-void*   tree_search(const Tree* tree, const void* item);
-void*   tree_search_function(const Tree* tree, const void* item, int_signed (*function)());
+Tree*       tree_create(void* (*copy)(), void (*destroy)(), int_signed (*compare)());
+void*       tree_get_root(const Tree* tree);
+int_signed  tree_get_size(const Tree* tree);
+bool        tree_insert(Tree* tree, const void* item);
+void*       tree_remove(Tree* tree, const void* item);
+void*       tree_find(Tree* tree, const void* item);
+void        tree_map_inorder(Tree* tree, void (*function)());
 
 #ifdef __cplusplus
     }

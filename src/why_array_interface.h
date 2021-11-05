@@ -34,6 +34,10 @@ void        array_destroy(Array* array);
 void        array_destroy_no_content(Array* array);
 void        array_sortM(Array* array, int_signed (*compare)());
 void        array_sortH(Array* array, int_signed (*compare)());
+void*       array_findCMP(const Array* array, const void* item, int_signed (*comapre)());
+void*       array_find(const Array* array, const void* item);
+void*       array_first(const Array* array);
+void*       array_last(const Array* array);
 
 #ifdef __cplusplus
     }

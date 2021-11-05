@@ -134,16 +134,32 @@ bool hash_table_insert(HashTable* table, const void* item, int_signed (*compare)
     return hash_table_insert_at_index(table, item, compare, index);
 }
 
-void* hash_table_remove(HashTable* table, const void* item, int_signed (*compare)())
+void* hash_table_remove_at_index(HashTable* table, const void* item, int_signed (*compare)(), int_unsigned index)
 {
-    int_unsigned    index;
-    void*           _item;
+    void* _item;
 
-    index = table->hash(item) % table->capacity;
     _item = list_remove(table->items[index], item, compare);
 
     if (_item)
         table->number_of_items --;
 
-    return _item;
+    return _item; 
+}
+
+void* hash_table_remove_hashed(HashTable* table, const void* item, int_signed (*compare)(), int_unsigned hash_value)
+{
+    int_unsigned index;
+
+    index = hash_value % table->capacity;
+
+    return hash_table_remove_at_index(table, item, compare, index);
+}
+
+void* hash_table_remove(HashTable* table, const void* item, int_signed (*compare)())
+{
+    int_unsigned    index;
+
+    index = table->hash(item) % table->capacity;
+
+    return hash_table_remove_at_index(table, item, compare, index);
 }

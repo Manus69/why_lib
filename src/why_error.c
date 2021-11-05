@@ -7,20 +7,23 @@
 int_unsigned WHY_ERROR = WHY_ERROR_DEFAULT;
 char* error_string = NULL;
 
-const char* error_strings[] = {
-"No errors detected",
-"Error",
-"It is totally broken",
-"Memory error",
-"Index error",
-"Parse error",
-"Syntax error",
-"Math error",
-"Name error",
-"Unknown symbol error",
-"Evaluation error",
-"Conversion error",
-0};
+const char* error_strings[] = 
+{
+    "No errors detected",
+    "Error",
+    "It is totally broken",
+    "Memory error",
+    "Index error",
+    "Parse error",
+    "Syntax error",
+    "Math error",
+    "Name error",
+    "Unknown symbol error",
+    "Evaluation error",
+    "Conversion error",
+    "File error",
+    0,
+};
 
 void* error_set(int_unsigned type, const char* _error_string)
 {

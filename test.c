@@ -112,6 +112,22 @@ void _at_exit()
     get_line(-1);
 }
 
+void test()
+{
+    struct _test
+    {
+        char* stuff;
+    };
+
+    struct _test* t = allocate(sizeof(struct _test));
+    t->stuff = cstr_copy("0123456789");
+
+    printf("%p\n%p\n", t, &t->stuff);
+    
+    free(t->stuff);
+    free(t);
+}
+
 int main()
 {
     clock_t start;
@@ -121,7 +137,8 @@ int main()
 
     start = clock();
 
-    merge_sort_test();
+    test();
+    // merge_sort_test();
     // queue_test();
     // hash_test();
     // string_test();

@@ -24,6 +24,9 @@ bool            hash_table_insert(HashTable* table, const void* item, int_signed
 bool            hash_table_insert_at_index(HashTable* table, const void* item, int_signed (*compare)(), int_unsigned index);
 bool            hash_table_insert_hashed(HashTable* table, const void* item, int_signed (*compare)(), int_unsigned hash_value);
 void*           hash_table_remove(HashTable* table, const void* item, int_signed (*compare)());
+void*           hash_table_remove_hashed(HashTable* table, const void* item, int_signed (*compare)(), int_unsigned hash_value);
+void*           hash_table_remove(HashTable* table, const void* item, int_signed (*compare)());
+
 
 #ifdef __cplusplus
     }

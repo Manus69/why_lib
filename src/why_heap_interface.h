@@ -22,8 +22,7 @@ bool        heap_push(Heap* heap, const void* item);
 void*       heap_pop_root(Heap* heap);
 void        heap_map(Heap* heap, void (*function)());
 void        heap_sort(Heap* heap);
-
-
+void*       heap_find(const Heap* heap, const void* item);
 
 #ifdef __cplusplus
     }
