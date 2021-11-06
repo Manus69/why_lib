@@ -107,25 +107,26 @@ void string_test()
     string_destroy(string);
 }
 
+void tree_test()
+{
+    Tree* tree;
+
+    tree = tree_create(copy_cstring, cstr_destroy, cstr_compare);
+    // tree = tree_create_avl(copy_cstring, cstr_destroy, cstr_compare);
+    tree_insert(tree, "aa");
+    tree_insert(tree, "a");
+    tree_insert(tree, "b");
+    tree_insert(tree, "d");
+    tree_insert(tree, "c");
+
+    print_treeN(tree, print_cstringS);
+
+    tree_destroy(tree);
+}
+
 void _at_exit()
 {
     get_line(-1);
-}
-
-void test()
-{
-    struct _test
-    {
-        char* stuff;
-    };
-
-    struct _test* t = allocate(sizeof(struct _test));
-    t->stuff = cstr_copy("0123456789");
-
-    printf("%p\n%p\n", t, &t->stuff);
-    
-    free(t->stuff);
-    free(t);
 }
 
 int main()
@@ -137,7 +138,7 @@ int main()
 
     start = clock();
 
-    test();
+    tree_test();
     // merge_sort_test();
     // queue_test();
     // hash_test();

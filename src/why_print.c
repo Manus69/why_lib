@@ -123,6 +123,12 @@ void print_cstringN(const char* string)
     printf("\n");
 }
 
+void print_cstringS(const char* string)
+{
+    print_cstring(string);
+    printf(" ");
+}
+
 void print_string(const String* string)
 {
     if (!string)
@@ -247,4 +253,15 @@ void print_heap(const Heap* heap, void (*print)())
         return ;
     
     print_array(heap, print, "\n");
+}
+
+void print_tree(const Tree* tree, void (*print)())
+{
+    return tree_map_inorder((Tree *)tree, print);
+}
+
+void print_treeN(const Tree* tree, void (*print)())
+{
+    print_tree(tree, print);
+    printf("\n");
 }

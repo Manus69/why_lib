@@ -8,8 +8,10 @@ bool is_prime(int_unsigned n)
         return false;
     if (n == 2 || n == 3)
         return true;
+    if (n % 2 == 0)
+        return false;
 
-    divisor = 2;
+    divisor = 3;
     while (divisor * divisor < n)
     {
         if (n % divisor == 0)

@@ -15,6 +15,7 @@ struct Node
     void*       data;
     Node*       left;
     Node*       right;
+    Node*       parent;
 };
 
 struct AVLNode
@@ -36,8 +37,8 @@ struct Tree
     int_signed  size;
     bool        avl;
 
-    void*       (*create)();
-    bool        (*insert)();
+    void*       (*node_create)();
+    bool        (*node_insert)();
 };
 
 
