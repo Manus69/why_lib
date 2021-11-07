@@ -4,8 +4,6 @@
 
 #include "why_definitions.h"
 
-typedef struct Tree Tree;
-
 #ifdef __cplusplus
     extern "C" {
 #endif

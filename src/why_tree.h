@@ -1,7 +1,3 @@
-#ifdef __cplusplus
-    extern "C" {
-#endif
-
 #ifndef WHY_TREE_H
 #define WHY_TREE_H
 
@@ -41,9 +37,18 @@ struct Tree
     bool        (*node_insert)();
 };
 
+void    _linkL(Node* parent, Node* child);
+void    _linkR(Node* parent, Node* child);
+void    _break_link(Node* parent, Node* child);
+void    _reattach(Node* parent, Node* child, Node* new_child);
+bool    _insert(Node* root, const void* item, int_signed (*compare)(), void* (*copy)());
+bool    _insertAVL(AVLNode* node, const void* item, int_signed (*compare)(), void* (*copy)());
+void*   _node_create(const void* data, void* (*copy)());
+void*   _node_avl_create(const void* data, void* (*copy)());
+void    _node_destroy(Node* node, void (*destroy)());
+void    _node_destroyNC(Node* node);
+void    _convert_to_avl(Tree* tree);
+void    _destroy_nodes(Node* root, void (*destroy)());
+Node*   _rotate_right(Node* node);
 
-#endif
-
-#ifdef __cplusplus
-    }
 #endif

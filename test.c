@@ -109,17 +109,32 @@ void string_test()
 
 void tree_test()
 {
-    Tree* tree;
+    const char* strings[] = {"a", "aa", "b", "c", "d", 0};
+    Tree*       tree;
+    char*       string;
+    int         n;
 
+    n = 0;
     tree = tree_create(copy_cstring, cstr_destroy, cstr_compare);
     // tree = tree_create_avl(copy_cstring, cstr_destroy, cstr_compare);
-    tree_insert(tree, "aa");
-    tree_insert(tree, "a");
-    tree_insert(tree, "b");
-    tree_insert(tree, "d");
-    tree_insert(tree, "c");
+    while (strings[n])
+    {
+        tree_insert(tree, strings[n]);
+        n ++;
+    }
 
     print_treeN(tree, print_cstringS);
+
+    n = 0;
+    while (strings[n])
+    {
+        string = tree_remove(tree, strings[n]);
+        print_cstringN(string);
+        cstr_destroy(string);
+        n ++;
+    }
+
+    // print_tree(tree, print_cstringS);
 
     tree_destroy(tree);
 }
