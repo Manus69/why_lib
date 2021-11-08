@@ -1,5 +1,6 @@
 #include "why_tree.h"
 #include "why_tree_interface.h"
+#include "why_tree_internal_decl.h"
 #include "why_memory.h"
 #include "why_macros.h"
 
@@ -16,35 +17,51 @@ int_signed tree_get_size(const Tree* tree)
 void _linkL(Node* parent, Node* child)
 {
     parent->left = child;
-    child->parent = parent;
+
+    if (child)
+        child->parent = parent;
 }
 
 void _linkR(Node* parent, Node* child)
 {
     parent->right = child;
-    child->parent = parent;
+
+    if (child)
+        child->parent = parent;
 }
 
-static void _create_linkL(Node* node, const void* item, void* (copy)())
+static void* _create_linkL(Node* node, const void* item, void* (copy)(), void* (*node_constructor)())
 {
-    node->left = _node_avl_create(item, copy);
+    // node->left = _node_avl_create(item, copy);
+    node->left = node_constructor(item, copy);
     node->left->parent = node;
+
+    return node->left;
 }
 
-static void _create_linkR(Node* node, const void* item, void* (copy)())
+static void* _create_linkR(Node* node, const void* item, void* (copy)(), void* (*node_constructor)())
 {
-    node->right = _node_avl_create(item, copy);
+    // node->right = _node_avl_create(item, copy);
+    node->right = node_constructor(item, copy);
     node->right->parent = node;
+
+    return node->right;
 }
 
 static void _break_linkL(Node* node)
 {
+    if (!node->left)
+        return ;
+    
     node->left->parent = NULL;
     node->left = NULL;
 }
 
 static void _break_linkR(Node* node)
 {
+    if (!node->right)
+        return ;
+    
     node->right->parent = NULL;
     node->right = NULL;
 }
@@ -71,12 +88,21 @@ void _reattach(Node* parent, Node* child, Node* new_child)
     }
 }
 
-bool _insert(Node* root, const void* item, int_signed (*compare)(), void* (copy)())
+static Node* _find_root(Node* node)
 {
-    int_signed result;
+    while (node->parent)
+        node = node->parent;
+    
+    return node;
+}
+
+void* _insert(Node* root, const void* item, int_signed (*compare)(), void* (copy)())
+{
+    int_signed  result;
+    Node*       new_node;
     
     if (!root)
-        return false;
+        return NULL;
 
     result = compare(root->data, item);
     if (result > 0)
@@ -84,25 +110,26 @@ bool _insert(Node* root, const void* item, int_signed (*compare)(), void* (copy)
         if (root->right)
             return _insert(root->right, item, compare, copy);
         
-        _create_linkR(root, item, copy);
+        new_node = _create_linkR(root, item, copy, _node_create);
     }
     else
     {
         if (root->left)
             return _insert(root->left, item, compare, copy);
 
-        _create_linkL(root, item, copy);
+        new_node = _create_linkL(root, item, copy, _node_create);
     }
 
-    return true;
+    return new_node;
 }
 
-bool _insertAVL(AVLNode* node, const void* item, int_signed (*compare)(), void* (copy)())
+void* _insertAVL(AVLNode* node, const void* item, int_signed (*compare)(), void* (copy)())
 {
-    int_signed result;
+    int_signed  result;
+    AVLNode*    new_node;
 
     if (!node)
-        return false;
+        return NULL;
 
     result = compare(node->data, item);
     if (result > 0)
@@ -110,22 +137,28 @@ bool _insertAVL(AVLNode* node, const void* item, int_signed (*compare)(), void* 
         if (node->right)
             return _insertAVL(node->right, item, compare, copy);
         
-        _create_linkR((Node *)node, item, copy);
+        new_node = _create_linkR((Node *)node, item, copy, _node_avl_create);
     }
     else if (result < 0)
     {
         if (node->left)
             return _insertAVL(node->left, item, compare, copy);
         
-        _create_linkL((Node *)node, item, copy);
+        new_node = _create_linkL((Node *)node, item, copy, _node_avl_create);
     }
-    else return false;
-    
-    return true;
+    else return NULL;
+
+    _balance(new_node);
+
+    // _update_height(node);
+
+    return new_node;
 }
 
 bool tree_insert(Tree* tree, const void* item)
 {
+    Node* node;
+
     if (!tree)
         return false;
 
@@ -137,9 +170,11 @@ bool tree_insert(Tree* tree, const void* item)
         return true;
     }
     
-    if (tree->node_insert(tree->root, item, tree->compare, tree->copy))
+    if ((node = tree->node_insert(tree->root, item, tree->compare, tree->copy)))
     {
+        tree->root = tree->avl ? _find_root(node) : tree->root;
         tree->size ++;
+
         return true;
     }
 
@@ -333,4 +368,29 @@ void* tree_remove(Tree* tree, const void* item)
     tree->size --;
     
     return data;
+}
+
+static int_signed _compute_height(const Node* node)
+{
+    int_signed lhs;
+    int_signed rhs;
+
+    if (!node)
+        return -1;
+    
+    if (_is_leaf(node))
+        return 0;
+    
+    lhs = _compute_height(node->left);
+    rhs = _compute_height(node->right);
+
+    return MAX(lhs, rhs) + 1;
+}
+
+int_signed tree_compute_height(const Tree* tree)
+{
+    if (!tree || !tree->root)
+        return -1;
+    
+    return _compute_height(tree->root);
 }

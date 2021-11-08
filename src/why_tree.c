@@ -1,5 +1,6 @@
 #include "why_tree.h"
 #include "why_tree_interface.h"
+#include "why_tree_internal_decl.h"
 #include "why_memory.h"
 #include "why_macros.h"
 
@@ -26,7 +27,6 @@ void* _node_avl_create(const void* data, void* (*copy)())
     node->right = NULL;
     node->parent = NULL;
     node->height = 0;
-    node->balance = 0;
 
     return node;
 }

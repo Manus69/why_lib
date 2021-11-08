@@ -9,6 +9,11 @@ int_signed inverse_string_compare(const String* lhs, const String* rhs)
     return -string_compare(lhs, rhs);
 }
 
+int_signed compare_int(int_signed* lhs, int_signed* rhs)
+{
+    return *rhs - *lhs;
+}
+
 void merge_sort_test()
 {
     Array* strings;
@@ -25,6 +30,25 @@ void merge_sort_test()
     print_arrayN(strings, print_string, "\n");
 
     array_destroy(strings);
+}
+
+void merge_sort_number_test()
+{
+    Array* numbers;
+    int_signed n;
+
+    numbers = array_create(copy_int_signed, memory_destroy);
+    n = 1000000;
+    while (n)
+    {
+        array_push(numbers, &n);
+        n --;
+    }
+
+    array_sortM(numbers, compare_int);
+
+    // print_arrayN(numbers, print_int_pointerN, NULL);
+    array_destroy(numbers);
 }
 
 void queue_test()
@@ -139,6 +163,30 @@ void tree_test()
     tree_destroy(tree);
 }
 
+void tree_test_numbers()
+{
+    Tree* tree;
+    int_signed n;
+    int_signed limit;
+
+    tree = tree_create_avl(copy_int_signed, memory_destroy, compare_int);
+    // tree = tree_create(copy_int_signed, memory_destroy, compare_int);
+
+    n = 0;
+    limit = 1000000;
+
+    while (n < limit)
+    {
+        tree_insert(tree, &n);
+        n ++;
+    }
+
+    // print_treeN(tree, print_int_pointerN);
+    // print_intN(tree_compute_height(tree));
+
+    tree_destroy(tree);
+}
+
 void _at_exit()
 {
     get_line(-1);
@@ -153,8 +201,10 @@ int main()
 
     start = clock();
 
-    tree_test();
+    // tree_test_numbers();
+    // tree_test();
     // merge_sort_test();
+    merge_sort_number_test();
     // queue_test();
     // hash_test();
     // string_test();
