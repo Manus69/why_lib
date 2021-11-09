@@ -19,6 +19,15 @@ int_signed _node_get_balance(const AVLNode* node)
     return _node_get_height(node->right) - _node_get_height(node->left);
 }
 
+bool _balance_is_invalid(const AVLNode* node)
+{
+    int_signed balance;
+
+    balance = _node_get_balance(node);
+
+    return ABS(balance) > 1;
+}
+
 void _update_height(AVLNode* node)
 {
     int_signed lhs;
@@ -48,10 +57,9 @@ Node* _rotate_right(Node* node)
     _break_link(node, left);
 
     _linkL(node, LR_subtree);
-    _linkR(left, node);
-    
     if (parent)
         _reattach(parent, node, left);
+    _linkR(left, node);
     
     _update_height((AVLNode *)node);
 
@@ -72,10 +80,9 @@ Node* _rotate_left(Node* node)
     _break_link(right, right->left);
 
     _linkR(node, RL_subtree);
-    _linkL(right, node);
-
     if (parent)
         _reattach(parent, node, right);
+    _linkL(right, node);
     
     _update_height((AVLNode *)node);
 
@@ -122,7 +129,7 @@ static AVLNode* _find_violation(const AVLNode* node)
     if (!node)
         return NULL;
     
-    if (ABS(_node_get_balance(node)) > 1)
+    if (_balance_is_invalid(node))
         return (AVLNode *)node;
     
     return _find_violation(node->parent);

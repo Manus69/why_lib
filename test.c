@@ -1,5 +1,6 @@
 #include "why_lib.h"
 #include "why_hash_table_diagnostics.h"
+#include "why_tree_diagnostics.h"
 
 #include <time.h>
 #include <stdio.h>
@@ -178,11 +179,28 @@ void tree_test_numbers()
     while (n < limit)
     {
         tree_insert(tree, &n);
+        //
+        // tree_check_integrity(tree);
+        // tree_check_avl_invariant(tree);
+        //
         n ++;
     }
 
     // print_treeN(tree, print_int_pointerN);
     // print_intN(tree_compute_height(tree));
+
+    n = 0;
+    void* item;
+    while (n < limit)
+    {
+        item = tree_remove(tree, &n);
+        //
+        // print_treeN(tree, print_int_pointerN);
+        //
+        // print_int_pointerN(item);
+        memory_destroy(item);
+        n ++;
+    }
 
     tree_destroy(tree);
 }
@@ -201,10 +219,10 @@ int main()
 
     start = clock();
 
-    // tree_test_numbers();
+    tree_test_numbers();
     // tree_test();
     // merge_sort_test();
-    merge_sort_number_test();
+    // merge_sort_number_test();
     // queue_test();
     // hash_test();
     // string_test();

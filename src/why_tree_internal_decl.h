@@ -3,7 +3,9 @@
 
 #include "why_tree.h"
 
+int_signed  _node_get_balance(const AVLNode* node);
 int_signed  _node_get_height(const AVLNode* node);
+bool        _balance_is_invalid(const AVLNode* node);
 void        _linkL(Node* parent, Node* child);
 void        _linkR(Node* parent, Node* child);
 void        _break_link(Node* parent, Node* child);

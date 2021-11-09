@@ -34,6 +34,7 @@ struct Tree
 
     void*       (*node_create)();
     void*       (*node_insert)();
+    // void*       (*node_remove)();
 };
 
 #endif

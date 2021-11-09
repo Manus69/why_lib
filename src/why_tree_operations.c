@@ -172,7 +172,7 @@ bool tree_insert(Tree* tree, const void* item)
     
     if ((node = tree->node_insert(tree->root, item, tree->compare, tree->copy)))
     {
-        tree->root = tree->avl ? _find_root(node) : tree->root;
+        tree->root = _find_root(tree->root);
         tree->size ++;
 
         return true;
@@ -215,7 +215,7 @@ static Node* _find(Node* node, const void* item, int_signed (*compare)())
         return _find(node->right, item, compare);
 }
 
-static Node* _find_parent(Node* node, const void* item, int_signed (*compare)())
+Node* _find_parent(Node* node, const void* item, int_signed (*compare)())
 {
     Node* result;
 
@@ -283,7 +283,7 @@ static void _swap(Node* lhs, Node* rhs)
     SWAP(lhs->data, rhs->data, void *);
 }
 
-static Node* _remove(Node* node)
+static void* _remove_and_balance(Node* node, bool balance)
 {
     Node* parent;
     Node* child;
@@ -291,15 +291,15 @@ static Node* _remove(Node* node)
 
     parent = node->parent;
     if (_is_leaf(node))
-    {
-        _break_link(parent, node);       
-    }
+        _break_link(parent, node);
     else if (_has_both_children(node))
     {
         min = _min(node->right);
         _swap(node, min);
 
-        return _remove(min);
+        _break_link(min->parent, min);
+        node = min;
+        // return _remove(min);
     }
     else if (node->left)
     {
@@ -311,8 +311,21 @@ static Node* _remove(Node* node)
         child = node->right;
         _reattach(parent, node, child);
     }
-    
+
+    if (balance)
+        _balance((AVLNode *)parent);
+
     return node;
+}
+
+void* _remove(Node* node)
+{
+    return _remove_and_balance(node, false);
+}
+
+void* _removeAVL(Node* node)
+{
+    return _remove_and_balance(node, true);
 }
 
 static Node* _remove_root(Tree* tree)
@@ -333,17 +346,17 @@ static Node* _remove_root(Tree* tree)
         node = _min(root->right);
         _swap(root, node);
 
-        return _remove(node);
+        return _remove_and_balance(node, tree->avl);
     }
     else if (root->left)
     {
         _swap(root, root->left);
-        return _remove(root->left);
+        return _remove_and_balance(root->left, tree->avl);
     }
     else
     {
         _swap(root, root->right);
-        return _remove(root->right);
+        return _remove_and_balance(root->right, tree->avl);
     }
 }
 
@@ -361,7 +374,10 @@ void* tree_remove(Tree* tree, const void* item)
     if (node == tree->root)
         node = _remove_root(tree); 
     else
-        node = _remove(node);
+    {
+        node = _remove_and_balance(node, tree->avl);
+        tree->root = _find_root(tree->root);
+    }
     
     data = node->data;
     _node_destroyNC(node);

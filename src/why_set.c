@@ -1,28 +1,27 @@
 #include "why_memory.h"
-#include "why_hash_table_interface.h"
-#include "why_hash_functions.h"
+#include "why_tree_interface.h"
 
-Set* set_create(void* (*copy)(), void (*destroy)(), int_unsigned (*hash)(), int_unsigned capacity)
+Set* set_create(void* (*copy)(), void (*destroy)(), int_signed (*compare)())
 {
-    return hash_table_create(copy, destroy, hash, capacity);
+    return tree_create_avl(copy, destroy, compare);
 }
 
 void set_destroy(Set* set)
 {
-    return hash_table_destroy(set);
+    return tree_destroy(set);
 }
 
 int_signed set_get_size(const Set* set)
 {
-    return hash_table_number_of_items(set);
+    return tree_get_size(set);
 }
 
-bool set_insert(Set* set, const void* item, int_signed (*compare)())
+bool set_insert(Set* set, const void* item)
 {
-    return hash_table_insert(set, item, compare);
+    return tree_insert(set, item);
 }
 
-void* set_remove(Set* set, const void* item, int_signed (*compare)())
+void* set_remove(Set* set, const void* item)
 {
-    return hash_table_remove(set, item, compare);
+    return tree_remove(set, item);
 }

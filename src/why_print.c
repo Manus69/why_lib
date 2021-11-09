@@ -20,12 +20,16 @@ void print_intN(int_signed n)
 
 void print_int_pointer(int_signed* n)
 {
-    print_int(*n);
+    if (n)
+        print_int(*n);
+    else
+        printf("(null)");
+    
 }
 
 void print_int_pointerN(int_signed* n)
 {
-    print_int(*n);
+    print_int_pointer(n);
     printf("\n");
 }
 
