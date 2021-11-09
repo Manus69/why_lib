@@ -101,3 +101,9 @@ void memory_destroy(void* item)
 {
     free(item);
 }
+
+void destroy_shallow(void* item)
+{
+    if (item)
+        return ;
+}

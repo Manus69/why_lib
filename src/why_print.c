@@ -269,3 +269,14 @@ void print_treeN(const Tree* tree, void (*print)())
     print_tree(tree, print);
     printf("\n");
 }
+
+void print_set(const Set* set, void (*print)())
+{
+    return print_tree(set, print);
+}
+
+void print_setN(const Set* set, void (*print)())
+{
+    print_set(set, print);
+    printf("\n");
+}

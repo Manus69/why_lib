@@ -40,6 +40,8 @@ void print_hash_table_cell(const HashTable* table, void (*print)(), int_signed n
 void print_heap(const Heap* heap, void (*print)());
 void print_tree(const Tree* tree, void (*print)());
 void print_treeN(const Tree* tree, void (*print)());
+void print_set(const Set* set, void (*print)());
+void print_setN(const Set* set, void (*print)());
 
 #ifdef __cplusplus
     }

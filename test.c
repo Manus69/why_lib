@@ -97,8 +97,8 @@ void hash_test()
         if (!hash_table_insert(table, string, string_compare))
         {
             // print_stringN(string);
-            if (string_length(string) > 1)
-                print_stringN(string);
+            // if (string_length(string) > 1)
+                // print_stringN(string);
             string_destroy(string);
             unique_lines --;
         }
@@ -164,6 +164,26 @@ void tree_test()
     tree_destroy(tree);
 }
 
+void tree_test_strings()
+{
+    Tree* tree;
+    Array* strings;
+    String* string;
+
+    strings = get_all_linesAFN("test_file.txt");
+    tree = tree_create_avl(copy_shallow, string_destroy, string_compare);
+    while (array_size(strings))
+    {
+        string = array_pop(strings);
+        if (!tree_insert(tree, string))
+            string_destroy(string);
+    }
+
+    print_intN(tree_get_size(tree));
+    array_destroy(strings);
+    tree_destroy(tree);
+}
+
 void tree_test_numbers()
 {
     Tree* tree;
@@ -174,7 +194,7 @@ void tree_test_numbers()
     // tree = tree_create(copy_int_signed, memory_destroy, compare_int);
 
     n = 0;
-    limit = 1000000;
+    limit = 1000;
 
     while (n < limit)
     {
@@ -186,8 +206,8 @@ void tree_test_numbers()
         n ++;
     }
 
-    // print_treeN(tree, print_int_pointerN);
-    // print_intN(tree_compute_height(tree));
+    print_treeN(tree, print_int_pointerN);
+    print_intN(tree_compute_height(tree));
 
     n = 0;
     void* item;
@@ -219,12 +239,13 @@ int main()
 
     start = clock();
 
-    tree_test_numbers();
+    // tree_test_numbers();
     // tree_test();
+    // tree_test_strings();
+    hash_test();
     // merge_sort_test();
     // merge_sort_number_test();
     // queue_test();
-    // hash_test();
     // string_test();
     // perfect_square_test();
 

@@ -92,15 +92,15 @@ Node* _rotate_left(Node* node)
 static AVLNode* _balance_lhs(AVLNode* node)
 {
     if (_node_get_balance(node->left) > 0)
-        return (AVLNode *)_rotate_right((Node *)node->left);
-    
+        return (AVLNode *)_rotate_left((Node *)node->left);
+
     return node;
 }
 
 static AVLNode* _balance_rhs(AVLNode* node)
 {
     if (_node_get_balance(node->right) < 0)
-        return (AVLNode *)_rotate_left((Node *)node->right);
+        return (AVLNode *)_rotate_right((Node *)node->right);
     
     return node;
 }

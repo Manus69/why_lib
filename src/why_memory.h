@@ -22,6 +22,7 @@ void*   memory_copy(const void* source, int_unsigned size);
 void*   reallocate(const void* item, int_unsigned current_size, int_unsigned extra_size);
 void*   memory_zero(int_unsigned size);
 void    memory_destroy(void* item);
+void    destroy_shallow(void* item);
 
 #ifdef __cplusplus
     }

@@ -25,3 +25,8 @@ void* set_remove(Set* set, const void* item)
 {
     return tree_remove(set, item);
 }
+
+void* set_pop_min(Set* set)
+{
+    return tree_pop_min(set);
+}

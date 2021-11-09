@@ -4,6 +4,8 @@
 #include "why_memory.h"
 #include "why_macros.h"
 
+// static void* _remove_and_balance(Node* node, bool balance);
+
 void* tree_get_root(const Tree* tree)
 {
     return tree->root;
@@ -384,6 +386,26 @@ void* tree_remove(Tree* tree, const void* item)
     tree->size --;
     
     return data;
+}
+
+void* tree_pop_min(Tree* tree)
+{
+    Node* min;
+    void* data;
+
+    if (tree->size == 1)
+        min = _remove_root(tree);
+    else
+    {
+        min = tree_min(tree);
+        min = _remove_and_balance(min, tree->avl);
+    }
+
+    data = min->data;
+    _node_destroyNC(min);
+    tree->size --;
+
+    return data;        
 }
 
 static int_signed _compute_height(const Node* node)

@@ -19,6 +19,7 @@ void*       tree_find(Tree* tree, const void* item);
 void        tree_map_inorder(Tree* tree, void (*function)());
 void*       tree_max(Tree* tree);
 void*       tree_min(Tree* tree);
+void*       tree_pop_min(Tree* tree);
 int_signed  tree_compute_height(const Tree* tree);
 
 #ifdef __cplusplus
