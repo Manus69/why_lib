@@ -5,6 +5,7 @@
 
 int_signed  _node_get_balance(const AVLNode* node);
 int_signed  _node_get_height(const AVLNode* node);
+int_signed  _fold(const Node* node, int_signed (*function)());
 bool        _balance_is_invalid(const AVLNode* node);
 void        _linkL(Node* parent, Node* child);
 void        _linkR(Node* parent, Node* child);

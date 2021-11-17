@@ -39,7 +39,7 @@ void merge_sort_number_test()
     int_signed n;
 
     numbers = array_create(copy_int_signed, memory_destroy);
-    n = 1000000;
+    n = (1 << 20);
     while (n)
     {
         array_push(numbers, &n);
@@ -50,6 +50,37 @@ void merge_sort_number_test()
 
     // print_arrayN(numbers, print_int_pointerN, NULL);
     array_destroy(numbers);
+}
+
+void quick_sort_test()
+{
+    Array* array;
+
+    array = get_all_linesAFN("test_file.txt");
+    array_sortQ(array, string_compare);
+
+    print_arrayN(array, print_stringN, NULL);
+    
+    array_destroy(array);
+    
+}
+
+void quick_sort_number_test()
+{
+    int_signed n;
+    Array*     array;
+
+    array = array_create(copy_int_signed, memory_destroy);
+    n = (1 << 20);
+    while (n)
+    {
+        array_push(array, &n);
+        n --;
+    }
+
+    // print_arrayN(array, print_int_pointer, " ");
+
+    array_destroy(array);
 }
 
 void queue_test()
@@ -225,6 +256,15 @@ void tree_test_numbers()
     tree_destroy(tree);
 }
 
+void random_test()
+{
+    bool chi_test;
+
+    chi_test = random_chi_squared_test(0, 100000, 1000);
+
+    printf("%d\n", chi_test);
+}
+
 void _at_exit()
 {
     get_line(-1);
@@ -242,16 +282,18 @@ int main()
     // tree_test_numbers();
     // tree_test();
     // tree_test_strings();
-    hash_test();
+    // hash_test();
     // merge_sort_test();
+    quick_sort_test();
     // merge_sort_number_test();
+    // quick_sort_number_test();
     // queue_test();
     // string_test();
     // perfect_square_test();
+    // random_test();
 
     end = clock();
-
-    printf("Time elapsed: %f s\n", (end - start) / (double) CLOCKS_PER_SEC);
+    print_time_diff(start, end);
 
     return EXIT_SUCCESS;
 }

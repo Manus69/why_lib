@@ -4,7 +4,9 @@ driver_name = test
 
 cc = gcc
 flags = -Wall -Wextra -g
-release_flags = -Wall -Wextra -O2 -flto
+driver_flags = $(flags)
+release_flags = -Wall -Wextra -O2 #-flto# -fsanitize=address
+release_driver_flags = $(release_flags) -flto
 
 source_folder = src/
 obj_folder = obj/
@@ -24,6 +26,7 @@ directory:
 	@mkdir -p $(obj_folder)
 
 release: flags = $(release_flags)
+release: driver_flags = $(release_driver_flags)
 release: fclean all
 
 test_release: flags = $(release_flags)
@@ -35,7 +38,7 @@ $(obj_folder)%.o : $(source_folder)%.c $(headers) $(lib_header)
 $(driver_name): $(driver) $(lib)
 	$(cc) $(flags) $< -I $(include_folder) -I. -c -o $(obj_folder)$(driver:.c=.o)
 	# $(cc) $(flags) $(obj_folder)$(driver:.c=.o) -o $(driver_name) $(lib)
-	$(cc) $(flags) $(objects) $(obj_folder)$(driver:.c=.o) -o $(driver_name)
+	$(cc) $(driver_flags) $(objects) $(obj_folder)$(driver:.c=.o) -o $(driver_name)
 
 $(lib): $(objects)
 	ar rcs $(lib) $(objects)

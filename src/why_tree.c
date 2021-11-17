@@ -89,7 +89,11 @@ void _destroy_nodes(Node* root, void (*destroy)())
     left = root->left;
     right = root->right;
 
-    _node_destroy(root, destroy);
+    if (destroy)
+        _node_destroy(root, destroy);
+    else
+        _node_destroyNC(root);
+    
     _destroy_nodes(left, destroy);
     _destroy_nodes(right, destroy);
 }

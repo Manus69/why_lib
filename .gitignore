@@ -1,5 +1,5 @@
 test
-test_file.txt
+*.txt
 test.cpp
 *.o
 lib*

@@ -5,5 +5,7 @@
 
 void tree_check_integrity(const Tree* tree);
 void tree_check_avl_invariant(const Tree* tree);
+void tree_check_size(const Tree* tree);
+void tree_check_search_invariant(const Tree* tree);
 
 #endif

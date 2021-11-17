@@ -7,6 +7,11 @@
 
 #define BUFFER_SIZE (1 << 7)
 
+void print_time_diff(clock_t start, clock_t end)
+{
+    printf("Time elapsed: %f sec.\n", ((double)(end - start) / CLOCKS_PER_SEC));
+}
+
 void print_int(int_signed n)
 {
     printf("%lld", n);
@@ -31,6 +36,11 @@ void print_int_pointerN(int_signed* n)
 {
     print_int_pointer(n);
     printf("\n");
+}
+
+void print_uint(int_unsigned n)
+{
+    printf("%llu", n);
 }
 
 static void _print_number_string(char* string)
@@ -272,7 +282,9 @@ void print_treeN(const Tree* tree, void (*print)())
 
 void print_set(const Set* set, void (*print)())
 {
-    return print_tree(set, print);
+    printf("{ ");
+    print_tree(set, print);
+    printf(" }");
 }
 
 void print_setN(const Set* set, void (*print)())

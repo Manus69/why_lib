@@ -3,11 +3,12 @@
 #define WHY_MATH_H
 
 #include "why_definitions.h"
-#include "why_array_interface.h"
+// #include "why_array_interface.h"
 
-#define EPSILON (((real)1) / (1 << 12))
-#define PI      (real)3.1415926535
-#define E       (real)2.7182818284
+#define WHY_RAND_MAX    (((int_unsigned)1 << 31) - 2)
+#define EPSILON         (((real)1) / (1 << 12))
+#define PI              (real)3.1415926535
+#define E               (real)2.7182818284
 
 typedef struct Complex Complex;
 typedef struct Polynomial Polynomial;
@@ -101,6 +102,13 @@ Matrix*         matrix_mult(Matrix* A, Matrix* B);
 //primes
 bool            is_prime(int_unsigned n);
 int_unsigned    get_next_prime(int_unsigned n);
+
+//random
+int_unsigned    random_get();
+int_unsigned    random_in_range(int_unsigned left, int_unsigned right);
+void            random_seed(int_unsigned seed);
+real            random_chi_squared(int_unsigned seed, int_unsigned max_value, int_unsigned sample_size);
+bool            random_chi_squared_test(int_unsigned seed, int_unsigned max, int_unsigned sample_size);
 
 #ifdef __cplusplus
     }

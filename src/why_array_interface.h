@@ -32,12 +32,18 @@ void        array_map(Array* array, void (*function)());
 void        array_swap(Array* array, int_signed m, int_signed n);
 void        array_destroy(Array* array);
 void        array_destroy_no_content(Array* array);
+void        array_sortI(Array* array, int_signed (*compare)());
 void        array_sortM(Array* array, int_signed (*compare)());
 void        array_sortH(Array* array, int_signed (*compare)());
+void        array_sortQ(Array* array, int_signed (*comapre)());
 void*       array_findCMP(const Array* array, const void* item, int_signed (*comapre)());
 void*       array_find(const Array* array, const void* item);
 void*       array_first(const Array* array);
 void*       array_last(const Array* array);
+void        array_set_compare(Array* array, int_signed (*compare)());
+int_signed  array_compare_elements(const Array* array, int_signed left, int_signed right);
+
+void        _bubble_sort_slice(Array* array, int_signed left, int_signed right);
 
 #ifdef __cplusplus
     }

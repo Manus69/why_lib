@@ -4,7 +4,7 @@
 #include "why_memory.h"
 #include "why_macros.h"
 
-// static void* _remove_and_balance(Node* node, bool balance);
+#include <assert.h>
 
 void* tree_get_root(const Tree* tree)
 {
@@ -92,6 +92,9 @@ void _reattach(Node* parent, Node* child, Node* new_child)
 
 static Node* _find_root(Node* node)
 {
+    if (!node)
+        return NULL;
+    
     while (node->parent)
         node = node->parent;
     
@@ -201,7 +204,31 @@ void tree_map_inorder(Tree* tree, void (*function)())
     _map_inorder(tree->root, function);
 }
 
-static Node* _find(Node* node, const void* item, int_signed (*compare)())
+int_signed _fold(const Node* node, int_signed (*function)())
+{
+    int_signed lhs;
+    int_signed rhs;
+    int_signed result;
+
+    if (!node)
+        return function(NULL);
+    
+    lhs = _fold(node->left, function);
+    rhs = _fold(node->right, function);
+    result = function(node) + lhs + rhs;
+
+    return result; 
+}
+
+int_signed tree_fold(const Tree* tree, int_signed (*function)())
+{
+    if (!tree)
+        return 0;
+    
+    return _fold(tree->root, function);
+}
+
+static Node* _find(const Node* node, const void* item, int_signed (*compare)())
 {
     int_signed result;
 
@@ -210,7 +237,7 @@ static Node* _find(Node* node, const void* item, int_signed (*compare)())
 
     result = compare(node->data, item);
     if (result == 0)
-        return node;
+        return (Node *)node;
     else if (result < 0)
         return _find(node->left, item, compare);
     else
@@ -226,7 +253,7 @@ Node* _find_parent(Node* node, const void* item, int_signed (*compare)())
     return result ? result->parent : NULL;
 }
 
-void* tree_find(Tree* tree, const void* item)
+void* tree_find(const Tree* tree, const void* item)
 {
     Node* result;
 
@@ -299,9 +326,9 @@ static void* _remove_and_balance(Node* node, bool balance)
         min = _min(node->right);
         _swap(node, min);
 
-        _break_link(min->parent, min);
-        node = min;
-        // return _remove(min);
+        // _break_link(min->parent, min);
+        // node = min;
+        return _remove_and_balance(min, balance);
     }
     else if (node->left)
     {
@@ -374,7 +401,10 @@ void* tree_remove(Tree* tree, const void* item)
         return NULL;
     
     if (node == tree->root)
+    {
         node = _remove_root(tree); 
+        tree->root = _find_root(tree->root);
+    }
     else
     {
         node = _remove_and_balance(node, tree->avl);
@@ -385,6 +415,11 @@ void* tree_remove(Tree* tree, const void* item)
     _node_destroyNC(node);
     tree->size --;
     
+    //
+    if (tree->size && !tree->root)
+        assert(0);
+    //
+
     return data;
 }
 
@@ -393,12 +428,18 @@ void* tree_pop_min(Tree* tree)
     Node* min;
     void* data;
 
+    if (!tree || !tree->size)
+        return NULL;
+
     if (tree->size == 1)
+        min = _remove_root(tree);
+    else if (((Node *)tree->root)->left == NULL)
         min = _remove_root(tree);
     else
     {
-        min = tree_min(tree);
+        min = _min(tree->root);
         min = _remove_and_balance(min, tree->avl);
+        tree->root = _find_root(tree->root);
     }
 
     data = min->data;

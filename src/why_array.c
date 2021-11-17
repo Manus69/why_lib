@@ -308,3 +308,16 @@ void* array_last(const Array* array)
     
     return NULL;
 }
+
+void array_set_compare(Array* array, int_signed (*compare)())
+{
+    if (!array)
+        return ;
+    
+    array->compare = compare;
+}
+
+int_signed array_compare_elements(const Array* array, int_signed left, int_signed right)
+{
+    return array->compare(array_at(array, left), array_at(array, right));
+}

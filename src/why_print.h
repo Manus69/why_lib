@@ -10,6 +10,8 @@
 #include "why_hash_table_interface.h"
 #include "why_tree_interface.h"
 
+#include <time.h>
+
 #define TOLERANCE (1.0/10000)
 
 #ifdef __cplusplus
@@ -17,6 +19,7 @@
 #endif
 
 void print_int(int_signed n);
+void print_uint(int_unsigned n);
 void print_intN(int_signed n);
 void print_int_pointer(int_signed* n);
 void print_int_pointerN(int_signed* n);
@@ -42,6 +45,7 @@ void print_tree(const Tree* tree, void (*print)());
 void print_treeN(const Tree* tree, void (*print)());
 void print_set(const Set* set, void (*print)());
 void print_setN(const Set* set, void (*print)());
+void print_time_diff(clock_t start, clock_t end);
 
 #ifdef __cplusplus
     }
