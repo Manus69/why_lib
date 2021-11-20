@@ -33,6 +33,11 @@ Complex complex_zero()
     return (Complex){0, 0};
 }
 
+Complex complex_one()
+{
+    return (Complex){1, 0};
+}
+
 bool complex_is_real(Complex z)
 {
     return z.im == 0 ? TRUE : FALSE;

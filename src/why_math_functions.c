@@ -1,8 +1,7 @@
 #include "why_math.h"
 #include "why_error.h"
 #include "why_lib.h"
-
-#define FIB_LIMIT 90
+#include "why_macros.h"
 
 real math_id(real x)
 {
@@ -69,30 +68,6 @@ int_unsigned round_to_int(real x)
 real absolute_value(real x)
 {
     return x < 0 ? -x : x;
-}
-
-int_unsigned fib(int_unsigned n)
-{
-    static int_unsigned values[FIB_LIMIT];
-    int_unsigned        value;
-
-    if (n >= FIB_LIMIT)
-        return 0;
-    
-    if (n == 0)
-        return 0;
-    if (n == 1)
-        return 1;
-
-    if (values[n])
-        return values[n];
-    else
-    {
-        value = fib(n - 1) + fib(n - 2);
-        values[n] = value;
-
-        return value;
-    }
 }
 
 static real math_mod_negative(real x, real mod)

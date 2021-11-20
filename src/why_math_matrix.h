@@ -11,4 +11,7 @@ struct Matrix
     int_signed  n_cols;
 };
 
+bool _same_size(const Matrix* lhs, const Matrix* rhs);
+bool _conformant(const Matrix* lhs, const Matrix* rhs);
+
 #endif

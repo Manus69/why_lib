@@ -265,6 +265,14 @@ void random_test()
     printf("%d\n", chi_test);
 }
 
+void math_test()
+{
+    int_signed x;
+
+    x = math_gcd(INT_MAX, 661);
+    print_intN(x);
+}
+
 void _at_exit()
 {
     get_line(-1);
@@ -284,13 +292,14 @@ int main()
     // tree_test_strings();
     // hash_test();
     // merge_sort_test();
-    quick_sort_test();
+    // quick_sort_test();
     // merge_sort_number_test();
     // quick_sort_number_test();
     // queue_test();
     // string_test();
     // perfect_square_test();
     // random_test();
+    math_test();
 
     end = clock();
     print_time_diff(start, end);

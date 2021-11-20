@@ -1,6 +1,8 @@
-#include "why_math_number_interface.h"
+#include "why_math_algebra.h"
 #include "why_memory.h"
-#include "why_lib.h"
+#include "why_math_complex_interface.h"
+#include "why_math_complex.h"
+#include "why_macros.h"
 
 #if OVERFLOW_CHECK
     #include "why_error.h"
@@ -17,7 +19,7 @@ bool check_add_overflow(int_signed n, int_signed m)
     return FALSE;
 }
 
-int_signed add_int(int_signed n, int_signed m)
+int_signed int_add(int_signed n, int_signed m)
 {
     #if OVERFLOW_CHECK
     if (check_add_overflow(n, m))
@@ -38,7 +40,7 @@ bool check_mult_overflow(int_signed n, int_signed m)
     return FALSE;
 }
 
-int_signed mult_int(int_signed n, int_signed m)
+int_signed int_mult(int_signed n, int_signed m)
 {
     #if OVERFLOW_CHECK
     if (check_mult_overflow(n, m))
@@ -48,42 +50,42 @@ int_signed mult_int(int_signed n, int_signed m)
     return n * m;
 }
 
-int_signed subtract_int(int_signed n, int_signed m)
+int_signed int_subtract(int_signed n, int_signed m)
 {
     return n - m;
 }
 
-int_signed divide_int(int_signed n, int_signed m)
+int_signed int_divide(int_signed n, int_signed m)
 {
     return n / m;
 }
 
-int_signed mod_int(int_signed n, int_signed m)
+int_signed int_mod(int_signed n, int_signed m)
 {
     return n % m;
 }
 
-real add_real(real x, real y)
+real real_add(real x, real y)
 {
     return x + y;
 }
 
-real mult_real(real x, real y)
+real real_mult(real x, real y)
 {
     return x * y;
 }
 
-real subtract_real(real x, real y)
+real real_subtract(real x, real y)
 {
     return x - y;
 }
 
-real divide_real(real x, real y)
+real real_divide(real x, real y)
 {
     return x / y;
 }
 
-bool real_is_zero(real* x)
+bool real_is_zeroP(const real* x)
 {
     return *x == 0;
 }
@@ -93,7 +95,7 @@ bool real_is_int(real x)
     return x == (int_signed)x;
 }
 
-void* real_add(real* x, real* y)
+void* real_addP(const real* x, const real* y)
 {
     real* result;
 
@@ -103,7 +105,7 @@ void* real_add(real* x, real* y)
     return result;
 }
 
-void* real_mult(real* x, real* y)
+void* real_multP(const real* x, const real* y)
 {
     real* result;
 
@@ -113,12 +115,12 @@ void* real_mult(real* x, real* y)
     return result;
 }
 
-bool complex_is_zero_p(Complex* z)
+bool complex_is_zeroP(const Complex* z)
 {
     return complex_is_zero(*z);
 }
 
-void* complex_add_p(Complex* z, Complex* w)
+void* complex_addP(const Complex* z, const Complex* w)
 {
     Complex* result;
 
@@ -128,7 +130,7 @@ void* complex_add_p(Complex* z, Complex* w)
     return result;
 }
 
-void* complex_mult_p(Complex* z, Complex* w)
+void* complex_multP(const Complex* z, const Complex* w)
 {
     Complex* result;
 

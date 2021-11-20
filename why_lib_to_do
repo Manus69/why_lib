@@ -10,3 +10,4 @@ make realloc useable
 random
 inline functions in the headers?
 asserts in tree_op
+asserts in matrix 

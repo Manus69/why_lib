@@ -2,7 +2,7 @@
 #include "why_definitions.h"
 #include "why_math.h"
 
-#define THRESHOLD (1 << 3)
+#define THRESHOLD (1 << 5)
 
 //pivot is on the right
 static int_signed _fix_pivot(Array* array, int_signed left, int_signed right)
@@ -77,7 +77,8 @@ static void _sort_slice2(Array* array, int_signed left, int_signed right)
         return ;
     
     if (right - left <= THRESHOLD)
-        return _bubble_sort_slice(array, left, right);
+        // return _bubble_sort_slice(array, left, right);
+        return _insert_sort_slice(array, left, right);
 
     pivot = random_in_range(left + 1, right);
     j = left;

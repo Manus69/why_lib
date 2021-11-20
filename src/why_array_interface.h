@@ -44,6 +44,7 @@ void        array_set_compare(Array* array, int_signed (*compare)());
 int_signed  array_compare_elements(const Array* array, int_signed left, int_signed right);
 
 void        _bubble_sort_slice(Array* array, int_signed left, int_signed right);
+void        _insert_sort_slice(Array* array, int_signed left, int_signed right);
 
 #ifdef __cplusplus
     }

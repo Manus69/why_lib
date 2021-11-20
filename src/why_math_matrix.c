@@ -1,6 +1,9 @@
 #include "why_math_matrix.h"
 #include "why_memory.h"
 #include "why_math_complex.h"
+#include "why_array_interface.h"
+
+#include <assert.h>
 
 Matrix* matrix_create(int_signed n_rows, int_signed n_cols)
 {
@@ -25,7 +28,20 @@ void matrix_destroy(Matrix* matrix)
     free(matrix);
 }
 
-Complex matrix_at(Matrix* A, int_signed j, int_signed k)
+Matrix* matrix_copy(const Matrix* matrix)
+{
+    Matrix* copy;
+
+    if (!matrix)
+        return NULL;
+    
+    copy = memory_copy(matrix, sizeof(Matrix));
+    copy->array = memory_copy(matrix->array, matrix_get_total_size(matrix) * sizeof(Complex));
+
+    return copy;
+}
+
+Complex matrix_at(const Matrix* A, int_signed j, int_signed k)
 {
     return A->array[A->n_cols * j + k];
 }
@@ -37,6 +53,37 @@ bool matrix_set(Matrix* A, Complex z, int_signed j, int_signed k)
     return TRUE;
 }
 
-Matrix* matrix_eye(int_signed size);
-Matrix* matrix_add(Matrix* A, Matrix* B);
-Matrix* matrix_mult(Matrix* A, Matrix* B);
+int_signed matrix_get_n_rows(const Matrix* matrix)
+{
+    return matrix->n_rows;
+}
+
+int_signed matrix_get_n_cols(const Matrix* matrix)
+{
+    return matrix->n_cols;
+}
+
+int_signed matrix_get_total_size(const Matrix* matrix)
+{
+    return matrix->n_cols * matrix->n_rows;
+}
+
+bool _same_size(const Matrix* lhs, const Matrix* rhs)
+{
+    return (lhs->n_cols == rhs->n_cols) && (lhs->n_rows == rhs->n_rows);
+}
+
+bool _conformant(const Matrix* lhs, const Matrix* rhs)
+{
+    return lhs->n_cols == rhs->n_rows;
+}
+
+Matrix* matrix_create_from_array(const Array* array, int_signed rows, int_signed cols)
+{
+    Matrix* matrix;
+    
+    if (!array || rows * cols != array_size(array))
+        return NULL;
+
+    return NULL;
+}
