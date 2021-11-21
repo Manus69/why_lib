@@ -1,5 +1,4 @@
 #include "why_math_rational.h"
-#include "why_math.h"
 
 Rational rational(int_signed top, int_signed bot)
 {

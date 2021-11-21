@@ -1,7 +1,9 @@
 #ifndef WHY_LIST_H
 #define WHY_LIST_H
 
-#include "why_list_interface.h"
+#include "why_lib.h"
+
+typedef struct Sequence Sequence;
 
 struct List
 {

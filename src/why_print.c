@@ -1,11 +1,11 @@
-#include "why_print.h"
-#include "why_cstring.h"
-#include "why_error.h"
+#include "why_lib.h"
+#include "why_math_complex.h"
 
 #include <stdio.h>
 #include <unistd.h>
 
 #define BUFFER_SIZE (1 << 7)
+#define TOLERANCE (1.0/10000)
 
 void print_time_diff(clock_t start, clock_t end)
 {

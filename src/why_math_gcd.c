@@ -1,5 +1,4 @@
-#include "why_definitions.h"
-#include "why_macros.h"
+#include "why_lib.h"
 
 static int_signed _gcd(int_signed a, int_signed b)
 {

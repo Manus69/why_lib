@@ -1,7 +1,7 @@
 #ifndef WHY_ARRAY_H
 #define WHY_ARRAY_H
 
-#include "why_definitions.h"
+#include "why_lib.h"
 
 struct Array
 {

@@ -1,6 +1,4 @@
-#include "why_array_interface.h"
-#include "why_definitions.h"
-#include "why_math.h"
+#include "why_lib.h"
 
 #define THRESHOLD (1 << 5)
 
@@ -77,7 +75,6 @@ static void _sort_slice2(Array* array, int_signed left, int_signed right)
         return ;
     
     if (right - left <= THRESHOLD)
-        // return _bubble_sort_slice(array, left, right);
         return _insert_sort_slice(array, left, right);
 
     pivot = random_in_range(left + 1, right);

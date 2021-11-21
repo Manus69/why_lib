@@ -1,5 +1,4 @@
-#include "why_string_interface.h"
-#include "why_cstring.h"
+#include "why_lib.h"
 
 #define H_VALUE 5381
 

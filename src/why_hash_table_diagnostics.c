@@ -1,9 +1,5 @@
-#include "why_hash_table_interface.h"
+#include "why_lib.h"
 #include "why_hash_table.h"
-#include "why_array_interface.h"
-#include "why_list_interface.h"
-#include "why_copy.h"
-#include "why_memory.h"
 
 int_unsigned _hash_table_count_collisions(const HashTable* table)
 {

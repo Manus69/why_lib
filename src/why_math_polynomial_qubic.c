@@ -1,6 +1,5 @@
-#include "why_lib.h"
 #include "why_math_polynomial.h"
-#include "why_error.h"
+#include "why_math_complex.h"
 
 static Polynomial* _scale(const Polynomial* p)
 {

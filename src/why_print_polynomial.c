@@ -1,5 +1,6 @@
+#include "why_lib.h"
+#include "why_math_complex.h"
 #include "why_math_polynomial.h"
-#include "why_print.h"
 
 #include <stdio.h>
 

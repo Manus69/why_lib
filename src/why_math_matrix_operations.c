@@ -1,5 +1,4 @@
 #include "why_math_matrix.h"
-#include "why_memory.h"
 #include "why_math_complex.h"
 
 #include <assert.h>

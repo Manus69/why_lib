@@ -1,8 +1,7 @@
 #ifndef WHY_MATH_COMPLEX_H
 #define WHY_MATH_COMPLEX_H
 
-#include "why_definitions.h"
-#include "why_math.h"
+#include "why_lib.h"
 
 struct Complex
 {

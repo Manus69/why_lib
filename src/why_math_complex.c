@@ -1,8 +1,4 @@
 #include "why_math_complex.h"
-#include "why_math.h"
-#include "why_macros.h"
-#include "why_memory.h"
-#include "why_error.h"
 
 Complex complex(real re, real im)
 {

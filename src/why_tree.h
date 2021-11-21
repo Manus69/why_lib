@@ -1,7 +1,7 @@
 #ifndef WHY_TREE_H
 #define WHY_TREE_H
 
-#include "why_definitions.h"
+#include "why_lib.h"
 
 typedef struct Node Node;
 typedef struct AVLNode AVLNode;
@@ -34,7 +34,6 @@ struct Tree
 
     void*       (*node_create)();
     void*       (*node_insert)();
-    // void*       (*node_remove)();
 };
 
 #endif

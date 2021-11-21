@@ -1,10 +1,5 @@
-#include "why_array_interface.h"
-#include "why_memory.h"
+#include "why_lib.h"
 #include "why_array.h"
-#include "why_macros.h"
-
-#include "why_print.h" //
-#include <stdio.h> //
 
 struct _slice
 {

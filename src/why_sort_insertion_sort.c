@@ -1,4 +1,4 @@
-#include "why_array_interface.h"
+#include "why_lib.h"
 
 static int_signed _find_index(Array* array, int_signed left, int_signed right)
 {

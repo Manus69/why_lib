@@ -1,5 +1,5 @@
-#include "why_lib.h"
 #include "why_math_polynomial.h"
+#include "why_math_complex.h"
 
 #define DELTA 1.0 / (1 << 17)
 

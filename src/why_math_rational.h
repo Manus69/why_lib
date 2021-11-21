@@ -1,7 +1,7 @@
 #ifndef WHY_MATH_RATIONAL_H
 #define WHY_MATH_RATIONAL_H
 
-#include "why_definitions.h"
+#include "why_lib.h"
 
 typedef struct Rational Rational;
 

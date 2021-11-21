@@ -1,7 +1,4 @@
 #include "why_lib.h"
-#include "why_error.h"
-
-#include <limits.h>
 
 #define SQRT_EPSILON    1.0 / (1 << 20)
 #define SN_CUTOFF       100

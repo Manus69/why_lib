@@ -1,6 +1,4 @@
-#include "why_error.h"
-#include "why_definitions.h"
-#include "why_cstring.h"
+#include "why_lib.h"
 
 #include <stdio.h>
 
@@ -53,6 +51,12 @@ void error_display()
     fprintf(stderr, format, error_strings[WHY_ERROR], error_string);
 
     error_reset();
+}
+
+void* error_display_return()
+{
+    error_display();
+    return NULL;
 }
 
 void error_display_message(const char* message)

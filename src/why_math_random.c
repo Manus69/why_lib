@@ -1,8 +1,5 @@
-#include "why_definitions.h"
+#include "why_lib.h"
 #include "why_math_random.h"
-#include "why_math.h"
-#include "why_memory.h"
-#include "why_macros.h"
 
 static int_unsigned rand_int = INITIAL_VALUE;
 

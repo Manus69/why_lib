@@ -1,11 +1,5 @@
-#include "why_array_interface.h"
-#include "why_string_interface.h"
-#include "why_string_view_interface.h"
+#include "why_string.h"
 #include "why_string_view.h"
-#include "why_copy.h"
-
-#include "why_memory.h"
-#include "why_cstring.h"
 
 Array* cstr_split(const char* string, char delimiter)
 {
@@ -26,7 +20,6 @@ Array* cstr_split(const char* string, char delimiter)
             substring = string_view_substring_shiftCSTRE(&view);
         else
         {
-            // substring = cstr_copy("");
             string_view_shift(&view, 1);
             continue ;
         }
@@ -55,7 +48,6 @@ Array* string_split(const String* string, char delimiter)
             element = string_view_substring_shiftE(&view);
         else
         {
-            // element = string_create("");
             string_view_shift(&view, 1);
             continue ;
         }

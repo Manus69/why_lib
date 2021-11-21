@@ -1,7 +1,4 @@
 #include "why_array.h"
-#include "why_array_interface.h"
-#include "why_memory.h"
-#include "why_macros.h"
 
 static void** _get_array(int_signed size)
 {

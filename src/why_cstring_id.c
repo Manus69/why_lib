@@ -1,4 +1,4 @@
-#include "why_cstring.h"
+#include "why_lib.h"
 
 static inline int_unsigned _is_between(char value, char left, char right)
 {

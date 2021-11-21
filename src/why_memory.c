@@ -1,4 +1,6 @@
-#include "why_memory.h"
+#include "why_lib.h"
+
+#include <stdlib.h>
 
 void* memory_init(void* restrict destination, const void* restrict source, int_unsigned size)
 {

@@ -1,8 +1,4 @@
-#include "why_heap_interface.h"
-#include "why_array_interface.h"
 #include "why_array.h"
-#include "why_memory.h"
-#include "why_macros.h"
 
 extern inline int_signed heap_size(const Heap* heap);
 

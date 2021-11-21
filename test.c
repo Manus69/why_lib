@@ -4,6 +4,7 @@
 
 #include <time.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 int_signed inverse_string_compare(const String* lhs, const String* rhs)
 {
@@ -292,14 +293,14 @@ int main()
     // tree_test_strings();
     // hash_test();
     // merge_sort_test();
-    // quick_sort_test();
+    quick_sort_test();
     // merge_sort_number_test();
     // quick_sort_number_test();
     // queue_test();
     // string_test();
     // perfect_square_test();
     // random_test();
-    math_test();
+    // math_test();
 
     end = clock();
     print_time_diff(start, end);

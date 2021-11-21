@@ -1,7 +1,5 @@
-#include "why_lib.h"
 #include "why_math_polynomial.h"
-#include "why_memory.h"
-#include "why_cstring.h"
+#include "why_math_complex.h"
 
 #if WHY_DBG
     #include "why_print.h"

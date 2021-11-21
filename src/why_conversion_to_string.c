@@ -1,7 +1,4 @@
-#include "why_conversion.h"
-#include "why_cstring.h"
-#include "why_error.h"
-#include "why_string_interface.h"
+#include "why_lib.h"
 
 #define BUFFER_CAPACITY (1 << 5)
 #define DIGITS "0123456789abcdef"
@@ -17,7 +14,6 @@ String* convert_to_string_uintB(int_unsigned n, byte base)
     if (base > 16)
         return error_set(WHY_ERROR_CONV, NULL);
     
-    // memory_set(buffer, 0, BUFFER_CAPACITY);
     index = 0;
     while (n)
     {

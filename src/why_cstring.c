@@ -1,4 +1,4 @@
-#include "why_cstring.h"
+#include "why_lib.h"
 
 int_signed cstr_length(const char* string)
 {

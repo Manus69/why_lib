@@ -1,8 +1,7 @@
 #ifndef WHY_STRING_H
 #define WHY_STRING_H
 
-#include "why_definitions.h"
-#include "why_string_interface.h"
+#include "why_lib.h"
 
 struct String
 {

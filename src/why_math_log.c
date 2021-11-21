@@ -1,5 +1,4 @@
 #include "why_lib.h"
-#include "why_error.h"
 
 #define N_TERMS     (1 << 6)
 #define LN2         (real)0.693147180559945309

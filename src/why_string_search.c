@@ -1,5 +1,4 @@
 #include "why_string.h"
-#include "why_string_interface.h"
 
 static inline bool _id_char(char lhs, char rhs)
 {

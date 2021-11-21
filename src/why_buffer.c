@@ -1,11 +1,5 @@
 #include "why_buffer.h"
-#include "why_buffer_interface.h"
-#include "why_definitions.h"
-#include "why_memory.h"
-#include "why_string_interface.h"
-#include "why_string_view_interface.h"
 #include "why_string_view.h"
-#include "why_macros.h"
 
 #include <unistd.h>
 

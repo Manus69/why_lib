@@ -1,10 +1,5 @@
 #include "why_tree.h"
-#include "why_tree_interface.h"
 #include "why_tree_internal_decl.h"
-#include "why_memory.h"
-#include "why_macros.h"
-
-#include <assert.h>
 
 void* tree_get_root(const Tree* tree)
 {
@@ -34,7 +29,6 @@ void _linkR(Node* parent, Node* child)
 
 static void* _create_linkL(Node* node, const void* item, void* (copy)(), void* (*node_constructor)())
 {
-    // node->left = _node_avl_create(item, copy);
     node->left = node_constructor(item, copy);
     node->left->parent = node;
 
@@ -43,7 +37,6 @@ static void* _create_linkL(Node* node, const void* item, void* (copy)(), void* (
 
 static void* _create_linkR(Node* node, const void* item, void* (copy)(), void* (*node_constructor)())
 {
-    // node->right = _node_avl_create(item, copy);
     node->right = node_constructor(item, copy);
     node->right->parent = node;
 
@@ -154,8 +147,6 @@ void* _insertAVL(AVLNode* node, const void* item, int_signed (*compare)(), void*
     else return NULL;
 
     _balance(new_node);
-
-    // _update_height(node);
 
     return new_node;
 }
@@ -326,8 +317,6 @@ static void* _remove_and_balance(Node* node, bool balance)
         min = _min(node->right);
         _swap(node, min);
 
-        // _break_link(min->parent, min);
-        // node = min;
         return _remove_and_balance(min, balance);
     }
     else if (node->left)
@@ -414,11 +403,6 @@ void* tree_remove(Tree* tree, const void* item)
     data = node->data;
     _node_destroyNC(node);
     tree->size --;
-    
-    //
-    if (tree->size && !tree->root)
-        assert(0);
-    //
 
     return data;
 }

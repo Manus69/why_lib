@@ -1,5 +1,4 @@
-#include "why_memory.h"
-#include "why_tree_interface.h"
+#include "why_lib.h"
 
 Set* set_create(void* (*copy)(), void (*destroy)(), int_signed (*compare)())
 {

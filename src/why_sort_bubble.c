@@ -1,4 +1,4 @@
-#include "why_array_interface.h"
+#include "why_lib.h"
 
 void _bubble_sort_slice(Array* array, int_signed left, int_signed right)
 {

@@ -1,8 +1,4 @@
-#include "why_math_algebra.h"
-#include "why_memory.h"
-#include "why_math_complex_interface.h"
 #include "why_math_complex.h"
-#include "why_macros.h"
 
 #if OVERFLOW_CHECK
     #include "why_error.h"

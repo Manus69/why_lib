@@ -1,6 +1,5 @@
-#include "why_math.h"
 #include "why_math_polynomial.h"
-#include "why_memory.h"
+#include "why_math_complex.h"
 
 Complex polynomial_evaluate(const Polynomial* p, Complex value)
 {

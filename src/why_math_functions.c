@@ -1,7 +1,4 @@
-#include "why_math.h"
-#include "why_error.h"
 #include "why_lib.h"
-#include "why_macros.h"
 
 real math_id(real x)
 {

@@ -1,10 +1,5 @@
 #include "why_tree.h"
-#include "why_tree_interface.h"
 #include "why_tree_internal_decl.h"
-#include "why_memory.h"
-#include "why_macros.h"
-
-#include <assert.h>
 
 int_signed _node_get_height(const AVLNode* node)
 {

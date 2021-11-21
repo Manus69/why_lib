@@ -1,5 +1,4 @@
-#include "why_array_interface.h"
-#include "why_heap_interface.h"
+#include "why_lib.h"
 #include "why_array.h"
 
 void array_sortH(Array* array, int_signed (*compare)())

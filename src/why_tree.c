@@ -1,8 +1,5 @@
 #include "why_tree.h"
-#include "why_tree_interface.h"
 #include "why_tree_internal_decl.h"
-#include "why_memory.h"
-#include "why_macros.h"
 
 void* _node_create(const void* data, void* (*copy)())
 {

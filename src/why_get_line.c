@@ -1,8 +1,4 @@
-#include "why_buffer_interface.h"
-#include "why_string_interface.h"
-#include "why_array_interface.h"
-#include "why_memory.h"
-#include "why_copy.h"
+#include "why_lib.h"
 
 #include <fcntl.h>
 #include <sys/stat.h>

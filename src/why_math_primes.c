@@ -1,4 +1,4 @@
-#include "why_definitions.h"
+#include "why_lib.h"
 
 bool is_prime(int_unsigned n)
 {

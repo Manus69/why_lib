@@ -1,9 +1,4 @@
-#include "why_list_interface.h"
 #include "why_list.h"
-#include "why_memory.h"
-#include "why_copy.h"
-
-//not tested
 
 List* list_create(void* (*copy)(), void (*destroy)())
 {

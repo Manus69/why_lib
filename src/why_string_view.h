@@ -1,7 +1,7 @@
 #ifndef WHY_STRING_VIEW_H
 #define WHY_STRING_VIEW_H
 
-#include "why_definitions.h"
+#include "why_lib.h"
 
 struct StringView
 {
