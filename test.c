@@ -17,6 +17,22 @@ int_signed compare_int(int_signed* lhs, int_signed* rhs)
     return *rhs - *lhs;
 }
 
+void array_test()
+{
+    Array* array;
+    String* string;
+
+    array = array_create(copy_shallow, string_destroy);
+    string = string_create("this is a test");
+    array_push(array, &string);
+
+    // string = array_at(array, 0);
+    // print_string(string);
+
+    print_array(array, print_stringN, NULL);
+    array_destroy(array);
+}
+
 void merge_sort_test()
 {
     Array* strings;
@@ -72,7 +88,8 @@ void quick_sort_number_test()
     int_signed n;
     Array*     array;
 
-    array = array_create(copy_int_signed, memory_destroy);
+    // array = array_create(copy_int_signed, memory_destroy);
+    array = array_createINT();
     n = (1 << 20);
     while (n)
     {
@@ -81,7 +98,7 @@ void quick_sort_number_test()
     }
 
     // print_arrayN(array, print_int_pointer, " ");
-
+    print_int_pointerN(array_pop_front(array));
     array_destroy(array);
 }
 
@@ -349,6 +366,7 @@ void _at_exit()
     get_line(-1);
 }
 
+//MERGE SORT
 int main()
 {
     clock_t start;
@@ -365,12 +383,13 @@ int main()
     // merge_sort_test();
     // quick_sort_test();
     // merge_sort_number_test();
-    // quick_sort_number_test();
+    quick_sort_number_test();
     // queue_test();
     // string_test();
     // perfect_square_test();
     // random_test();
-    segment_test();
+    // segment_test();
+    // array_test();
 
     end = clock();
     print_time_diff(start, end);

@@ -12,3 +12,4 @@ inline functions in the headers?
 asserts in tree_op
 asserts in matrix 
 asserts in rational
+make an internal header for stuff ?

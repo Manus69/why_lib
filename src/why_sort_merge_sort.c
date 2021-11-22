@@ -111,31 +111,31 @@ static int_signed _first_pass(Array* array, int_signed (*compare)())
 
 static void _get_sorted_array(Array* array, int_signed (*compare)())
 {
-    int_signed      frame_size;
-    void**          swap_array;
-    void**          sorted_array;
-    struct _slice   target;
-    struct _slice   source;
+    // int_signed      frame_size;
+    // void**          swap_array;
+    // void**          sorted_array;
+    // struct _slice   target;
+    // struct _slice   source;
 
-    swap_array = memory_zero(array_get_capacity(array) * sizeof(void *));
-    source = _slice_init(array->items, array->left_index + 1, array->right_index);
-    target = _slice_init(swap_array, array->left_index + 1, array->right_index);
-    frame_size = 2;
-    sorted_array = array->items;
+    // swap_array = memory_zero(array_get_capacity(array) * sizeof(void *));
+    // source = _slice_init(array->items, array->left_index + 1, array->right_index);
+    // target = _slice_init(swap_array, array->left_index + 1, array->right_index);
+    // frame_size = 2;
+    // sorted_array = array->items;
 
-    while (frame_size < array_size(array))
-    {
-        _make_a_pass(&target, &source, compare, frame_size);
-        sorted_array = target.items;
-        SWAP(source.items, target.items, void **);
+    // while (frame_size < array_size(array))
+    // {
+    //     _make_a_pass(&target, &source, compare, frame_size);
+    //     sorted_array = target.items;
+    //     SWAP(source.items, target.items, void **);
         
-        frame_size = frame_size * 2;
-        source.left_index = array->left_index + 1;
-        target.left_index = array->left_index + 1;
-    }
+    //     frame_size = frame_size * 2;
+    //     source.left_index = array->left_index + 1;
+    //     target.left_index = array->left_index + 1;
+    // }
 
-    sorted_array == swap_array ? free(array->items) : free(swap_array);
-    array->items = sorted_array;
+    // sorted_array == swap_array ? free(array->items) : free(swap_array);
+    // array->items = sorted_array;
 }
 
 void array_sortM(Array* array, int_signed (*compare)())

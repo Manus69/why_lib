@@ -5,13 +5,17 @@
 
 struct Array
 {
+    void*       (*at)();
+    void        (*set)();
+    void        (*swap)();
     void*       (*copy)();
     void        (*destroy)();
     int_signed  (*compare)();
 
-    void**      items;
+    void*       data;
 
     int_signed  capacity;
+    int_signed  item_size;
     int_signed  left_index;
     int_signed  right_index;
 };

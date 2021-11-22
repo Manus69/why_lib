@@ -68,7 +68,14 @@ extern char*                error_string;
 #define         ABS(x) ((((x) < 0)) ? -(x) : (x))
 #define         MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define         MIN(x, y) (((x) < (y)) ? (x) : (y))
-#define         SWAP(a , b, type) {type swap = a; a = b; b = swap;}
+#define         SWAP(a, b, type) {type swap = a; a = b; b = swap;}
+#define         MEM_GET(pointer, index, item_size) (pointer + index * item_size)
+#define         MEM_SET(pointer, index, value, type) (((type *)pointer)[index] = *(type *)value)
+#define         MEM_SWAP(memory, j, k, type) \
+                    type lhs = *(type *)MEM_GET(memory, j, sizeof(type)); \
+                    type rhs = *(type *)MEM_GET(memory, k, sizeof(type)); \
+                    MEM_SET(memory, j, &rhs, type); \
+                    MEM_SET(memory, k, &lhs, type);
 
 //memory
 void*           memory_init(void* restrict destination, const void* restrict source, int_unsigned size);
@@ -80,6 +87,15 @@ void*           reallocate(const void* item, int_unsigned current_size, int_unsi
 void*           memory_zero(int_unsigned size);
 void            memory_destroy(void* item);
 void            destroy_shallow(void* item);
+
+//swap set
+void            int_set(void* memory, const int_signed* n, int_signed index);
+void            complex_set(void* memory, const Complex* z, int_signed index);
+void            pointer_set(void* memory, const void* item, int_signed index);
+void            int_swap(void* memory, int_signed lhs_offset, int_signed rhs_offset);
+void            complex_swap(void* memory, int_signed lhs_offset, int_signed rhs_offset);
+void            pointer_swap(void* memory, int_signed lhs_offset, int_signed rhs_offset);
+
 
 //memory segment
 // MSegment*       msegment_create(int_signed size, int_signed item_size, void* (*get)(), void (*set)());
@@ -95,6 +111,7 @@ void            msegment_map(MSegment* segment, void (*function)());
 void            msegment_swap(MSegment* segment, int_signed j, int_signed k);
 
 //array
+Array*          array_createINT();
 Array*          array_create(void* (*copy)(), void (*destroy_)());
 Array*          array_create_with_capacity(void* (copy)(), void (*destroy)(), int_signed capacity);
 Array*          array_copy(const Array* array);
@@ -108,7 +125,7 @@ bool            array_push_front(Array* array, const void* item);
 int_signed      array_size(const Array* array);
 int_signed      array_get_capacity(const Array* array);
 void*           array_at(const Array* array, int_signed index);
-void*           array_set(Array* array, void* item, int_signed index);
+void*           array_set(Array* array, const void* item, int_signed index);
 void*           array_pop(Array* array);
 void*           array_pop_front(Array* array);
 void            array_map(Array* array, void (*function)());
