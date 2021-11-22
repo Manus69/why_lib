@@ -90,6 +90,7 @@ void            msegment_set(MSegment* segment, void* value, int_signed index);
 MSegment*       msegment_createINT(int_signed size);
 MSegment*       msegment_createPTR(int_signed size);
 MSegment*       msegment_createREAL(int_signed size);
+MSegment*       msegment_createCMPLX(int_signed size);
 void            msegment_map(MSegment* segment, void (*function)());
 void            msegment_swap(MSegment* segment, int_signed j, int_signed k);
 
@@ -464,6 +465,9 @@ void            print_real(real x);
 void            print_real_pointer(const real* x);
 void            print_rational(Rational p);
 void            print_complex(Complex z);
+void            print_complex_pointer(const Complex* z);
+void            print_complexN(Complex z);
+void            print_complex_pointerN(const Complex* z);
 void            print_cstring(const char* string);
 void            print_cstringN(const char* string);
 void            print_string(const String* string);

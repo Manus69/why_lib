@@ -1,4 +1,5 @@
 #include "why_memory_segment.h"
+#include "why_math_complex.h"
 
 MSegment* msegment_create(int_signed size, int_signed item_size, void* (*get)(), void (*set)(), void (*swap)())
 {
@@ -81,4 +82,10 @@ MSegment* msegment_createPTR(int_signed size)
     segment = msegment_create(size, sizeof(void *), msegment_get_pointer, msegment_set_pointer, msegment_swap_pointer);
 
     return segment;
+}
+
+
+MSegment* msegment_createCMPLX(int_signed size)
+{
+    return msegment_create(size, sizeof(Complex), msegment_get_complex, msegment_set_complex, msegment_swap_complex);
 }

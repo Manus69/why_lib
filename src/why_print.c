@@ -152,6 +152,26 @@ void print_complex(Complex z)
     printf("i");
 }
 
+void print_complexN(Complex z)
+{
+    print_complex(z);
+    printf("/n");
+}
+
+void print_complex_pointer(const Complex* z)
+{
+    if (!z)
+        return ;
+
+    print_complex(*z);
+}
+
+void print_complex_pointerN(const Complex* z)
+{
+    print_complex_pointer(z);
+    printf("\n");
+}
+
 void print_cstring(const char* string)
 {
     printf("%s", string);

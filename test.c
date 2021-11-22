@@ -1,6 +1,7 @@
 #include "why_lib.h"
 #include "why_hash_table_diagnostics.h"
 #include "why_tree_diagnostics.h"
+#include "why_math_complex.h"
 
 #include <time.h>
 #include <stdio.h>
@@ -322,6 +323,24 @@ void segment_test()
     msegment_swap(segment, 0, 2);
     print_msegment(segment, print_real_pointer);
 
+    msegment_destroy(segment);
+
+    Complex v, w, t;
+
+    segment = msegment_createCMPLX(3);
+
+    v = complex(PI, PI);
+    w = complex(0, -E);
+    t = complex_zero();
+
+    msegment_set(segment, &v, 0);
+    msegment_set(segment, &w, 1);
+    msegment_set(segment, &t, 2);
+
+    print_msegment(segment, print_complex_pointerN);
+    msegment_swap(segment, 0, 2);
+    print_msegment(segment, print_complex_pointerN);
+    
     msegment_destroy(segment);
 }
 

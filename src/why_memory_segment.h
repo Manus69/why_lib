@@ -23,5 +23,8 @@ void    msegment_set_real(MSegment* segment, const void* value, int_signed index
 void    msegment_swap_int(MSegment* segment, int_signed j, int_signed k);
 void    msegment_swap_pointer(MSegment* segment, int_signed j, int_signed k);
 void    msegment_swap_real(MSegment* segment, int_signed j, int_signed k);
+void*   msegment_get_complex(const MSegment* segment, int_signed index);
+void    msegment_set_complex(MSegment* segment, const void* value, int_signed index);
+void    msegment_swap_complex(MSegment* segment, int_signed j, int_signed k);
 
 #endif

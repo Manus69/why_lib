@@ -1,4 +1,5 @@
 #include "why_memory_segment.h"
+#include "why_math_complex.h"
 
 #define SHIFT(pointer, index, type) (pointer + index * sizeof(type))
 #define SET(pointer, index, value, type) (((type *)pointer)[index] = *(type *)value)
@@ -37,6 +38,16 @@ void msegment_set_real(MSegment* segment, const void* value, int_signed index)
     SET(segment->memory, index, value, real);
 }
 
+void* msegment_get_complex(const MSegment* segment, int_signed index)
+{
+    return SHIFT(segment->memory, index, Complex);
+}
+
+void msegment_set_complex(MSegment* segment, const void* value, int_signed index)
+{
+    SET(segment->memory, index, value, Complex);
+}
+
 #define MS_SWAP(memory, j, k, type) \
     type lhs = *(type *)SHIFT(memory, j, type); \
     type rhs = *(type *)SHIFT(memory, k, type); \
@@ -46,19 +57,17 @@ void msegment_set_real(MSegment* segment, const void* value, int_signed index)
 
 void msegment_swap_int(MSegment* segment, int_signed j, int_signed k)
 {
-    // int_signed lhs;
-    // int_signed rhs;
-
-    // lhs = *(int_signed *)msegment_get(segment, j);
-    // rhs = *(int_signed *)msegment_get(segment, k);
-    // msegment_set(segment, &rhs, j);
-    // msegment_set(segment, &lhs, k);
     MS_SWAP(segment->memory, j, k, int_signed);
 }
 
 void msegment_swap_real(MSegment* segment, int_signed j, int_signed k)
 {
     MS_SWAP(segment->memory, j, k, real);
+}
+
+void msegment_swap_complex(MSegment* segment, int_signed j, int_signed k)
+{
+    MS_SWAP(segment->memory, j, k, Complex);
 }
 
 void msegment_swap_pointer(MSegment* segment, int_signed j, int_signed k)
