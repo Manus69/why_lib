@@ -1,5 +1,6 @@
 #include "why_lib.h"
 #include "why_math_complex.h"
+#include "why_math_rational.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -93,6 +94,31 @@ void print_real(real x)
         _print_number_string(buffer);
         cstr_destroy(buffer);
     }
+}
+
+void print_real_pointer(const real* x)
+{
+    if (!x)
+        return ;
+    
+    print_real(*x);
+}
+
+void print_rational(Rational p)
+{
+    int_signed top;
+    int_signed bot;
+
+    p = rational_normalize(p);
+    top = rational_get_top(p);
+    bot = rational_get_bot(p);
+
+    if (top == 0)
+        return print_int(0);
+    
+    print_int(top);
+    printf(" / ");
+    print_int(bot);
 }
 
 void print_complex(Complex z)
@@ -291,4 +317,22 @@ void print_setN(const Set* set, void (*print)())
 {
     print_set(set, print);
     printf("\n");
+}
+
+void print_msegment(const MSegment* segment, void (*print)())
+{
+    int_signed  n;
+    void*       value;
+
+    if (!segment)
+        return ;
+
+    n = 0;
+    while (n < msegment_get_size(segment))
+    {
+        value = msegment_get(segment, n);
+        print(value);
+
+        n ++;
+    }
 }

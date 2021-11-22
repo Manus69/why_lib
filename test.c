@@ -266,12 +266,63 @@ void random_test()
     printf("%d\n", chi_test);
 }
 
-void math_test()
+void segment_test()
 {
-    int_signed x;
+    MSegment* segment;
+    int_signed size;
+    int_signed n;
+    
+    size = 10;
+    segment = msegment_createINT(size);
+    n = 0;
 
-    x = math_gcd(INT_MAX, 661);
-    print_intN(x);
+    while (n < size)
+    {
+        msegment_set(segment, &n, n);
+        n ++;
+    }
+
+    print_msegment(segment, print_int_pointerN);
+    msegment_swap(segment, 0, size - 1);
+    print_msegment(segment, print_int_pointerN);
+    msegment_destroy(segment);
+
+    size = 3;
+    segment = msegment_createPTR(size);
+    String* s0 = string_create("this is a test");
+    String* s1 = string_create("does it work");
+    String* s2 = string_create("01234567789");
+
+    // printf("%p\n", s0);
+    // print_stringN(s0);
+
+    msegment_set(segment, s0, 0);
+    msegment_set(segment, s1, 1);
+    msegment_set(segment, s2, 2);
+
+    print_msegment(segment, print_stringN);
+    msegment_swap(segment, 0, 2);
+    print_msegment(segment, print_stringN);
+
+    msegment_map(segment, string_destroy);
+    msegment_destroy(segment);
+
+    real x, y, z;
+
+    segment = msegment_createREAL(size);
+    x = PI;
+    y = E;
+    z = INT_MAX / 2;
+
+    msegment_set(segment, &x, 0);
+    msegment_set(segment, &y, 1);
+    msegment_set(segment, &z, 2);
+
+    print_msegment(segment, print_real_pointer);
+    msegment_swap(segment, 0, 2);
+    print_msegment(segment, print_real_pointer);
+
+    msegment_destroy(segment);
 }
 
 void _at_exit()
@@ -293,14 +344,14 @@ int main()
     // tree_test_strings();
     // hash_test();
     // merge_sort_test();
-    quick_sort_test();
+    // quick_sort_test();
     // merge_sort_number_test();
     // quick_sort_number_test();
     // queue_test();
     // string_test();
     // perfect_square_test();
     // random_test();
-    // math_test();
+    segment_test();
 
     end = clock();
     print_time_diff(start, end);

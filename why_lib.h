@@ -40,6 +40,7 @@ typedef long long           int_signed;
 typedef unsigned char       byte;
 typedef long double         real;
 typedef unsigned char       boolean;
+typedef struct MSegment     MSegment;
 typedef struct Array        Array;
 typedef struct Buffer       Buffer;
 typedef struct HashTable    HashTable;
@@ -79,6 +80,18 @@ void*           reallocate(const void* item, int_unsigned current_size, int_unsi
 void*           memory_zero(int_unsigned size);
 void            memory_destroy(void* item);
 void            destroy_shallow(void* item);
+
+//memory segment
+// MSegment*       msegment_create(int_signed size, int_signed item_size, void* (*get)(), void (*set)());
+void            msegment_destroy(MSegment* segment);
+int_signed      msegment_get_size(const MSegment* segment);
+void*           msegment_get(const MSegment* segment, int_signed index);
+void            msegment_set(MSegment* segment, void* value, int_signed index);
+MSegment*       msegment_createINT(int_signed size);
+MSegment*       msegment_createPTR(int_signed size);
+MSegment*       msegment_createREAL(int_signed size);
+void            msegment_map(MSegment* segment, void (*function)());
+void            msegment_swap(MSegment* segment, int_signed j, int_signed k);
 
 //array
 Array*          array_create(void* (*copy)(), void (*destroy_)());
@@ -310,10 +323,19 @@ void*           complex_multP(const Complex* z, const Complex* w);
 
 //rational
 Rational        rational(int_signed top, int_signed bot);
+int_signed      rational_get_top(Rational p);
+int_signed      rational_get_bot(Rational p);
 Rational        rational_one();
 Rational        rational_zero();
-Rational        rational_scale(Rational p, int_signed factor);
+Rational        rational_reciprocal(Rational p);
+Rational        rational_reduce(Rational p);
+Rational        rational_normalize(Rational p);
+Rational        rational_scale(Rational p, int_signed factor);;
+Rational        rational_negative(Rational p);
 Rational        rational_add(Rational lhs, Rational rhs);
+Rational        rational_subtract(Rational lhs, Rational rhs);
+Rational        rational_mult(Rational lhs, Rational rhs);
+Rational        rational_divide(Rational lhs, Rational rhs);
 
 //complex
 Complex         complex(real re, real im);
@@ -392,6 +414,7 @@ int_unsigned    round_to_int(real x);
 int_unsigned    fib(int_unsigned n);
 int_unsigned    math_is_perfect_square(int_unsigned x);
 int_signed      math_gcd(int_signed a, int_signed b);
+int_signed      math_lcm(int_signed a, int_signed b);
 
 //math: R -> R
 real            math_sqrt(real a);
@@ -438,6 +461,8 @@ void            print_intN(int_signed n);
 void            print_int_pointer(int_signed* n);
 void            print_int_pointerN(int_signed* n);
 void            print_real(real x);
+void            print_real_pointer(const real* x);
+void            print_rational(Rational p);
 void            print_complex(Complex z);
 void            print_cstring(const char* string);
 void            print_cstringN(const char* string);
@@ -460,6 +485,7 @@ void            print_treeN(const Tree* tree, void (*print)());
 void            print_set(const Set* set, void (*print)());
 void            print_setN(const Set* set, void (*print)());
 void            print_time_diff(clock_t start, clock_t end);
+void            print_msegment(const MSegment* segment, void (*print)());
 
 //error
 void*           error_set(int_unsigned type, const char* _error_message);
