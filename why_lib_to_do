@@ -1,15 +1,18 @@
 use realloc instead of malloc for vector? (mremap)
 resize the array when you poped some elements ?
 make isert(tree, item, after) to insert items in trees after another item in the traversal order
-sets via trees
 radix sort
 <stdint.h>?
 some sort of a dictionary to unfuck enum - string array management?
 array first() last()
 make realloc useable
-random
 inline functions in the headers?
 asserts in tree_op
 asserts in matrix 
 asserts in rational
 make an internal header for stuff ?
+redo polynomials
+matrix
+large numbers
+grep
+complex modulus

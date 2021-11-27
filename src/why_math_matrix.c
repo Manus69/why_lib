@@ -83,5 +83,5 @@ Matrix* matrix_create_from_array(const Array* array, int_signed rows, int_signed
     if (!array || rows * cols != array_size(array))
         return NULL;
 
-    return NULL;
+    return matrix;
 }

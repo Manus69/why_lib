@@ -312,7 +312,7 @@ void print_heap(const Heap* heap, void (*print)())
     if (array_size(heap) == 0)
         return ;
     
-    print_array(heap, print, "\n");
+    print_array(heap, print, NULL);
 }
 
 void print_tree(const Tree* tree, void (*print)())

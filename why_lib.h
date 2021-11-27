@@ -76,6 +76,7 @@ extern char*                error_string;
                     type rhs = *(type *)MEM_GET(memory, k, sizeof(type)); \
                     MEM_SET(memory, j, &rhs, type); \
                     MEM_SET(memory, k, &lhs, type);
+#define         NOP(x) (x = x == x ? x : x)
 
 //memory
 void*           memory_init(void* restrict destination, const void* restrict source, int_unsigned size);
@@ -111,7 +112,10 @@ void            msegment_map(MSegment* segment, void (*function)());
 void            msegment_swap(MSegment* segment, int_signed j, int_signed k);
 
 //array
-Array*          array_createINT();
+Array*          array_createVAL(int_signed capacity, int_signed item_size);
+Array*          array_createINT(int_signed capacity);
+Array*          array_createBYTE(int_signed capacity);
+Array*          array_createCPLX(int_signed capacity);
 Array*          array_create(void* (*copy)(), void (*destroy_)());
 Array*          array_create_with_capacity(void* (copy)(), void (*destroy)(), int_signed capacity);
 Array*          array_copy(const Array* array);
@@ -142,8 +146,12 @@ void*           array_first(const Array* array);
 void*           array_last(const Array* array);
 void            array_set_compare(Array* array, int_signed (*compare)());
 int_signed      array_compare_elements(const Array* array, int_signed left, int_signed right);
+int_signed      _array_get_right_brk(const Array* array);
+void            _array_shift_right_brk(Array* array, int_signed shift);
 void            _bubble_sort_slice(Array* array, int_signed left, int_signed right);
 void            _insert_sort_slice(Array* array, int_signed left, int_signed right);
+void*           _array_get_data(const Array* array);
+void            _array_set_data(Array* array, const void* data);
 
 //list
 List*           list_create(void* (*copy)(), void (*destroy)());

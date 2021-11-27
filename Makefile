@@ -3,7 +3,7 @@ lib_header = why_lib.h
 driver_name = test
 
 cc = gcc
-flags = -Wall -Wextra -g
+flags = -Wall -Wextra -g -fsanitize=address
 driver_flags = $(flags)
 release_flags = -Wall -Wextra -O2 #-flto# -fsanitize=address
 release_driver_flags = $(release_flags) -flto

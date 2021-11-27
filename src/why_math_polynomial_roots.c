@@ -5,13 +5,15 @@ Array* _solve_qubic(const Polynomial* p);
 
 static Array* _solve_constant(const Polynomial* p)
 {
-    Array* root;
+    Array*      root;
+    Complex*    copy;
 
     if (!complex_is_zero(p->coefficients[0]))
         return NULL;
 
     root = array_create_with_capacity(copy_shallow, memory_destroy, 1);
-    array_push(root, complex_copy(&p->coefficients[0]));
+    copy = complex_copy(&p->coefficients[0]);
+    array_push(root, copy);
 
     return root;
 }
@@ -21,11 +23,13 @@ static Array* _solve_linear(const Polynomial* p)
 {
     Array*  roots;
     real    x;
+    Complex* z;
     
     roots = array_create_with_capacity(copy_shallow, memory_destroy, 2);
 
     x = -p->coefficients[0].re / p->coefficients[1].re;
-    array_push(roots, complex_create(x, 0));
+    z = complex_create(x, 0);
+    array_push(roots, z);
 
     return roots;
 }
@@ -44,9 +48,7 @@ static Array* _solve_quadratic(const Polynomial* p)
 
     D = b * b - 4 * a *c;
     if (D == 0)
-    {
         array_push(roots, complex_create(-b / (2 * a), 0));
-    }
     else if (D > 0)
     {
         x = (-b + math_sqrt(D)) / (2 * a);

@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define SIZE (1 << 20)
+
 int_signed inverse_string_compare(const String* lhs, const String* rhs)
 {
     return -string_compare(lhs, rhs);
@@ -17,19 +19,66 @@ int_signed compare_int(int_signed* lhs, int_signed* rhs)
     return *rhs - *lhs;
 }
 
+int_signed compare_complex_test(Complex* lhs, Complex* rhs)
+{
+    return rhs->im - lhs->im;
+}
+
+static Array* _get_unsorted_arrayINT(int_signed size)
+{
+    Array*      array;
+
+    array = array_createINT(0);
+    size --;
+    while (size >= 0)
+    {
+        array_push(array, &size);
+        size --;
+    }
+
+    return array;
+}
+
+static Array* _get_unsorted_arrayCPLX(int_signed size)
+{
+    Array*      array;
+    Complex     z;
+
+    array = array_createCPLX(0);
+    size --;
+
+    while (size >= 0)
+    {
+        z = complex(0, size);
+        // print_complex_pointerN(&z);
+        array_push(array, &z);
+        
+        // z = *(Complex *)array_last(array);
+
+        size --;
+    }
+
+    return array;
+}
+
 void array_test()
 {
     Array* array;
-    String* string;
+    
+    array = _get_unsorted_arrayINT(10);
+    print_arrayN(array, print_int_pointerN, NULL);
 
-    array = array_create(copy_shallow, string_destroy);
-    string = string_create("this is a test");
-    array_push(array, &string);
+    array_sortM(array, compare_int);
+    print_arrayN(array, print_int_pointerN, NULL);
 
-    // string = array_at(array, 0);
-    // print_string(string);
+    array_destroy(array);
 
-    print_array(array, print_stringN, NULL);
+    array = _get_unsorted_arrayCPLX(10);
+    print_arrayN(array, print_complex_pointerN, NULL);
+
+    array_sortM(array, compare_complex_test);
+    print_arrayN(array, print_complex_pointerN, NULL);
+
     array_destroy(array);
 }
 
@@ -46,7 +95,8 @@ void merge_sort_test()
     // array_sortH(strings, inverse_string_compare);
 
 
-    print_arrayN(strings, print_string, "\n");
+    // print_arrayN(strings, print_string, "\n");
+    print_stringN(array_last(strings));
 
     array_destroy(strings);
 }
@@ -54,19 +104,17 @@ void merge_sort_test()
 void merge_sort_number_test()
 {
     Array* numbers;
-    int_signed n;
 
-    numbers = array_create(copy_int_signed, memory_destroy);
-    n = (1 << 20);
-    while (n)
-    {
-        array_push(numbers, &n);
-        n --;
-    }
+    numbers = _get_unsorted_arrayINT(SIZE);
+    // print_arrayN(numbers, print_int_pointerN, NULL);
+
+    // Array* copy = array_copy(numbers);
+    // print_arrayN(copy, print_int_pointerN, NULL);
 
     array_sortM(numbers, compare_int);
 
     // print_arrayN(numbers, print_int_pointerN, NULL);
+    print_int_pointerN(array_last(numbers));
     array_destroy(numbers);
 }
 
@@ -75,9 +123,13 @@ void quick_sort_test()
     Array* array;
 
     array = get_all_linesAFN("test_file.txt");
+    String* string = array_at(array, 0);
+    print_stringN(string);
+
     array_sortQ(array, string_compare);
 
-    print_arrayN(array, print_stringN, NULL);
+    print_stringN(array_last(array));
+    // print_arrayN(array, print_stringN, NULL);
     
     array_destroy(array);
     
@@ -85,21 +137,37 @@ void quick_sort_test()
 
 void quick_sort_number_test()
 {
-    int_signed n;
     Array*     array;
 
-    // array = array_create(copy_int_signed, memory_destroy);
-    array = array_createINT();
-    n = (1 << 20);
-    while (n)
-    {
-        array_push(array, &n);
-        n --;
-    }
+    array = _get_unsorted_arrayINT(SIZE);
 
+    int_signed n = *(int_signed *)array_at(array, 0);
+
+    print_int(n);
     // print_arrayN(array, print_int_pointer, " ");
-    print_int_pointerN(array_pop_front(array));
+    array_sortQ(array, compare_int);
+
+    print_int_pointerN(array_last(array));
     array_destroy(array);
+}
+
+void heap_sort_test()
+{
+    Array* array;
+
+    array = get_all_linesAFN("test_file.txt");
+    array_sortH(array, string_compare);
+
+    print_string(array_last(array));
+    // print_arrayN(array, print_stringN, NULL);
+
+    array_destroy(array);
+
+    // array = _get_unsorted_arrayINT(SIZE);
+    // array_sortH(array, compare_int);
+    // print_int_pointerN(array_last(array));
+    // // print_arrayN(array, print_int_pointerN, NULL);
+    // array_destroy(array);
 }
 
 void queue_test()
@@ -109,15 +177,18 @@ void queue_test()
     String* string;
 
     strings = get_all_linesAFN("test_file.txt");
+    //
+    // print_arrayN(strings, print_stringN, NULL);
+    //
     queue = heap_create(copy_shallow, string_destroy, string_compare);
-
-    // print_arrayN(strings, print_string, "\n");
 
     while (array_size(strings))
     {
         string = array_pop_front(strings);
         heap_push(queue, string);
     }
+
+    // print_heap(queue, print_stringN);
 
     while ((string = heap_pop_root(queue)))
     {
@@ -138,12 +209,15 @@ void hash_test()
     int_signed  unique_lines;
 
     strings = get_all_linesAFN("test_file.txt");
-    table = hash_table_create(copy_shallow, string_destroy, hash_string, 30000);
+    // print_arrayN(strings, print_stringN, NULL);
+    table = hash_table_create(copy_shallow, string_destroy, hash_string, 20000);
     unique_lines = array_size(strings);
 
     while (array_size(strings))
     {
         string = array_pop(strings);
+        // print_stringN(string);
+
         if (!hash_table_insert(table, string, string_compare))
         {
             // print_stringN(string);
@@ -154,11 +228,11 @@ void hash_test()
         }
     }
 
-    // print_hash_table(table, print_string);
+    print_hash_table(table, print_string);
 
     distribution = _hash_table_get_distribution(table);
     // print_distribution(distribution);
-    // print_array(distribution, print_int_pointerN, " ");
+    print_array(distribution, print_int_pointerN, " ");
     array_destroy(distribution);
 
     print_intN(unique_lines);
@@ -284,83 +358,6 @@ void random_test()
     printf("%d\n", chi_test);
 }
 
-void segment_test()
-{
-    MSegment* segment;
-    int_signed size;
-    int_signed n;
-    
-    size = 10;
-    segment = msegment_createINT(size);
-    n = 0;
-
-    while (n < size)
-    {
-        msegment_set(segment, &n, n);
-        n ++;
-    }
-
-    print_msegment(segment, print_int_pointerN);
-    msegment_swap(segment, 0, size - 1);
-    print_msegment(segment, print_int_pointerN);
-    msegment_destroy(segment);
-
-    size = 3;
-    segment = msegment_createPTR(size);
-    String* s0 = string_create("this is a test");
-    String* s1 = string_create("does it work");
-    String* s2 = string_create("01234567789");
-
-    // printf("%p\n", s0);
-    // print_stringN(s0);
-
-    msegment_set(segment, s0, 0);
-    msegment_set(segment, s1, 1);
-    msegment_set(segment, s2, 2);
-
-    print_msegment(segment, print_stringN);
-    msegment_swap(segment, 0, 2);
-    print_msegment(segment, print_stringN);
-
-    msegment_map(segment, string_destroy);
-    msegment_destroy(segment);
-
-    real x, y, z;
-
-    segment = msegment_createREAL(size);
-    x = PI;
-    y = E;
-    z = INT_MAX / 2;
-
-    msegment_set(segment, &x, 0);
-    msegment_set(segment, &y, 1);
-    msegment_set(segment, &z, 2);
-
-    print_msegment(segment, print_real_pointer);
-    msegment_swap(segment, 0, 2);
-    print_msegment(segment, print_real_pointer);
-
-    msegment_destroy(segment);
-
-    Complex v, w, t;
-
-    segment = msegment_createCMPLX(3);
-
-    v = complex(PI, PI);
-    w = complex(0, -E);
-    t = complex_zero();
-
-    msegment_set(segment, &v, 0);
-    msegment_set(segment, &w, 1);
-    msegment_set(segment, &t, 2);
-
-    print_msegment(segment, print_complex_pointerN);
-    msegment_swap(segment, 0, 2);
-    print_msegment(segment, print_complex_pointerN);
-    
-    msegment_destroy(segment);
-}
-
 void _at_exit()
 {
     get_line(-1);
@@ -384,11 +381,10 @@ int main()
     // quick_sort_test();
     // merge_sort_number_test();
     quick_sort_number_test();
+    // heap_sort_test();
     // queue_test();
     // string_test();
-    // perfect_square_test();
     // random_test();
-    // segment_test();
     // array_test();
 
     end = clock();

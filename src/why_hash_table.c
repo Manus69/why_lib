@@ -1,7 +1,9 @@
 #include "why_lib.h"
 #include "why_hash_table.h"
 
-#define HASHT_MIN_CAPACITY  (661)
+#define HASHT_MIN_CAPACITY  (7)
+// #define HASHT_MIN_CAPACITY  (661)
+
 
 static void** _get_items(void* (*copy)(), void (*destroy)(), int_unsigned capacity)
 {

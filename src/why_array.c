@@ -1,125 +1,23 @@
 #include "why_array.h"
 
-// static void** _get_array(int_signed size)
-// {
-//     void** array;
-
-//     array = allocate(sizeof(void *) * size);
-//     size --;
-//     while (size >= 0)
-//     {
-//         array[size] = NULL;
-//         size --;
-//     }
-
-//     return array;
-// }
-
-static void* _get_array(int_signed size, int_signed item_size)
+int_signed _index_relative_to_abs(const Array* array, int_signed index)
 {
-    return allocate(size * item_size);
+    return array->left_index + index + 1;
 }
 
-static void* _atV(const Array* array, int_signed index)
+int_signed _index_abs_to_relative(const Array* array, int_signed index)
 {
-    return MEM_GET(array->data, index, array->item_size);
+    return index - array->left_index - 1;
 }
 
-static void* _atP(const Array* array, int_signed index)
+void* _array_get_data(const Array* array)
 {
-    return *(void **)MEM_GET(array->data, index, array->item_size);
+    return array->data;
 }
 
-static Array* _create(void* (*at)(), void (*set)(), void (*swap)(), void* (*copy)(),
-                        void (*destroy)(), int_signed capacity, int_signed item_size)
+void _array_set_data(Array* array, const void* data)
 {
-    Array* array;
-
-    array = allocate(sizeof(Array));
-
-    capacity = capacity < A_CAPACITY_MIN ? A_CAPACITY_MIN : capacity;
-
-    array->data = _get_array(capacity, item_size);
-    array->at = at;
-    array->set = set;
-    array->swap = swap;
-    array->copy = copy;
-    array->destroy = destroy;
-    array->compare = NULL;
-
-    array->item_size = item_size;
-    array->capacity = capacity;
-    array->left_index = capacity / 2;
-    array->right_index = array->left_index + 1;
-
-    return array;
-}
-
-Array* array_create_with_capacity(void* (copy)(), void (*destroy)(), int_signed capacity)
-{
-    return _create(_atP, pointer_set, pointer_swap, copy, destroy, capacity, sizeof(void *));
-}
-
-Array* array_create(void* (*copy)(), void (*destroy)())
-{
-    return array_create_with_capacity(copy, destroy, A_CAPACITY_DEFAULT);
-}
-
-Array* array_createINT()
-{
-    return _create(_atV, int_set, int_swap, copy_shallow, destroy_shallow, 0, sizeof(int_signed));
-}
-
-void array_map(Array* array, void (*function)())
-{
-    int_signed  n;
-    void*       item;
-
-    if (!array || !function)
-        return ;
-    
-    n = array->left_index + 1;
-    while (n < array->right_index)
-    {
-        item = array->at(array, n);
-        function(item);
-        n ++;
-    }
-}
-
-static void _destroy_items(Array* array)
-{
-    if (!array)
-        return ;
-    
-    array_map(array, array->destroy);
-}
-
-void array_destroy(Array* array)
-{
-    if (!array)
-        return ;
-    
-    _destroy_items(array);
-    free(array->data);
-    free(array);
-}
-
-void array_destroy_no_content(Array* array)
-{
-    if (!array)
-        return ;
-    
-    free(array->data);
-    free(array);
-}
-
-void* array_at(const Array* array, int_signed index)
-{
-    if (!array)
-        return NULL;
-    
-    return array->at(array, array->left_index + index + 1);
+    array->data = (void *)data;
 }
 
 int_signed array_size(const Array* array)
@@ -130,12 +28,40 @@ int_signed array_size(const Array* array)
     return array->right_index - array->left_index - 1;
 }
 
+void _array_shift_right_brk(Array* array, int_signed shift)
+{
+    array->right_index += shift;
+}
+
+int_signed _array_get_right_brk(const Array* array)
+{
+    return array->right_index;
+}
+
 int_signed array_get_capacity(const Array* array)
 {
     if (!array)
         return 0;
     
     return array->capacity;
+}
+
+void* _array_at(const Array* array, int_signed n)
+{
+    return array->at(array, n);
+}
+
+void* array_at(const Array* array, int_signed index)
+{
+    if (!array)
+        return NULL;
+    
+    return _array_at(array, _index_relative_to_abs(array, index));
+}
+
+void _array_set(Array* array, const void* item, int_signed index)
+{
+    array->set(array, item, index);
 }
 
 void* array_set(Array* array, const void* item, int_signed index)
@@ -145,9 +71,9 @@ void* array_set(Array* array, const void* item, int_signed index)
     if (!array)
         return NULL;
     
-    return_value = array_at(array, index);
-    array->set(array->data, item, array->left_index + index + 1);
-    // array->items[array->left_index + index + 1] = item;
+    index = _index_relative_to_abs(array, index);
+    return_value = _array_at(array, index);
+    _array_set(array, array->copy(item), index);
 
     return return_value;
 }
@@ -184,8 +110,7 @@ bool array_pushG(Array* array, const void* item, void* (*copy)())
     if (array->right_index == array->capacity)
         _reallocate_array(array);
     
-    array->set(array->data, copy(item), array->right_index);
-    // array->items[array->right_index] = copy(item);
+    _array_set(array, copy(item), array->right_index);
     array->right_index ++;
 
     return TRUE;
@@ -196,8 +121,7 @@ bool array_push_frontG(Array* array, const void* item, void* (*copy)())
     if (array->left_index == 0)
         _reallocate_array(array);
     
-    array->set(array->data, copy(item), array->left_index);
-    // array->items[array->left_index] = copy(item);
+    _array_set(array, copy(item), array->left_index);
     array->left_index --;
 
     return TRUE;
@@ -221,8 +145,7 @@ void* array_pop(Array* array)
         return NULL;
     
     array->right_index --;
-    item = array->at(array, array->right_index);
-    // item = array->items[array->right_index];
+    item = _array_at(array, array->right_index);
 
     return item;
 }
@@ -235,37 +158,57 @@ void* array_pop_front(Array* array)
         return NULL;
     
     array->left_index ++;
-    item = array->at(array, array->left_index);
-    // item = array->items[array->left_index];
+    item = _array_at(array, array->left_index);
 
     return item;
 }
 
 void array_swap(Array* array, int_signed m, int_signed n)
 {
-    array->swap(array->data, array->left_index + m + 1, array->left_index + n + 1);
-    // SWAP(array->items[array->left_index + m + 1], array->items[array->left_index + n + 1], void *);
+    array->swap(array, _index_relative_to_abs(array, m), _index_relative_to_abs(array, n));
+}
+
+void array_map(Array* array, void (*function)())
+{
+    int_signed  n;
+    void*       item;
+
+    if (!array || !function)
+        return ;
+    
+    n = array->left_index + 1;
+    while (n < array->right_index)
+    {
+        item = _array_at(array, n);
+        function(item);
+        n ++;
+    }
 }
 
 Array* array_copy_with(const Array* array, void* (*copy_function)())
 {
     Array*      copy;
     void*       item;
-    int_signed  n;
-    int_signed  length;
+    int_signed  left;
+    int_signed  size;
 
     if (!array)
         return NULL;
     
-    copy = array_create(array->copy, array->destroy);
-    n = array->left_index + 1;
-    length = array->right_index;
-    while (n < length)
-    {
-        item = copy_function(array->at(array, n));
-        array_push(copy, item);
+    copy = memory_copy(array, sizeof(Array));
+    copy->data = _get_array(array->capacity, array->item_size);
+    if ((size = array_size(array)) == 0)
+        return copy;
 
-        n ++;
+    left = _index_relative_to_abs(array, 0);
+
+    while (size)
+    {
+        item = copy_function(_array_at(array, left));
+        _array_set(copy, item, left);
+
+        left ++;
+        size --;
     }
 
     return copy;

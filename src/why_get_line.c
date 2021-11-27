@@ -82,7 +82,7 @@ Array* get_all_linesA(int file_descriptor)
     lines = array_create(copy_shallow, string_destroy);
     
     while ((line = get_line(file_descriptor)))
-        array_push(lines, &line);
+        array_push(lines, line);
 
     return lines;
 }

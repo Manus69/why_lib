@@ -73,6 +73,7 @@ Array* _solve_qubic(const Polynomial* p)
     Array*      roots;
     Polynomial* p_scaled;
     real        a_root;
+    Complex*    z;
 
     p_scaled = _scale(p);
 
@@ -80,13 +81,15 @@ Array* _solve_qubic(const Polynomial* p)
     {
         error_set(WHY_ERROR_MATH, "failed to find roots");
         polynomial_destroy(p_scaled);
+
         return NULL;
     }
 
     a_root = polynomial_newtons(p_scaled);
     roots = array_create_with_capacity(copy_shallow, memory_destroy, 3);
 
-    array_push(roots, complex_create(a_root, 0));
+    z = complex_create(a_root, 0);
+    array_push(roots, z);
     roots = _get_roots(p_scaled, roots, a_root);
 
     polynomial_destroy(p_scaled);
