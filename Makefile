@@ -5,7 +5,7 @@ driver_name = test
 cc = gcc
 flags = -Wall -Wextra -g -fsanitize=address
 driver_flags = $(flags)
-release_flags = -Wall -Wextra -O2 #-flto# -fsanitize=address
+release_flags = -Wall -Wextra -O2 #-flto#
 release_driver_flags = $(release_flags) -flto
 
 source_folder = src/

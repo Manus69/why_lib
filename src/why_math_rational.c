@@ -99,3 +99,32 @@ Rational rational_divide(Rational lhs, Rational rhs)
 
     return rational_mult(lhs, rational_reciprocal(rhs));
 }
+
+real rational_to_decimal(Rational p)
+{
+    return ((real)p.top) / p.bot;
+}
+
+int_signed rational_compare(const Rational* lhs, const Rational* rhs)
+{
+    real result;
+
+    result = rational_to_decimal(*rhs) - rational_to_decimal(*lhs);
+
+    return result < 0 ? -1 : result > 0;
+}
+
+Rational rational_random(int_signed top_max, int_signed bot_max)
+{
+    int_signed top;
+    int_signed bot;
+
+    top_max += 1;
+    bot_max += 1;
+    top = random_get() % top_max;
+    bot = random_get() % bot_max;
+    top = top == 0 ? 1 : top;
+    bot = bot == 0 ? 1 : bot;
+    
+    return rational(top, bot);
+}

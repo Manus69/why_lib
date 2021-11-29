@@ -44,6 +44,22 @@ void print_uint(int_unsigned n)
     printf("%llu", n);
 }
 
+void print_byte(byte byte)
+{
+    printf("%u", byte);
+}
+
+void print_byte_pointer(byte* byte)
+{
+    print_byte(*byte);
+}
+
+void print_byte_pointerN(byte* byte)
+{
+    print_byte_pointer(byte);
+    printf("\n");
+}
+
 static void _print_number_string(char* string)
 {
     int_signed n;
@@ -104,6 +120,12 @@ void print_real_pointer(const real* x)
     print_real(*x);
 }
 
+void print_real_pointerN(const real* x)
+{
+    print_real_pointer(x);
+    printf("\n");
+}
+
 void print_rational(Rational p)
 {
     int_signed top;
@@ -119,6 +141,18 @@ void print_rational(Rational p)
     print_int(top);
     printf(" / ");
     print_int(bot);
+}
+
+void print_rationalN(Rational p)
+{
+    print_rational(p);
+    printf("\n");
+}
+
+void print_rationalPN(const Rational* p)
+{
+    print_rational(*p);
+    printf("\n");
 }
 
 void print_complex(Complex z)

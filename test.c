@@ -2,6 +2,7 @@
 #include "why_hash_table_diagnostics.h"
 #include "why_tree_diagnostics.h"
 #include "why_math_complex.h"
+#include "why_math_rational.h"
 
 #include <time.h>
 #include <stdio.h>
@@ -12,16 +13,6 @@
 int_signed inverse_string_compare(const String* lhs, const String* rhs)
 {
     return -string_compare(lhs, rhs);
-}
-
-int_signed compare_int(int_signed* lhs, int_signed* rhs)
-{
-    return *rhs - *lhs;
-}
-
-int_signed compare_complex_test(Complex* lhs, Complex* rhs)
-{
-    return rhs->im - lhs->im;
 }
 
 static Array* _get_unsorted_arrayINT(int_signed size)
@@ -61,24 +52,104 @@ static Array* _get_unsorted_arrayCPLX(int_signed size)
     return array;
 }
 
+static Array* _get_unsorted_arrayBYTE(int_signed size)
+{
+    Array*  array;
+    byte    b;
+
+    array = array_createBYTE(0);
+    size --;
+
+    random_seed(0);
+
+    while (size >= 0)
+    {
+        b = random_get() % 256;
+        // print_complex_pointerN(&z);
+        array_push(array, &b);
+        
+        // z = *(Complex *)array_last(array);
+
+        size --;
+    }
+
+    return array;
+}
+
+static Array* _get_unsorted_arrayREAL(int_signed size)
+{
+    Array*  array;
+    real    x;
+
+    array = array_createREAL(size);
+    size --;
+
+    while (size >= 0)
+    {
+        x = size;
+        array_push(array, &x);
+        size --;
+    }
+
+    return array;
+}
+
+static Array* _get_unsorted_arrayRAT(int_signed size)
+{
+    Array*      array;
+    Rational    r;
+
+    array = array_createRAT(size);
+
+    while (size)
+    {
+        r = rational_random(1, 1000);
+        // print_rationalN(r);
+        array_push(array, &r);
+
+        size --;
+    }
+    
+    return array;
+}
+
 void array_test()
 {
     Array* array;
     
     array = _get_unsorted_arrayINT(10);
-    print_arrayN(array, print_int_pointerN, NULL);
+    // print_arrayN(array, print_int_pointerN, NULL);
 
     array_sortM(array, compare_int);
-    print_arrayN(array, print_int_pointerN, NULL);
-
+    // print_arrayN(array, print_int_pointerN, NULL);
+    print_real_pointerN(array_last(array));
     array_destroy(array);
 
     array = _get_unsorted_arrayCPLX(10);
     print_arrayN(array, print_complex_pointerN, NULL);
-
-    array_sortM(array, compare_complex_test);
+    array_sortM(array, compare_complex);
     print_arrayN(array, print_complex_pointerN, NULL);
 
+    array_destroy(array);
+
+    array = _get_unsorted_arrayBYTE(10);
+    // print_arrayN(array, print_byte_pointerN, NULL);
+    array_sortQ(array, compare_byte);
+    // print_arrayN(array, print_byte_pointerN, NULL);
+    print_real_pointerN(array_last(array));
+    array_destroy(array);
+
+    array = _get_unsorted_arrayREAL(10);
+    // print_arrayN(array, print_real_pointerN, NULL);
+    array_sortQ(array, compare_real);
+    // print_array(array, print_real_pointerN, NULL);
+    print_real_pointerN(array_last(array));
+    array_destroy(array);
+
+    array = _get_unsorted_arrayRAT(30);
+    print_arrayN(array, print_rationalPN, "\n");
+    array_sortI(array, rational_compare);
+    print_arrayN(array, print_rationalPN, "\n");
     array_destroy(array);
 }
 
@@ -155,19 +226,21 @@ void heap_sort_test()
 {
     Array* array;
 
-    array = get_all_linesAFN("test_file.txt");
-    array_sortH(array, string_compare);
+    // array = get_all_linesAFN("test_file.txt");
+    // array_sortH(array, string_compare);
 
-    print_string(array_last(array));
+    // // print_string(array_last(array));
     // print_arrayN(array, print_stringN, NULL);
 
-    array_destroy(array);
-
-    // array = _get_unsorted_arrayINT(SIZE);
-    // array_sortH(array, compare_int);
-    // print_int_pointerN(array_last(array));
-    // // print_arrayN(array, print_int_pointerN, NULL);
     // array_destroy(array);
+
+    array = _get_unsorted_arrayINT(SIZE);
+    // print_arrayN(array, print_int_pointerN, NULL);
+    // array_sortH(array, compare_int);
+    array_sortH(array, compare_int);
+    print_int_pointerN(array_last(array));
+    // print_arrayN(array, print_int_pointerN, NULL);
+    array_destroy(array);
 }
 
 void queue_test()
@@ -180,7 +253,7 @@ void queue_test()
     //
     // print_arrayN(strings, print_stringN, NULL);
     //
-    queue = heap_create(copy_shallow, string_destroy, string_compare);
+    queue = heap_create(copy_shallow, string_destroy, string_compareINV);
 
     while (array_size(strings))
     {
@@ -188,6 +261,7 @@ void queue_test()
         heap_push(queue, string);
     }
 
+    array_destroy(strings);
     // print_heap(queue, print_stringN);
 
     while ((string = heap_pop_root(queue)))
@@ -197,7 +271,6 @@ void queue_test()
     }
 
     heap_destroy(queue);
-    array_destroy(strings);
 }
 
 void hash_test()
@@ -373,19 +446,19 @@ int main()
 
     start = clock();
 
-    // tree_test_numbers();
-    // tree_test();
-    // tree_test_strings();
-    // hash_test();
-    // merge_sort_test();
-    // quick_sort_test();
-    // merge_sort_number_test();
+    tree_test_numbers();
+    tree_test();
+    tree_test_strings();
+    hash_test();
+    merge_sort_test();
+    quick_sort_test();
+    merge_sort_number_test();
     quick_sort_number_test();
-    // heap_sort_test();
-    // queue_test();
-    // string_test();
-    // random_test();
-    // array_test();
+    heap_sort_test();
+    queue_test();
+    string_test();
+    random_test();
+    array_test();
 
     end = clock();
     print_time_diff(start, end);

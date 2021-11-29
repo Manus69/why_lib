@@ -15,4 +15,5 @@ redo polynomials
 matrix
 large numbers
 grep
-complex modulus
+complex functions must take pointers as args?
+print all values by pointers? (get rid of print pointer)

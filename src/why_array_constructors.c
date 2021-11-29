@@ -1,6 +1,7 @@
 #include "why_lib.h"
 #include "why_array.h"
 #include "why_math_complex.h"
+#include "why_math_rational.h"
 
 void* _get_array(int_signed size, int_signed item_size)
 {
@@ -37,6 +38,26 @@ void array_value_swap(Array* array, int_signed n, int_signed m)
     MEM_SWAP(array->data, n, m, void *);   
 }
 
+void* array_byte_at(const Array* array, int_signed n)
+{
+    return (void *)&((byte *)array->data)[n];
+}
+
+void array_byte_set(Array* array, const void* value, int_signed n)
+{
+    MEM_SET(array->data, n, value, byte);
+}
+
+void array_byte_swap(Array* array, int_signed m, int_signed n)
+{
+    MEM_SWAP(array->data, m, n, byte);
+}
+
+void* array_int_at(const Array* array, int_signed n)
+{
+    return (void *)&((int_signed *)array->data)[n];
+}
+
 void array_int_set(Array* array, const void* value, int_signed n)
 {
     MEM_SET(array->data, n, value, int_signed);
@@ -45,6 +66,16 @@ void array_int_set(Array* array, const void* value, int_signed n)
 void array_int_swap(Array* array, int_signed m, int_signed n)
 {
     MEM_SWAP(array->data, m, n, int_signed);
+}
+
+void array_real_set(Array* array, const void* value, int_signed n)
+{
+    MEM_SET(array->data, n, value, real);
+}
+
+void array_real_swap(Array* array, int_signed m, int_signed n)
+{
+    MEM_SWAP(array->data, m, n, real);
 }
 
 void array_complex_set(Array* array, const void* value, int_signed n)
@@ -58,6 +89,21 @@ void array_complex_swap(Array* array, int_signed m, int_signed n)
     // SWAP(((Complex *)array->data)[m], ((Complex *)array->data)[n], Complex);
 }
 
+void* array_rational_at(const Array* array, int_signed n)
+{
+    return (void *)&((Rational *)array->data)[n];
+}
+
+void array_rational_set(Array* array, const void* value, int_signed n)
+{
+    MEM_SET(array->data, n, value, Rational);
+}
+
+void array_rational_swap(Array* array, int_signed m, int_signed n)
+{
+    MEM_SWAP(array->data, m, n, Rational);
+}
+
 static Array* _create(void* (*at)(), void (*set)(), void (*swap)(), void* (*copy)(),
                         void (*destroy)(), int_signed capacity, int_signed item_size)
 {
@@ -65,6 +111,7 @@ static Array* _create(void* (*at)(), void (*set)(), void (*swap)(), void* (*copy
 
     array = allocate(sizeof(Array));
 
+    capacity = capacity == 0 ? A_CAPACITY_DEFAULT : capacity;
     capacity = capacity < A_CAPACITY_MIN ? A_CAPACITY_MIN : capacity;
 
     array->data = _get_array(capacity, item_size);
@@ -108,13 +155,26 @@ Array* array_createINT(int_signed capacity)
 
 Array* array_createBYTE(int_signed capacity)
 {
-    return array_createVAL(capacity, sizeof(byte));
+    return _create(array_value_at, array_byte_set, array_byte_swap, 
+                    copy_shallow, destroy_shallow, capacity, sizeof(byte));
+}
+
+Array* array_createREAL(int_signed capacity)
+{
+    return _create(array_value_at, array_real_set, array_real_swap, 
+                    copy_shallow, destroy_shallow, capacity, sizeof(real));
 }
 
 Array* array_createCPLX(int_signed capacity)
 {
     return _create(array_value_at, array_complex_set, array_complex_swap, 
                     copy_shallow, destroy_shallow, capacity, sizeof(Complex));
+}
+
+Array* array_createRAT(int_signed capacity)
+{
+    return _create(array_value_at, array_rational_set, array_rational_swap, 
+                    copy_shallow, destroy_shallow, capacity, sizeof(Rational));
 }
 
 static void _destroy_items(Array* array)

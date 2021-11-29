@@ -79,6 +79,11 @@ real complex_mod_squared(Complex z)
     return z.re * z.re + z.im * z.im;
 }
 
+real complex_mod(Complex z)
+{
+    return math_sqrt(complex_mod_squared(z));
+}
+
 Complex complex_inv(Complex z)
 {
     if (complex_is_zero(z))

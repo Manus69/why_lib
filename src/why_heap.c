@@ -183,19 +183,24 @@ static bool _heapify_down(Heap* heap, int_signed index)
 static void _swap_out_root(Heap* heap)
 {
     heap_swap(heap, _index_of_last(heap), _index_of_root(heap));
+    _array_shift_right_brk(heap, -1);
     _heapify_down(heap, _index_of_root(heap));
 }
 
 void* heap_pop_root(Heap* heap)
 {
-    void* item;
+    void*       item;
+    int_signed  size;
 
-    if (!heap || array_size(heap) == 0)
+    if (!heap || (size = array_size(heap)) == 0)
         return NULL;
     
-    _swap_out_root(heap);
-    item = array_at(heap, _index_of_last(heap));
-    _array_shift_right_brk(heap, -1);
+    if (size != 1)
+    {
+        _swap_out_root(heap);
+        return array_at(heap, _index_of_last(heap) + 1);
+    }
+    item = array_pop(heap);
 
     return item;
 }
@@ -212,13 +217,15 @@ void heap_sort(Heap* heap)
     {
         _heapify_down(heap, n);
         n --;
+        //
+        // print_heap(heap, print_int_pointerN);
     }
 
     n = array_size(heap);
     while (array_size(heap))
     {
         _swap_out_root(heap);
-        _array_shift_right_brk(heap, -1);
+        // _array_shift_right_brk(heap, -1);
     }
 
     _array_shift_right_brk(heap, n);

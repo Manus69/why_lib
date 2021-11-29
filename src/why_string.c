@@ -171,6 +171,11 @@ int_signed string_compare(const String* lhs, const String* rhs)
     return cstr_compare(lhs->characters, rhs->characters);
 }
 
+int_signed string_compareINV(const String* lhs, const String* rhs)
+{
+    return -string_compare(lhs, rhs);
+}
+
 int_signed string_compare_length(const String* lhs, const String* rhs, int_signed length)
 {
     int_signed lhs_length;

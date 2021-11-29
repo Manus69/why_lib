@@ -112,10 +112,11 @@ void            msegment_map(MSegment* segment, void (*function)());
 void            msegment_swap(MSegment* segment, int_signed j, int_signed k);
 
 //array
-Array*          array_createVAL(int_signed capacity, int_signed item_size);
 Array*          array_createINT(int_signed capacity);
 Array*          array_createBYTE(int_signed capacity);
+Array*          array_createREAL(int_signed capacity);
 Array*          array_createCPLX(int_signed capacity);
+Array*          array_createRAT(int_signed capacity);
 Array*          array_create(void* (*copy)(), void (*destroy_)());
 Array*          array_create_with_capacity(void* (copy)(), void (*destroy)(), int_signed capacity);
 Array*          array_copy(const Array* array);
@@ -139,7 +140,7 @@ void            array_destroy_no_content(Array* array);
 void            array_sortI(Array* array, int_signed (*compare)());
 void            array_sortM(Array* array, int_signed (*compare)());
 void            array_sortH(Array* array, int_signed (*compare)());
-void            array_sortQ(Array* array, int_signed (*comapre)());
+void            array_sortQ(Array* array, int_signed (*compare)());
 void*           array_findCMP(const Array* array, const void* item, int_signed (*comapre)());
 void*           array_find(const Array* array, const void* item);
 void*           array_first(const Array* array);
@@ -262,6 +263,7 @@ String*         string_appendC(String* string, const char* rhs);
 String*         string_appendS(String* string, const String* rhs);
 String*         string_copy_shallow(const String* string);
 int_signed      string_compare(const String* lhs, const String* rhs);
+int_signed      string_compareINV(const String* lhs, const String* rhs);
 int_signed      string_compare_length(const String* lhs, const String* rhs, int_signed length);
 String*         string_substring(const String* string, int_signed left_index, int_signed length);
 String*         string_substring_end(const String* string, int_signed left_index);
@@ -362,6 +364,9 @@ Rational        rational_add(Rational lhs, Rational rhs);
 Rational        rational_subtract(Rational lhs, Rational rhs);
 Rational        rational_mult(Rational lhs, Rational rhs);
 Rational        rational_divide(Rational lhs, Rational rhs);
+real            rational_to_decimal(Rational p);
+int_signed      rational_compare(const Rational* lhs, const Rational* rhs);
+Rational        rational_random(int_signed top_max, int_signed bot_max);
 
 //complex
 Complex         complex(real re, real im);
@@ -381,6 +386,7 @@ Complex         complex_scale(Complex z, real a);
 Complex         complex_conjugate(Complex z);
 Complex         complex_power(Complex z, int_unsigned n);
 real            complex_mod_squared(Complex z);
+real            complex_mod(Complex z);
 
 //polynomial
 Polynomial*     polynomial_create(char* variable);
@@ -480,7 +486,17 @@ void*           copy_real(real* x);
 void*           copy_complex(Complex* z);
 void*           copy_cstring(const char* string);
 
+//compare
+int_signed      compare_int(const int_signed* lhs, const int_signed* rhs);
+int_signed      compare_intINV(const int_signed* lhs, const int_signed* rhs);
+int_signed      compare_byte(const byte* lhs, const byte* rhs);
+int_signed      compare_complex(const Complex* lhs, const Complex* rhs);
+int_signed      compare_real(const real* lhs, const real* rhs);
+
 //print
+void            print_byte(byte byte);
+void            print_byte_pointer(byte* byte);
+void            print_byte_pointerN(byte* byte);
 void            print_int(int_signed n);
 void            print_uint(int_unsigned n);
 void            print_intN(int_signed n);
@@ -488,7 +504,10 @@ void            print_int_pointer(int_signed* n);
 void            print_int_pointerN(int_signed* n);
 void            print_real(real x);
 void            print_real_pointer(const real* x);
+void            print_real_pointerN(const real* x);
 void            print_rational(Rational p);
+void            print_rationalN(Rational p);
+void            print_rationalPN(const Rational* p);
 void            print_complex(Complex z);
 void            print_complex_pointer(const Complex* z);
 void            print_complexN(Complex z);
